@@ -3,6 +3,7 @@ body{font-size:16px}
 .brand{font-size:21px}.brand span{font-size:10px}.nav-links,.menu-toggle{font-size:11px}
 .hero-kicker{font-size:11px}.hero-intro{font-size:16px}.hero-cta{font-size:11px}.hero-card-top,.hero-card-footer,.hero-bottom{font-size:8px}.hero-card p{font-size:12px}.scroll-cue{font-size:9px}.hero-corner{font-size:9px}
 .hero-card{background:rgba(255,73,63,.7);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px)}
+@media(min-width:901px){.hero h1{font-size:clamp(64px,8vw,116px)}}
 .section-label{font-size:10px}.section-heading-row p,.process-heading p{font-size:13px}.body-copy{font-size:15px}.portrait-caption{font-size:8px}.about-tags span{font-size:9px}
 .project-meta{font-size:9px}.project-card p{font-size:12px}.project-card h3{font-size:clamp(24px,2.3vw,33px)}.project-card h3 span{font-size:16px}.visual-node{font-size:9px}.type-b{font-size:13px}.ui-title,.ui-row i{font-size:8px}.ui-row{font-size:10px}.admit-card span,.admit-card small{font-size:7px}.revenue-value{font-size:84px}.visual-revenue>span:last-child{font-size:8px}
 .process-grid span{font-size:10px}.process-grid h3{font-size:32px}.process-grid p{font-size:12px}.experience-row{font-size:13px}.experience-row .year,.experience-row span:last-child{font-size:9px}.experience-row strong{font-size:26px}
