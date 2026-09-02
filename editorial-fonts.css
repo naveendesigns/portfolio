@@ -1,0 +1,23 @@
+:root{
+    --handwritten:'Kalam',cursive;
+}
+
+/* The reference uses a clear three-layer type system: display, handwritten personality, and utility mono. */
+.site-nav .brand{font-family:var(--body);font-weight:700}
+.mobile-menu a{font-family:var(--body);font-weight:700}
+
+/* Keep Pixelify Sans exclusive to the homepage hero. */
+.display-copy,.section-heading-row h2,.process-heading h2,.project-card h3,
+.visual-label,.system-word,.admit-number,.admit-card strong,.type-a,.type-c,.type-d,.type-e,
+.revenue-value,.process-grid h3,.experience-row strong,.contact h2,
+.case-hero h1,.case-content h2,.case-next strong{font-family:var(--body)}
+
+/* Handwritten layer for the personal, human part of the portfolio. */
+.display-copy{font-family:var(--handwritten);font-weight:400;letter-spacing:-.02em;line-height:1.04}
+.display-copy em{font-family:var(--handwritten);font-style:normal;color:#aaa}
+.portrait-caption span:first-child{font-family:var(--handwritten);font-size:10px}
+
+/* Editorial display type stays clean and recruiter-friendly outside the personal intro. */
+.section-heading-row h2,.process-heading h2,.contact h2{font-weight:700}
+.project-card h3,.experience-row strong,.case-hero h1,.case-content h2,.case-next strong{font-weight:700}
+.visual-label,.system-word,.admit-number,.type-a,.type-c,.type-d,.type-e,.revenue-value{font-weight:800}
