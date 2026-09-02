@@ -1,94 +1,210 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Naveen Kumar | Product Designer</title>
-    <meta name="description" content="Naveen Kumar is a Product Designer focused on B2B SaaS, AI, and complex workflows.">
+    <meta name="description" content="Naveen Kumar is a Product Designer focused on B2B SaaS, AI, complex workflows, design systems and thoughtful digital experiences.">
+    <meta name="author" content="Naveen Kumar">
+    <meta name="theme-color" content="#111111">
+    <link rel="canonical" href="https://naveendesigns.github.io/portfolio/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Naveen Kumar | Product Designer">
+    <meta property="og:description" content="Product Designer focused on B2B SaaS, AI, systems and complex workflows.">
+    <meta property="og:url" content="https://naveendesigns.github.io/portfolio/">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <nav>
-        <div class="logo label" style="color: var(--text-main); font-weight: bold;">NAVEEN</div>
+    <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="#top">NAVEEN<span>®</span></a>
         <div class="nav-links">
             <a href="#about">About</a>
             <a href="#work">Work</a>
+            <a href="#process">Process</a>
             <a href="#experience">Experience</a>
-            <a href="mailto:naveenmm26@gmail.com">Contact</a>
+            <a href="#contact">Contact</a>
         </div>
+        <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">MENU</button>
     </nav>
 
-    <main>
-        <section class="hero-wrapper">
-            <div class="inner-canvas">
-                <div class="hero-meta">
-                    <div class="label">✳ DESIGN + CODE</div>
-                    <div class="label" style="text-align: right;">PRODUCT DESIGNER<br>BASED IN CHENNAI</div>
+    <div class="mobile-menu" aria-hidden="true">
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <main id="main">
+        <section class="hero" id="top" aria-labelledby="hero-title">
+            <div class="hero-canvas">
+                <div class="hero-corner hero-corner-left">
+                    <span class="asterisk">✳</span>
+                    <span>DESIGN + CODE</span>
+                </div>
+                <div class="hero-corner hero-corner-right">
+                    <span>PRODUCT DESIGNER</span>
+                    <span>BASED IN CHENNAI</span>
                 </div>
 
-                <div class="hero-content">
-                    <h1 class="reveal-text">Crafting<br>innovative<br>applications<br>with AI.</h1>
+                <div class="hero-center">
+                    <p class="hero-kicker">PRODUCT DESIGNER · 5+ YEARS</p>
+                    <h1 id="hero-title">
+                        <span>Crafting</span>
+                        <span>innovative</span>
+                        <span>applications</span>
+                        <span>with AI<span class="dot">.</span></span>
+                    </h1>
+                    <p class="hero-intro">I like to make things which make sense and I can code a little.</p>
+                    <a class="hero-cta" href="#work">VIEW MY WORK <span>↗</span></a>
                 </div>
 
-                <div class="nk-card" id="editorial-card">
-                    <div class="card-id">NK / PRODUCT DESIGN</div>
-                    <p>I like to make things which make sense and I can code a little.</p>
-                    <a href="#work" class="cta">VIEW WORK <span>↗</span></a>
+                <div class="hero-card" id="editorial-card">
+                    <div class="hero-card-top">
+                        <span>NK</span>
+                        <span>01 / 05</span>
+                    </div>
+                    <div class="hero-emoji" aria-hidden="true">👨🏽‍💻</div>
+                    <p>Designing useful digital products across B2B SaaS, AI and complex workflows.</p>
+                    <span class="card-line"></span>
+                    <span class="card-footer">PRODUCT · SYSTEMS · CODE</span>
                 </div>
 
-                <div class="hero-meta">
-                    <div class="label">5 YEARS EXP.</div>
-                    <div class="label">B2B SAAS / AI</div>
-                    <div class="label">SYSTEMS THINKING</div>
+                <div class="hero-bottom">
+                    <span>CHENNAI / INDIA</span>
+                    <span class="hero-rule"></span>
+                    <span>B2B SAAS · AI / LLM · SYSTEMS</span>
                 </div>
+            </div>
+            <div class="scroll-cue"><span>SCROLL TO EXPLORE</span><span>↓</span></div>
+        </section>
+
+        <section class="about section-dark" id="about">
+            <div class="section-label">01 / ABOUT</div>
+            <div class="about-layout">
+                <div class="about-copy">
+                    <p class="display-copy">I’m a Product Designer who enjoys making <em>complex products feel simple.</em></p>
+                    <p class="body-copy">My work sits between product thinking, interaction design and implementation. I enjoy understanding the system behind a product, finding the confusing parts and turning them into experiences that feel clear and intentional.</p>
+                </div>
+                <div class="portrait-panel">
+                    <div class="portrait-frame">
+                        <img src="assets/naveen-profile.svg" alt="Naveen Kumar smiling in a black shirt">
+                    </div>
+                    <div class="portrait-caption"><span>THAT'S ME</span><span>NK / CHENNAI</span></div>
+                </div>
+            </div>
+            <div class="about-tags"><span>B2B SAAS</span><span>AI / LLM</span><span>DESIGN SYSTEMS</span><span>PROTOTYPING</span><span>PRODUCT STRATEGY</span></div>
+        </section>
+
+        <section class="work section-light" id="work">
+            <div class="section-label">02 / SELECTED WORK</div>
+            <div class="section-heading-row">
+                <h2>Work that starts with<br><em>the problem.</em></h2>
+                <p>Six projects across B2B SaaS, AI, education and product systems.</p>
+            </div>
+
+            <div class="projects-grid">
+                <a class="project-card project-featured" href="case-studies/linked-campaign-propagation.html">
+                    <div class="project-visual visual-campaign">
+                        <span class="visual-label">LINKED</span>
+                        <div class="visual-node node-a">SOURCE</div>
+                        <div class="visual-connection"></div>
+                        <div class="visual-node node-b">LINKED</div>
+                        <div class="visual-node node-c">PROPAGATE</div>
+                    </div>
+                    <div class="project-meta"><span>01 · INTEGRATE</span><span>PRODUCT DESIGN</span></div>
+                    <h3>Linked Campaign Propagation <span>↗</span></h3>
+                    <p>Mapping complex campaign relationships into a clearer, predictable workflow.</p>
+                </a>
+
+                <a class="project-card" href="case-studies/design-engineering-collaboration.html">
+                    <div class="project-visual visual-system">
+                        <span class="system-word">DESIGN</span>
+                        <span class="system-cross">×</span>
+                        <span class="system-word right">ENGINEERING</span>
+                        <div class="system-grid-lines"></div>
+                    </div>
+                    <div class="project-meta"><span>02 · INTEGRATE</span><span>DESIGN OPS</span></div>
+                    <h3>Design × Engineering <span>↗</span></h3>
+                    <p>A two-track collaboration model and reusable prototyping system.</p>
+                </a>
+
+                <a class="project-card" href="case-studies/teacher-experience.html">
+                    <div class="project-visual visual-teacher">
+                        <div class="ui-window"><div class="ui-bar"></div><div class="ui-title">TODAY'S CLASS</div><div class="ui-row"><b>08:30</b><span>Mathematics</span><i>AI</i></div><div class="ui-row"><b>09:30</b><span>Science</span><i>→</i></div><div class="ui-row"><b>10:30</b><span>English</span><i>→</i></div></div>
+                    </div>
+                    <div class="project-meta"><span>03 · HURREY</span><span>AI + IoT SAAS</span></div>
+                    <h3>Teacher Experience <span>↗</span></h3>
+                    <p>Redesigning the teacher app around clearer classroom workflows and AI.</p>
+                </a>
+
+                <a class="project-card" href="case-studies/school-admissions.html">
+                    <div class="project-visual visual-admissions">
+                        <div class="admit-number">04</div><div class="admit-card"><span>APPLICATION</span><strong>#0428</strong><small>SHORTLISTED</small></div><div class="admit-card offset"><span>APPLICATION</span><strong>#0516</strong><small>REVIEW</small></div>
+                    </div>
+                    <div class="project-meta"><span>04 · HURREY</span><span>EDUCATION</span></div>
+                    <h3>School Admissions <span>↗</span></h3>
+                    <p>A simpler administration experience for a months-long admissions process.</p>
+                </a>
+
+                <a class="project-card" href="case-studies/typography-system.html">
+                    <div class="project-visual visual-type">
+                        <span class="type-a">Aa</span><span class="type-b">TYPE</span><span class="type-c">01</span><span class="type-d">02</span><span class="type-e">03</span>
+                    </div>
+                    <div class="project-meta"><span>05 · SYSTEMS</span><span>FIGMA + CODE</span></div>
+                    <h3>Scalable Typography System <span>↗</span></h3>
+                    <p>A token-based type system connecting Figma decisions to implementation.</p>
+                </a>
+
+                <a class="project-card" href="case-studies/revenue-optimization.html">
+                    <div class="project-visual visual-revenue">
+                        <div class="revenue-value">₹</div><div class="revenue-line"></div><div class="revenue-bars"><i></i><i></i><i></i><i></i><i></i></div><span>REVENUE / OPTIMIZE</span>
+                    </div>
+                    <div class="project-meta"><span>06 · INAI</span><span>CONCEPT</span></div>
+                    <h3>Revenue Optimization <span>↗</span></h3>
+                    <p>Helping merchants find revenue loss and understand what to do next.</p>
+                </a>
             </div>
         </section>
 
-        <section id="work" class="work-section">
-            <div class="label" style="margin-bottom: 20px;">02 / SELECTED WORK</div>
-            <h2>Selected work across B2B SaaS, AI, education and product systems.</h2>
+        <section class="process section-dark" id="process">
+            <div class="section-label">03 / PROCESS</div>
+            <div class="process-heading"><h2>Understand.<br>Explore.<br><em>Deliver.</em></h2><p>I don't start with pixels. I start by understanding what needs to make sense.</p></div>
+            <div class="process-grid">
+                <article><span>01</span><h3>Understand</h3><p>Users, business constraints, data and the workflow behind the interface.</p></article>
+                <article><span>02</span><h3>Explore</h3><p>Journeys, assumptions, flows and prototypes before committing to a direction.</p></article>
+                <article><span>03</span><h3>Deliver</h3><p>Interaction design, documentation and close collaboration with engineering.</p></article>
+            </div>
+        </section>
 
-            <div class="projects-grid">
-                <!-- Project 1 -->
-                <a href="case-studies/linked-campaign-propagation.html" class="project-card" id="proj-1">
-                    <div class="project-image-wrapper">
-                        <div style="background-image: url('assets/projects/integrate-main.jpg')"></div>
-                    </div>
-                    <div class="label">INTEGRATE / PRODUCT DESIGN</div>
-                    <h3 style="margin: 10px 0;">Linked Campaign Propagation</h3>
-                </a>
+        <section class="experience section-light" id="experience">
+            <div class="section-label">04 / EXPERIENCE</div>
+            <div class="experience-list">
+                <div class="experience-row"><span class="year">2024 → NOW</span><strong>Integrate</strong><span>Product Designer · B2B SaaS</span><span>Chennai</span></div>
+                <div class="experience-row"><span class="year">PREVIOUS</span><strong>Hurrey</strong><span>Product Designer · AI / IoT SaaS</span><span>Chennai</span></div>
+                <div class="experience-row"><span class="year">PREVIOUS</span><strong>CoSchool</strong><span>Product Designer · EdTech</span><span>Chennai</span></div>
+            </div>
+        </section>
 
-                <!-- Project 2 -->
-                <a href="case-studies/design-engineering-collaboration.html" class="project-card" id="proj-2">
-                    <div class="project-image-wrapper">
-                        <!-- CSS Grid-based placeholder to avoid broken image icons -->
-                        <div style="display: flex; align-items: center; justify-content: center; background: #f0f0f0; font-family: var(--font-mono); font-size: 10px; color: #999;">[ DESIGN SYSTEMS ARCHITECTURE ]</div>
-                    </div>
-                    <div class="label">INTEGRATE / DESIGN OPS</div>
-                    <h3 style="margin: 10px 0;">Design × Engineering Collaboration</h3>
-                </a>
-
-                <!-- Project 3 -->
-                <a href="case-studies/teacher-experience.html" class="project-card" id="proj-3">
-                    <div class="project-image-wrapper">
-                        <div style="background: #111;"></div>
-                    </div>
-                    <div class="label">HURREY / AI SAAS</div>
-                    <h3 style="margin: 10px 0;">Teacher Experience</h3>
-                </a>
-
-                <!-- Project 4 (Add others following same pattern) -->
+        <section class="contact section-dark" id="contact">
+            <div class="section-label">05 / CONTACT</div>
+            <div class="contact-inner">
+                <p class="contact-kicker">HAVE A PRODUCT PROBLEM?</p>
+                <h2>Let's make<br><em>something useful.</em></h2>
+                <div class="contact-links"><a href="mailto:naveenmm26@gmail.com">EMAIL ↗</a><a href="https://www.linkedin.com/in/naveenux/" target="_blank" rel="noopener">LINKEDIN ↗</a></div>
             </div>
         </section>
     </main>
 
-    <!-- 1. Load GSAP First -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <footer class="site-footer"><span>© 2026 NAVEEN KUMAR</span><span>DESIGNED + BUILT WITH INTENT</span><span>CHENNAI / INDIA</span></footer>
 
-<!-- 2. Then Load Your Script -->
-<script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
