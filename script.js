@@ -6,12 +6,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = document.querySelector('#editorial-card');
     const heroCanvas = document.querySelector('.hero-canvas');
 
-    const setScrolledState = () => {
-        nav.classList.toggle('scrolled', window.scrollY > 40);
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const setNavState = () => {
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY <= 40) {
+            nav.classList.remove('scrolled');
+        } else if (currentScrollY > lastScrollY) {
+            nav.classList.add('scrolled');
+        } else if (currentScrollY < lastScrollY) {
+            nav.classList.remove('scrolled');
+        }
+
+        lastScrollY = currentScrollY;
+        ticking = false;
     };
 
-    setScrolledState();
-    window.addEventListener('scroll', setScrolledState, { passive: true });
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(setNavState);
+            ticking = true;
+        }
+    }, { passive: true });
 
     if (menuButton && mobileMenu) {
         menuButton.addEventListener('click', () => {
