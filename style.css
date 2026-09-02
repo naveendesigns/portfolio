@@ -73,19 +73,38 @@ nav {
     margin-bottom: 40px;
 }
 
-/* The Editorial Card */
+/* Update these specific properties in your .nk-card class */
 .nk-card {
     position: absolute;
-    right: 10%;
-    bottom: 15%;
-    width: 280px;
+    right: 8%; /* Adjust to your liking */
+    bottom: 12%; 
+    width: 300px;
     background: var(--accent);
     color: white;
-    padding: 30px;
-    box-shadow: 20px 20px 60px rgba(0,0,0,0.1);
-    transform: rotate(-2deg);
-    transition: var(--transition);
-    cursor: pointer;
+    padding: 35px;
+    box-shadow: 30px 30px 80px rgba(0,0,0,0.15);
+    
+    /* Initial state before GSAP kicks in */
+    opacity: 0; 
+    visibility: hidden; 
+    
+    transform: rotate(-2deg); /* The slight "dropped card" tilt */
+    z-index: 10;
+    transition: transform 0.4s ease; /* For hover state */
+}
+
+/* Ensure the CTA inside the card looks premium */
+.nk-card .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    font-family: var(--font-mono);
+    text-decoration: none;
+    color: white;
+    font-size: 0.8rem;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    padding-bottom: 4px;
 }
 
 .nk-card:hover { transform: rotate(0deg) scale(1.05); }
