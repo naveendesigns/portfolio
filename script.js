@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuButton = document.querySelector('.menu-toggle');
     const mobileMenu = document.querySelector('.mobile-menu');
     const card = document.querySelector('#editorial-card');
+    const heroCanvas = document.querySelector('.hero-canvas');
 
     const setScrolledState = () => {
         nav.classList.toggle('scrolled', window.scrollY > 40);
@@ -50,27 +51,29 @@ document.addEventListener('DOMContentLoaded', () => {
         .from('.hero-card', { scale: 0.94, opacity: 0, rotate: 2, duration: 0.8 }, '-=0.5')
         .from('.hero-corner, .hero-bottom, .scroll-cue', { opacity: 0, duration: 0.5 }, '-=0.55');
 
-    if (card && window.matchMedia('(pointer: fine)').matches) {
-        card.addEventListener('mousemove', event => {
-            const rect = card.getBoundingClientRect();
+    if (card && heroCanvas && window.matchMedia('(pointer: fine)').matches) {
+        heroCanvas.addEventListener('mousemove', event => {
+            const rect = heroCanvas.getBoundingClientRect();
             const x = (event.clientX - rect.left) / rect.width - 0.5;
             const y = (event.clientY - rect.top) / rect.height - 0.5;
             gsap.to(card, {
-                x: x * 8,
-                y: y * 8,
-                rotate: x * 1.5 - 1,
-                duration: 0.35,
-                ease: 'power2.out'
+                x: x * 34,
+                y: y * 26,
+                rotate: x * 3 - 2,
+                duration: 0.7,
+                ease: 'power3.out',
+                overwrite: true
             });
         });
 
-        card.addEventListener('mouseleave', () => {
+        heroCanvas.addEventListener('mouseleave', () => {
             gsap.to(card, {
                 x: 0,
                 y: 0,
                 rotate: -2,
-                duration: 0.5,
-                ease: 'power3.out'
+                duration: 0.8,
+                ease: 'power3.out',
+                overwrite: true
             });
         });
     }
