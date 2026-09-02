@@ -13,19 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
         x: 50,
         opacity: 100,
         duration: 1.5,
-        ease: "power3.out",
         delay: 0.8
     });
 
     // 3. Subtle Parallax for the Editorial Card based on Mouse
-    const card = document.querySelector('#editorial-card');
-    document.addEventListener('mousemove', (e) => {
-        const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
-        const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
-        gsap.to(card, {
-            rotationY: xAxis,
-            rotationX: yAxis,
-            ease: "power2.out"
+    
         });
     });
 
