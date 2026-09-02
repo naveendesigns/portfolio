@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             element.style.opacity = '1';
             element.style.transform = 'none';
         });
+        if (card) card.style.opacity = '1';
         return;
     }
 
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .from('.hero h1 span', { y: 35, opacity: 0, stagger: 0.07, duration: 0.75 }, '-=0.25')
         .from('.hero-intro', { y: 14, opacity: 0, duration: 0.55 }, '-=0.4')
         .from('.hero-cta', { y: 10, opacity: 0, duration: 0.45 }, '-=0.3')
-        .from('.hero-card', { scale: 0.94, opacity: 0, rotate: 2, duration: 0.8 }, '-=0.5')
+        .from('.hero-card', { scale: 0.94, opacity: 0, rotate: 2, duration: 0.8 }, '+=4')
         .from('.hero-corner, .hero-bottom, .scroll-cue', { opacity: 0, duration: 0.5 }, '-=0.55');
 
     if (card && heroCanvas && window.matchMedia('(pointer: fine)').matches) {
