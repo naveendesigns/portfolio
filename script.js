@@ -1,65 +1,94 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // Create a timeline for the Hero entrance
-    const tl = gsap.timeline();
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const nav = document.querySelector('.site-nav');
+    const menuButton = document.querySelector('.menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const card = document.querySelector('#editorial-card');
 
-    // 1. Fade in the main Typography first
-    tl.from(".reveal-text", {
-        y: 60,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power4.out",
-        delay: 0.4
-    });
-
-    // 2. Fade in the NK Card and let it "stay"
-    tl.to(".nk-card", {
-        autoAlpha: 1,      // This handles both opacity and visibility:visible
-        y: -20,            // Moves it up slightly into place
-        duration: 1.5,
-        ease: "expo.out",  // High-end editorial feel
-    }, "-=0.8");           // Starts slightly before the text finishes
-
-    // 3. Subtle Hover Interaction (Optional)
-    // This keeps the card feeling "alive" without moving it away
-    const card = document.querySelector('.nk-card');
-    card.addEventListener('mouseenter', () => {
-        gsap.to(card, {
-            scale: 1.02,
-            rotate: 0,
-            duration: 0.4,
-            ease: "power2.out"
-        });
-    });
-
-    card.addEventListener('mouseleave', () => {
-        gsap.to(card, {
-            scale: 1,
-            rotate: -2,
-            duration: 0.4,
-            ease: "power2.out"
-        });
-    });
-});
-
-    // 4. Scroll Reveal for Project Cards
-    const observerOptions = {
-        threshold: 0.1
+    const setScrolledState = () => {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
     };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                gsap.from(entry.target, {
-                    y: 60,
-                    opacity: 0,
-                    duration: 1,
-                    ease: "power3.out"
-                });
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
+    setScrolledState();
+    window.addEventListener('scroll', setScrolledState, { passive: true });
 
-    document.querySelectorAll('.project-card').forEach(p => observer.observe(p));
+    if (menuButton && mobileMenu) {
+        menuButton.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            menuButton.setAttribute('aria-expanded', String(isOpen));
+            mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+            document.body.classList.toggle('menu-open', isOpen);
+            menuButton.textContent = isOpen ? 'CLOSE' : 'MENU';
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                menuButton.setAttribute('aria-expanded', 'false');
+                mobileMenu.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('menu-open');
+                menuButton.textContent = 'MENU';
+            });
+        });
+    }
+
+    if (reduceMotion || typeof gsap === 'undefined') {
+        document.querySelectorAll('.reveal').forEach(element => {
+            element.style.opacity = '1';
+            element.style.transform = 'none';
+        });
+        return;
+    }
+
+    const heroTimeline = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+    heroTimeline
+        .from('.hero-kicker', { y: 14, opacity: 0, duration: 0.55 })
+        .from('.hero h1 span', { y: 35, opacity: 0, stagger: 0.07, duration: 0.75 }, '-=0.25')
+        .from('.hero-intro', { y: 14, opacity: 0, duration: 0.55 }, '-=0.4')
+        .from('.hero-cta', { y: 10, opacity: 0, duration: 0.45 }, '-=0.3')
+        .from('.hero-card', { scale: 0.94, opacity: 0, rotate: 2, duration: 0.8 }, '-=0.5')
+        .from('.hero-corner, .hero-bottom, .scroll-cue', { opacity: 0, duration: 0.5 }, '-=0.55');
+
+    if (card && window.matchMedia('(pointer: fine)').matches) {
+        card.addEventListener('mousemove', event => {
+            const rect = card.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - 0.5;
+            const y = (event.clientY - rect.top) / rect.height - 0.5;
+            gsap.to(card, {
+                x: x * 8,
+                y: y * 8,
+                rotate: x * 1.5 - 1,
+                duration: 0.35,
+                ease: 'power2.out'
+            });
+        });
+
+        card.addEventListener('mouseleave', () => {
+            gsap.to(card, {
+                x: 0,
+                y: 0,
+                rotate: -2,
+                duration: 0.5,
+                ease: 'power3.out'
+            });
+        });
+    }
+
+    const revealItems = document.querySelectorAll('.section-label, .display-copy, .body-copy, .project-card, .process-grid article, .experience-row, .contact-inner');
+
+    const revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            gsap.from(entry.target, {
+                y: 28,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.out'
+            });
+            revealObserver.unobserve(entry.target);
+        });
+    }, { threshold: 0.12 });
+
+    revealItems.forEach(item => revealObserver.observe(item));
 });
