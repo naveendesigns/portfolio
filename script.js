@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Editorial Card Float
     gsap.from("#editorial-card", {
         x: 50,
-        opacity: 0,
+        opacity: 100,
         duration: 1.5,
         ease: "power3.out",
         delay: 0.8
