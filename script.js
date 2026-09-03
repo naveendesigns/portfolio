@@ -201,6 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const schoolAdmissionsPageUrl = 'https://app.notion.com/p/3d062e4ab85280cabf6dd82bff217836?pvs=204';
     schoolAdmissionsCard?.addEventListener('click', event => openNotionProject({ event, notionUrl: schoolAdmissionsNotionUrl, notionPageUrl: schoolAdmissionsPageUrl, title: 'School Admission Platform' }));
 
+    const revenueOptimizationCard = document.querySelector('a.project-card[href="case-studies/revenue-optimization.html"]');
+    const revenueOptimizationNotionUrl = 'https://naveendesign.notion.site/ebd//3d062e4ab852809085c3eb4fbe39ca89';
+    const revenueOptimizationPageUrl = 'https://app.notion.com/p/3d062e4ab852809085c3eb4fbe39ca89?pvs=204';
+    revenueOptimizationCard?.addEventListener('click', event => openNotionProject({ event, notionUrl: revenueOptimizationNotionUrl, notionPageUrl: revenueOptimizationPageUrl, title: 'Revenue Optimization Insights' }));
+
     document.addEventListener('keydown', event => {
         if (event.key === 'Escape' && document.querySelector('#notion-project-modal')) closeNotionProject();
     });
