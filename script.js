@@ -211,6 +211,81 @@ document.addEventListener('DOMContentLoaded', () => {
         changeCard(1);
     });
 
+    // Open the typography case study as a native portfolio overlay using the Notion page.
+    const typographyCard = document.querySelector('a.project-card[href="case-studies/typography-system.html"]');
+    const notionUrl = 'https://app.notion.com/p/25d62e4ab852800ca075ea04f14ca91d?pvs=204';
+
+    const closeNotionProject = () => {
+        const modal = document.querySelector('#notion-project-modal');
+        if (!modal) return;
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('notion-project-open');
+        if (reduceMotion || typeof gsap === 'undefined') {
+            modal.remove();
+            return;
+        }
+        gsap.to(modal, {
+            opacity: 0,
+            duration: 0.28,
+            ease: 'power2.in',
+            onComplete: () => modal.remove()
+        });
+    };
+
+    const openNotionProject = event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const existing = document.querySelector('#notion-project-modal');
+        if (existing) return;
+
+        const modal = document.createElement('div');
+        modal.id = 'notion-project-modal';
+        modal.className = 'notion-project-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-label', 'Scalable Typography System case study');
+        modal.setAttribute('aria-hidden', 'false');
+        modal.innerHTML = `
+            <div class="notion-project-shell">
+                <div class="notion-project-bar">
+                    <span>05 / SYSTEMS</span>
+                    <div class="notion-project-actions">
+                        <a href="${notionUrl}" target="_blank" rel="noopener">OPEN NOTION ↗</a>
+                        <button type="button" class="notion-project-close" aria-label="Close project">×</button>
+                    </div>
+                </div>
+                <div class="notion-project-frame">
+                    <iframe src="${notionUrl}&embed=true" title="Building a Scalable Typography System" loading="eager" allow="fullscreen"></iframe>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+        document.body.classList.add('notion-project-open');
+        modal.querySelector('.notion-project-close').addEventListener('click', closeNotionProject);
+        modal.addEventListener('click', event => {
+            if (event.target === modal) closeNotionProject();
+        });
+
+        if (reduceMotion || typeof gsap === 'undefined') {
+            modal.style.opacity = '1';
+        } else {
+            gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power3.out' });
+        }
+
+        modal.querySelector('.notion-project-close').focus();
+    };
+
+    typographyCard?.addEventListener('click', openNotionProject);
+
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && document.querySelector('#notion-project-modal')) {
+            closeNotionProject();
+        }
+    });
+
     if (reduceMotion || typeof gsap === 'undefined') {
         document.querySelectorAll('.reveal').forEach(element => {
             element.style.opacity = '1';
