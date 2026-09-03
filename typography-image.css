@@ -1,2 +1,3 @@
 .project-card .visual-type:has(img){background:transparent;border:0}.project-card .visual-type img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}.project-card:hover .visual-type img{transform:scale(1.03)}
 .project-card .visual-teacher:has(img){background:transparent;border:0}.project-card .visual-teacher img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}.project-card:hover .visual-teacher img{transform:scale(1.03)}
+.project-card .visual-admissions:has(img){background:transparent;border:0}.project-card .visual-admissions img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}.project-card:hover .visual-admissions img{transform:scale(1.03)}
