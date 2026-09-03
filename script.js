@@ -138,9 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
     prevButton?.addEventListener('click', event => { event.stopPropagation(); changeCard(-1); });
     nextButton?.addEventListener('click', event => { event.stopPropagation(); changeCard(1); });
 
-    // Use the exact Notion-generated embed URL. This is different from the public page URL.
+    // Open the typography case study as a native portfolio overlay using the exact Notion-generated embed URL.
     const typographyCard = document.querySelector('a.project-card[href="case-studies/typography-system.html"]');
     const notionUrl = 'https://naveendesign.notion.site/ebd//25d62e4ab852800ca075ea04f14ca91d';
+    const notionPageUrl = 'https://naveendesign.notion.site/Building-a-Scalable-Typography-System-25d62e4ab852800ca075ea04f14ca91d';
 
     const closeNotionProject = () => {
         const modal = document.querySelector('#notion-project-modal');
@@ -169,9 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.innerHTML = `
             <div class="notion-project-shell">
                 <div class="notion-project-bar">
-                    <span>05 / SYSTEMS</span>
+                    <a class="notion-project-brand" href="#top" aria-label="Back to Naveen home">Naveen</a>
                     <div class="notion-project-actions">
-                        <a href="https://naveendesign.notion.site/Building-a-Scalable-Typography-System-25d62e4ab852800ca075ea04f14ca91d" target="_blank" rel="noopener">OPEN NOTION ↗</a>
+                        <a href="${notionPageUrl}" target="_blank" rel="noopener">OPEN NOTION ↗</a>
                         <button type="button" class="notion-project-close" aria-label="Close project">×</button>
                     </div>
                 </div>
@@ -183,10 +184,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(modal);
         document.body.classList.add('notion-project-open');
         modal.querySelector('.notion-project-close').addEventListener('click', closeNotionProject);
+        modal.querySelector('.notion-project-brand').addEventListener('click', event => {
+            event.preventDefault();
+            closeNotionProject();
+            window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+        });
         modal.addEventListener('click', event => { if (event.target === modal) closeNotionProject(); });
         if (reduceMotion || typeof gsap === 'undefined') modal.style.opacity = '1';
         else gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power3.out' });
-        modal.querySelector('.notion-project-close').focus();
+        modal.querySelector('.notion-project-brand').focus();
     };
 
     typographyCard?.addEventListener('click', openNotionProject);
