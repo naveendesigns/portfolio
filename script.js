@@ -138,11 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     prevButton?.addEventListener('click', event => { event.stopPropagation(); changeCard(-1); });
     nextButton?.addEventListener('click', event => { event.stopPropagation(); changeCard(1); });
 
-    // Open the typography case study as a native portfolio overlay using the exact Notion-generated embed URL.
-    const typographyCard = document.querySelector('a.project-card[href="case-studies/typography-system.html"]');
-    const notionUrl = 'https://naveendesign.notion.site/ebd//3d062e4ab8528026befaca694ce28efb';
-    const notionPageUrl = 'https://naveendesign.notion.site/Building-a-Scalable-Typography-System-25d62e4ab852800ca075ea04f14ca91d';
-
+    // Reusable Notion case-study overlay pattern.
     const closeNotionProject = () => {
         const modal = document.querySelector('#notion-project-modal');
         if (!modal) return;
@@ -156,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gsap.to(modal, { opacity: 0, duration: 0.28, ease: 'power2.in', onComplete: () => modal.remove() });
     };
 
-    const openNotionProject = event => {
+    const openNotionProject = ({ event, notionUrl, notionPageUrl, title }) => {
         event.preventDefault();
         event.stopPropagation();
         if (document.querySelector('#notion-project-modal')) return;
@@ -165,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.className = 'notion-project-modal';
         modal.setAttribute('role', 'dialog');
         modal.setAttribute('aria-modal', 'true');
-        modal.setAttribute('aria-label', 'Scalable Typography System case study');
+        modal.setAttribute('aria-label', `${title} case study`);
         modal.setAttribute('aria-hidden', 'false');
         modal.innerHTML = `
             <div class="notion-project-shell">
@@ -177,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="notion-project-frame">
-                    <iframe src="${notionUrl}" title="Building a Scalable Typography System" loading="eager" allowfullscreen></iframe>
+                    <iframe src="${notionUrl}" title="${title}" loading="eager" allowfullscreen></iframe>
                 </div>
             </div>
         `;
@@ -195,7 +191,16 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.querySelector('.notion-project-brand').focus();
     };
 
-    typographyCard?.addEventListener('click', openNotionProject);
+    const typographyCard = document.querySelector('a.project-card[href="case-studies/typography-system.html"]');
+    const typographyNotionUrl = 'https://naveendesign.notion.site/ebd//3d062e4ab8528026befaca694ce28efb';
+    const typographyPageUrl = 'https://naveendesign.notion.site/Building-a-Scalable-Typography-System-25d62e4ab852800ca075ea04f14ca91d';
+    typographyCard?.addEventListener('click', event => openNotionProject({ event, notionUrl: typographyNotionUrl, notionPageUrl: typographyPageUrl, title: 'Building a Scalable Typography System' }));
+
+    const schoolAdmissionsCard = document.querySelector('a.project-card[href="case-studies/school-admissions.html"]');
+    const schoolAdmissionsNotionUrl = 'https://naveendesign.notion.site/ebd//3d062e4ab85280cabf6dd82bff217836';
+    const schoolAdmissionsPageUrl = 'https://app.notion.com/p/3d062e4ab85280cabf6dd82bff217836?pvs=204';
+    schoolAdmissionsCard?.addEventListener('click', event => openNotionProject({ event, notionUrl: schoolAdmissionsNotionUrl, notionPageUrl: schoolAdmissionsPageUrl, title: 'School Admission Platform' }));
+
     document.addEventListener('keydown', event => {
         if (event.key === 'Escape' && document.querySelector('#notion-project-modal')) closeNotionProject();
     });
