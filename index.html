@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="editorial-fonts.css">
     <link rel="stylesheet" href="font-scale.css">
+    <link rel="stylesheet" href="hero-card.css">
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -33,15 +34,22 @@
             <div class="hero-canvas">
                 <div class="hero-center">
                     <p class="hero-kicker">PRODUCT DESIGNER · 5+ YEARS</p>
-                    <h1 id="hero-title"><span>Crafting</span><span>innovative</span><span>applications</span><span>with AI<span class="dot">.</span></span></h1>
+                    <h1 id="hero-title" tabindex="0" role="button" aria-controls="editorial-card" aria-expanded="true"><span>Crafting</span><span>innovative</span><span>applications</span><span>with AI<span class="dot">.</span></span></h1>
                     <p class="hero-intro">I like to make things which make sense and I can code a little.</p>
                     <a class="hero-cta" href="#work">VIEW MY WORK <span>↗</span></a>
                 </div>
-                <div class="hero-card" id="editorial-card">
-                    <div class="hero-card-top"><span>NK</span><span>01 / 05</span></div>
-                    <div class="hero-emoji" aria-hidden="true">👨🏽‍💻</div>
-                    <p>Designing useful digital products across B2B SaaS, AI and complex workflows.</p>
-                    <span class="card-line"></span><span class="card-footer">PRODUCT · SYSTEMS · CODE</span>
+                <div class="hero-card" id="editorial-card" aria-label="Personal notes">
+                    <div class="hero-card-top"><span>NK</span><button class="card-close" type="button" aria-label="Close personal card">×</button></div>
+                    <div class="hero-emoji" aria-hidden="true">🧠</div>
+                    <div class="hero-card-copy">
+                        <h2 class="card-title">I like products with a point.</h2>
+                        <p class="card-description">If it makes someone’s day a little easier, happier, or better, I’m interested.</p>
+                    </div>
+                    <div class="hero-card-controls" aria-label="Personal card navigation">
+                        <button class="card-nav card-prev" type="button" aria-label="Previous card"><span>←</span><span>PREVIOUS</span></button>
+                        <span class="card-progress" aria-live="polite">01 / 05</span>
+                        <button class="card-nav card-next" type="button" aria-label="Next card"><span>NEXT</span><span>→</span></button>
+                    </div>
                 </div>
                 <div class="hero-bottom"><span>CHENNAI / INDIA</span><span class="hero-rule"></span><span>B2B SAAS · AI / LLM · SYSTEMS</span></div>
             </div>
