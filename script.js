@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Open the typography case study as a native portfolio overlay using the exact Notion-generated embed URL.
     const typographyCard = document.querySelector('a.project-card[href="case-studies/typography-system.html"]');
-    const notionUrl = 'https://naveendesign.notion.site/ebd//25d62e4ab852800ca075ea04f14ca91d';
+    const notionUrl = 'https://naveendesign.notion.site/ebd//3d062e4ab8528026befaca694ce28efb';
     const notionPageUrl = 'https://naveendesign.notion.site/Building-a-Scalable-Typography-System-25d62e4ab852800ca075ea04f14ca91d';
 
     const closeNotionProject = () => {
