@@ -1,0 +1,10 @@
+/* Typography experiment: only two typefaces across the portfolio UI. */
+:root{
+  --pixel:'Unbounded',sans-serif;
+  --body:'Albert Sans',sans-serif;
+  --mono:'Albert Sans',sans-serif;
+  --handwritten:'Albert Sans',sans-serif;
+}
+html,body,button,input,textarea,select{font-family:'Albert Sans',sans-serif}
+h1,h2,h3,h4,h5,h6,.brand,.mobile-menu a,.display-copy,.section-heading-row h2,.process-heading h2,.project-card h3,.visual-label,.system-word,.admit-number,.admit-card strong,.type-a,.type-c,.type-d,.type-e,.revenue-value,.process-grid h3,.experience-row strong,.contact h2,.case-hero h1,.case-content h2,.case-next strong{font-family:'Unbounded',sans-serif}
+.display-copy{font-family:'Unbounded',sans-serif}
