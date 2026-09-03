@@ -1,23 +1,23 @@
-/* Hero background experiment: grain + slow ambient forms. Content remains untouched. */
+/* Hero background experiment: organic texture + slow ambient forms. Content remains untouched. */
 .hero-canvas{isolation:isolate;background:var(--canvas)}
 
-/* Keep the existing grid, but let it sit above the ambient forms. */
+/* Keep the existing grid underneath the new texture. */
 .hero-canvas::before{z-index:0}
 
-/* Fine film-grain texture. The tiny SVG noise is self-contained, so there is no external asset. */
-.hero-canvas::after{content:'';position:absolute;z-index:1;inset:-20%;pointer-events:none;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E");background-size:180px 180px;mix-blend-mode:multiply;animation:heroGrain 7s steps(6) infinite}
+/* Dense, organic grain inspired by the supplied texture reference. This is procedural, so no external image is required. */
+.hero-canvas::after{content:'';position:absolute;z-index:1;inset:-12%;pointer-events:none;opacity:.26;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='organic'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='5' seed='17' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='table' tableValues='.18 .72'/%3E%3CfeFuncG type='table' tableValues='.18 .72'/%3E%3CfeFuncB type='table' tableValues='.18 .72'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23organic)' opacity='.52'/%3E%3C/svg%3E");background-size:420px 420px;mix-blend-mode:multiply;animation:heroTexture 18s steps(10) infinite}
 
 /* Two oversized, soft forms create a slow-changing atmosphere behind the existing hero. */
 .hero-center::before,.hero-center::after{content:'';position:absolute;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(70px);opacity:.18;will-change:transform}
 .hero-center::before{width:52vw;height:52vw;max-width:720px;max-height:720px;left:-31vw;top:-28vh;background:rgba(255,73,63,.52);animation:heroAmbientA 28s ease-in-out infinite alternate}
 .hero-center::after{width:58vw;height:58vw;max-width:820px;max-height:820px;right:-35vw;bottom:-34vh;background:rgba(17,17,17,.28);animation:heroAmbientB 34s ease-in-out infinite alternate}
 
-@keyframes heroGrain{0%{transform:translate3d(0,0,0)}20%{transform:translate3d(-2%,1%,0)}40%{transform:translate3d(1%,-2%,0)}60%{transform:translate3d(2%,2%,0)}80%{transform:translate3d(-1%,-1%,0)}100%{transform:translate3d(0,0,0)}}
+@keyframes heroTexture{0%{transform:translate3d(0,0,0) scale(1)}20%{transform:translate3d(-3%,2%,0) scale(1.02)}40%{transform:translate3d(2%,-2%,0) scale(.99)}60%{transform:translate3d(3%,3%,0) scale(1.025)}80%{transform:translate3d(-2%,-3%,0) scale(1)}100%{transform:translate3d(0,0,0) scale(1)}}
 @keyframes heroAmbientA{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(13vw,8vh,0) scale(1.12)}100%{transform:translate3d(4vw,17vh,0) scale(.94)}}
 @keyframes heroAmbientB{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-12vw,-9vh,0) scale(.92)}100%{transform:translate3d(-3vw,-18vh,0) scale(1.08)}}
 
 @media (max-width:768px){
-  .hero-canvas::after{opacity:.09}
+  .hero-canvas::after{opacity:.20;background-size:340px 340px}
   .hero-center::before,.hero-center::after{filter:blur(55px);opacity:.13}
 }
 
