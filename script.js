@@ -5,7 +5,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenu = document.querySelector('.mobile-menu');
     const card = document.querySelector('#editorial-card');
     const heroCanvas = document.querySelector('.hero-canvas');
+    const heroTitle = document.querySelector('#hero-title');
+    const cardEmoji = document.querySelector('.hero-emoji');
+    const cardTitle = document.querySelector('.card-title');
+    const cardDescription = document.querySelector('.card-description');
+    const cardProgress = document.querySelector('.card-progress');
+    const prevButton = document.querySelector('.card-prev');
+    const nextButton = document.querySelector('.card-next');
+    const closeButton = document.querySelector('.card-close');
 
+    const personalCards = [
+        {
+            emoji: '🧠',
+            title: 'I like products with a point.',
+            description: 'If it makes someone’s day a little easier, happier, or better, I’m interested.'
+        },
+        {
+            emoji: '📷',
+            title: 'I chase good frames.',
+            description: 'Street corners, quiet cafés, interesting light, random moments. If it looks beautiful, I probably have a photo of it.'
+        },
+        {
+            emoji: '🏋️',
+            title: 'I lift heavy things.',
+            description: 'Full-on strength training, enough protein, repeat. I like the discipline of showing up and getting 1% better.'
+        },
+        {
+            emoji: '☕',
+            title: 'My office has many addresses.',
+            description: 'Find a good café, order a coffee, grab a corner, put on my headphones, and disappear into a design problem.'
+        },
+        {
+            emoji: '✨',
+            title: 'I’m probably noticing something.',
+            description: 'A weird interaction. A beautiful frame. A great cup of coffee. A tiny detail most people walked past.'
+        }
+    ];
+
+    let currentCard = 0;
+    let cardIsOpen = true;
+    let cardAnimating = false;
     let lastScrollY = window.scrollY;
     let ticking = false;
 
@@ -44,6 +83,132 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const renderCard = () => {
+        const item = personalCards[currentCard];
+        cardEmoji.textContent = item.emoji;
+        cardTitle.textContent = item.title;
+        cardDescription.textContent = item.description;
+        cardProgress.textContent = `${String(currentCard + 1).padStart(2, '0')} / ${String(personalCards.length).padStart(2, '0')}`;
+        prevButton.disabled = personalCards.length < 2;
+        nextButton.disabled = personalCards.length < 2;
+    };
+
+    const showCard = () => {
+        if (cardIsOpen || cardAnimating) return;
+        cardAnimating = true;
+        cardIsOpen = true;
+        heroTitle.setAttribute('aria-expanded', 'true');
+        card.classList.remove('is-closed');
+
+        if (reduceMotion || typeof gsap === 'undefined') {
+            gsap?.set(card, { opacity: 1, scale: 1, x: 0, y: 0, rotate: -2 });
+            card.style.opacity = '1';
+            cardAnimating = false;
+            return;
+        }
+
+        gsap.fromTo(card,
+            { opacity: 0, scale: 0.9, y: 28, rotate: 4 },
+            { opacity: 1, scale: 1, y: 0, rotate: -2, duration: 0.72, ease: 'power4.out', onComplete: () => { cardAnimating = false; } }
+        );
+    };
+
+    const hideCard = () => {
+        if (!cardIsOpen || cardAnimating) return;
+        cardAnimating = true;
+
+        if (reduceMotion || typeof gsap === 'undefined') {
+            card.style.opacity = '0';
+            card.classList.add('is-closed');
+            cardIsOpen = false;
+            heroTitle.setAttribute('aria-expanded', 'false');
+            cardAnimating = false;
+            return;
+        }
+
+        gsap.to(card, {
+            opacity: 0,
+            scale: 0.9,
+            y: 24,
+            rotate: 3,
+            duration: 0.52,
+            ease: 'power3.inOut',
+            onComplete: () => {
+                card.classList.add('is-closed');
+                cardIsOpen = false;
+                heroTitle.setAttribute('aria-expanded', 'false');
+                cardAnimating = false;
+            }
+        });
+    };
+
+    const changeCard = (direction) => {
+        if (!cardIsOpen || cardAnimating || personalCards.length < 2) return;
+        cardAnimating = true;
+        currentCard = (currentCard + direction + personalCards.length) % personalCards.length;
+        const item = personalCards[currentCard];
+
+        if (reduceMotion || typeof gsap === 'undefined') {
+            renderCard();
+            cardAnimating = false;
+            return;
+        }
+
+        const exitX = direction > 0 ? -38 : 38;
+        const enterX = direction > 0 ? 38 : -38;
+        const content = card.querySelector('.hero-emoji, .hero-card-copy, .hero-card-controls');
+
+        gsap.to(content, {
+            x: exitX,
+            opacity: 0,
+            duration: 0.22,
+            ease: 'power2.in',
+            stagger: 0.015,
+            onComplete: () => {
+                renderCard();
+                gsap.fromTo(content,
+                    { x: enterX, opacity: 0 },
+                    { x: 0, opacity: 1, duration: 0.48, ease: 'power4.out', stagger: 0.02, onComplete: () => { cardAnimating = false; } }
+                );
+            }
+        });
+
+        gsap.to(card, {
+            rotate: direction > 0 ? -3.5 : -0.5,
+            duration: 0.28,
+            ease: 'power2.out',
+            yoyo: true,
+            repeat: 1
+        });
+    };
+
+    renderCard();
+
+    if (heroTitle && card) {
+        heroTitle.addEventListener('click', showCard);
+        heroTitle.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                showCard();
+            }
+        });
+    }
+
+    closeButton?.addEventListener('click', event => {
+        event.stopPropagation();
+        hideCard();
+    });
+
+    prevButton?.addEventListener('click', event => {
+        event.stopPropagation();
+        changeCard(-1);
+    });
+
+    nextButton?.addEventListener('click', event => {
+        event.stopPropagation();
+        changeCard(1);
+    });
+
     if (reduceMotion || typeof gsap === 'undefined') {
         document.querySelectorAll('.reveal').forEach(element => {
             element.style.opacity = '1';
@@ -65,6 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (card && heroCanvas && window.matchMedia('(pointer: fine)').matches) {
         heroCanvas.addEventListener('mousemove', event => {
+            if (!cardIsOpen || cardAnimating) return;
             const rect = heroCanvas.getBoundingClientRect();
             const x = (event.clientX - rect.left) / rect.width - 0.5;
             const y = (event.clientY - rect.top) / rect.height - 0.5;
@@ -79,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         heroCanvas.addEventListener('mouseleave', () => {
+            if (!cardIsOpen) return;
             gsap.to(card, {
                 x: 0,
                 y: 0,
