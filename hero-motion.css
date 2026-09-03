@@ -1,24 +1,23 @@
-/* Hero background experiment: retro texture + slow ambient forms. Content remains untouched. */
+/* Hero background experiment: subtle film grain + slow ambient forms. Content remains untouched. */
 .hero-canvas{isolation:isolate;background:var(--canvas)}
 
-/* Existing grid stays as the structural layer. */
+/* Keep the existing grid underneath the grain. */
 .hero-canvas::before{z-index:0}
 
-/* Retro CRT-inspired halftone/dot texture. Kept subtle so the hero content remains dominant. */
-.hero-canvas::after{content:'';position:absolute;z-index:1;inset:0;pointer-events:none;opacity:.22;background-image:radial-gradient(circle,rgba(17,17,17,.34) 1px,transparent 1.2px);background-size:7px 7px;mix-blend-mode:multiply;animation:retroTexture 12s steps(8) infinite}
+/* Fine photographic film grain. Random-looking monochrome noise, kept intentionally soft. */
+.hero-canvas::after{content:'';position:absolute;z-index:1;inset:-15%;pointer-events:none;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='film'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' seed='29' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23film)' opacity='.42'/%3E%3C/svg%3E");background-size:180px 180px;mix-blend-mode:multiply;animation:filmGrain 8s steps(7) infinite}
 
-/* Soft ambient forms keep the background alive without moving any content. */
+/* Two oversized, slow ambient forms remain behind the hero content. */
 .hero-center::before,.hero-center::after{content:'';position:absolute;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(70px);opacity:.18;will-change:transform}
 .hero-center::before{width:52vw;height:52vw;max-width:720px;max-height:720px;left:-31vw;top:-28vh;background:rgba(255,73,63,.52);animation:heroAmbientA 28s ease-in-out infinite alternate}
 .hero-center::after{width:58vw;height:58vw;max-width:820px;max-height:820px;right:-35vw;bottom:-34vh;background:rgba(17,17,17,.28);animation:heroAmbientB 34s ease-in-out infinite alternate}
 
-/* Tiny stepped movement gives the texture a restrained vintage-screen feel. */
-@keyframes retroTexture{0%{background-position:0 0}20%{background-position:7px 3px}40%{background-position:2px 8px}60%{background-position:9px 5px}80%{background-position:4px 11px}100%{background-position:0 0}}
+@keyframes filmGrain{0%{transform:translate3d(0,0,0)}15%{transform:translate3d(-1.5%,1%,0)}30%{transform:translate3d(1%,-1.5%,0)}45%{transform:translate3d(1.5%,1.5%,0)}60%{transform:translate3d(-1%,-1%,0)}75%{transform:translate3d(1%,-1.5%,0)}100%{transform:translate3d(0,0,0)}}
 @keyframes heroAmbientA{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(13vw,8vh,0) scale(1.12)}100%{transform:translate3d(4vw,17vh,0) scale(.94)}}
 @keyframes heroAmbientB{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-12vw,-9vh,0) scale(.92)}100%{transform:translate3d(-3vw,-18vh,0) scale(1.08)}}
 
 @media (max-width:768px){
-  .hero-canvas::after{opacity:.15;background-size:6px 6px}
+  .hero-canvas::after{opacity:.10;background-size:160px 160px}
   .hero-center::before,.hero-center::after{filter:blur(55px);opacity:.13}
 }
 
