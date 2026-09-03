@@ -15,7 +15,13 @@
 .hero-card.is-closed{pointer-events:none}
 .hero h1[role="button"]{cursor:pointer}
 .hero h1[role="button"]:focus-visible{outline:1px solid var(--ink);outline-offset:8px}
-@media (max-width:600px){
+@media (max-width:768px){
+  .site-nav{height:64px;padding:0 20px}
+  .nav-links{display:none}
+  .menu-toggle{display:block;position:relative;z-index:102;padding:12px 0;min-width:52px;text-align:right}
+  .mobile-menu{position:fixed;z-index:99;top:64px;left:0;right:0;bottom:0;display:none;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:0;padding:32px 20px 40px;background:rgba(17,17,17,.98);color:var(--white);overflow-y:auto}
+  .mobile-menu.open{display:flex}
+  .mobile-menu a{display:block;width:100%;padding:18px 0;border-bottom:1px solid var(--dark-line);font-family:var(--pixel);font-size:clamp(30px,9vw,52px);line-height:1;letter-spacing:-.04em}
   .hero-card{width:min(280px,calc(100vw - 40px));min-height:260px;padding:17px 18px}
   .card-title{width:100%;font-size:18px}
   .card-description{width:100%;max-width:225px}
