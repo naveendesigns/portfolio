@@ -11,19 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const setNavState = () => {
         const currentScrollY = window.scrollY;
-
-        if (currentScrollY <= 40) {
-            nav.classList.remove('scrolled');
-        } else if (currentScrollY > lastScrollY) {
-            nav.classList.add('scrolled');
-        } else if (currentScrollY < lastScrollY) {
-            nav.classList.remove('scrolled');
-        }
-
+        nav.classList.add('scrolled');
         lastScrollY = currentScrollY;
         ticking = false;
     };
 
+    setNavState();
     window.addEventListener('scroll', () => {
         if (!ticking) {
             window.requestAnimationFrame(setNavState);
