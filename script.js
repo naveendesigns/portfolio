@@ -196,6 +196,52 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     typographyCard?.addEventListener('click', openNotionProject);
+
+    // Open the School Admissions case study in the same native Notion overlay pattern.
+    const schoolAdmissionsCard = document.querySelector('a.project-card[href="case-studies/school-admissions.html"]');
+    const schoolAdmissionsNotionUrl = 'https://naveendesign.notion.site/ebd//3d062e4ab85280cabf6dd82bff217836';
+    const schoolAdmissionsPageUrl = 'https://naveendesign.notion.site/School-Admission-Platform-3d062e4ab85280cabf6dd82bff217836';
+
+    const openSchoolAdmissionsProject = event => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (document.querySelector('#notion-project-modal')) return;
+        const modal = document.createElement('div');
+        modal.id = 'notion-project-modal';
+        modal.className = 'notion-project-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-label', 'School Admissions Platform case study');
+        modal.setAttribute('aria-hidden', 'false');
+        modal.innerHTML = `
+            <div class="notion-project-shell">
+                <div class="notion-project-bar">
+                    <a class="notion-project-brand" href="#top" aria-label="Back to Naveen home">Naveen</a>
+                    <div class="notion-project-actions">
+                        <a href="${schoolAdmissionsPageUrl}" target="_blank" rel="noopener">OPEN NOTION ↗</a>
+                        <button type="button" class="notion-project-close" aria-label="Close project">×</button>
+                    </div>
+                </div>
+                <div class="notion-project-frame">
+                    <iframe src="${schoolAdmissionsNotionUrl}" title="School Admission Platform" loading="eager" allowfullscreen></iframe>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        document.body.classList.add('notion-project-open');
+        modal.querySelector('.notion-project-close').addEventListener('click', closeNotionProject);
+        modal.querySelector('.notion-project-brand').addEventListener('click', event => {
+            event.preventDefault();
+            closeNotionProject();
+            window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+        });
+        modal.addEventListener('click', event => { if (event.target === modal) closeNotionProject(); });
+        if (reduceMotion || typeof gsap === 'undefined') modal.style.opacity = '1';
+        else gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power3.out' });
+        modal.querySelector('.notion-project-brand').focus();
+    };
+
+    schoolAdmissionsCard?.addEventListener('click', openSchoolAdmissionsProject);
     document.addEventListener('keydown', event => {
         if (event.key === 'Escape' && document.querySelector('#notion-project-modal')) closeNotionProject();
     });
