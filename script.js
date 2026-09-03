@@ -211,9 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
         changeCard(1);
     });
 
-    // Open the typography case study as a native portfolio overlay using the Notion page.
+    // Open the typography case study as a native portfolio overlay using the published Notion page.
     const typographyCard = document.querySelector('a.project-card[href="case-studies/typography-system.html"]');
-    const notionUrl = 'https://app.notion.com/p/25d62e4ab852800ca075ea04f14ca91d?pvs=204';
+    const notionUrl = 'https://naveendesign.notion.site/Building-a-Scalable-Typography-System-25d62e4ab852800ca075ea04f14ca91d';
 
     const closeNotionProject = () => {
         const modal = document.querySelector('#notion-project-modal');
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="notion-project-frame">
-                    <iframe src="${notionUrl}&embed=true" title="Building a Scalable Typography System" loading="eager" allow="fullscreen"></iframe>
+                    <iframe src="${notionUrl}?embed=true" title="Building a Scalable Typography System" loading="eager" allow="fullscreen"></iframe>
                 </div>
             </div>
         `;
