@@ -2,3 +2,7 @@
 .project-card .visual-teacher:has(img){background:transparent;border:0}.project-card .visual-teacher img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}.project-card:hover .visual-teacher img{transform:scale(1.03)}
 .project-card .visual-admissions:has(img){background:transparent;border:0}.project-card .visual-admissions img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}.project-card:hover .visual-admissions img{transform:scale(1.03)}
 .project-card .visual-revenue:has(img){background:transparent;border:0}.project-card .visual-revenue img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}.project-card:hover .visual-revenue img{transform:scale(1.03)}
+
+@media (max-width: 600px){
+  .contact h2{font-size:clamp(38px,10vw,70px);letter-spacing:-.06em;}
+}
