@@ -63,23 +63,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { passive: true });
 
+    const setMobileMenu = (isOpen) => {
+        if (!menuButton || !mobileMenu) return;
+        mobileMenu.classList.toggle('open', isOpen);
+        menuButton.setAttribute('aria-expanded', String(isOpen));
+        mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+        document.body.classList.toggle('menu-open', isOpen);
+        menuButton.textContent = isOpen ? 'CLOSE' : 'MENU';
+    };
+
     if (menuButton && mobileMenu) {
-        menuButton.addEventListener('click', () => {
-            const isOpen = mobileMenu.classList.toggle('open');
-            menuButton.setAttribute('aria-expanded', String(isOpen));
-            mobileMenu.setAttribute('aria-hidden', String(!isOpen));
-            document.body.classList.toggle('menu-open', isOpen);
-            menuButton.textContent = isOpen ? 'CLOSE' : 'MENU';
+        menuButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const isOpen = mobileMenu.classList.contains('open');
+            setMobileMenu(!isOpen);
         });
 
         mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('open');
-                menuButton.setAttribute('aria-expanded', 'false');
-                mobileMenu.setAttribute('aria-hidden', 'true');
-                document.body.classList.remove('menu-open');
-                menuButton.textContent = 'MENU';
-            });
+            link.addEventListener('click', () => setMobileMenu(false));
         });
     }
 
@@ -101,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.remove('is-closed');
 
         if (reduceMotion || typeof gsap === 'undefined') {
-            gsap?.set(card, { opacity: 1, scale: 1, x: 0, y: 0, rotate: -2 });
             card.style.opacity = '1';
+            card.style.transform = 'translate(-50%,-50%) rotate(-2deg)';
             cardAnimating = false;
             return;
         }
