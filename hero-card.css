@@ -15,6 +15,19 @@
 .hero-card.is-closed{pointer-events:none}
 .hero h1[role="button"]{cursor:pointer}
 .hero h1[role="button"]:focus-visible{outline:1px solid var(--ink);outline-offset:8px}
+
+.notion-project-modal{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;background:var(--ink);color:var(--white);opacity:0}
+.notion-project-shell{display:flex;flex-direction:column;width:100%;height:100%;min-height:0}
+.notion-project-bar{display:flex;align-items:center;justify-content:space-between;flex:0 0 64px;padding:0 28px;border-bottom:1px solid var(--dark-line);font-family:var(--mono);font-size:8px;letter-spacing:.08em}
+.notion-project-actions{display:flex;align-items:center;gap:24px}
+.notion-project-actions a{color:inherit;text-decoration:none}
+.notion-project-close{border:0;background:transparent;color:inherit;padding:4px;font-family:var(--body);font-size:25px;font-weight:300;line-height:1;cursor:pointer;transition:transform .35s var(--ease),opacity .25s ease}
+.notion-project-close:hover{opacity:.7;transform:rotate(90deg)}
+.notion-project-close:focus-visible{outline:1px solid var(--white);outline-offset:5px}
+.notion-project-frame{flex:1;min-height:0;background:#fff}
+.notion-project-frame iframe{display:block;width:100%;height:100%;min-height:0;border:0;background:#fff}
+body.notion-project-open{overflow:hidden}
+
 @media (max-width:768px){
   .site-nav{height:64px;padding:0 20px}
   .nav-links{display:none}
@@ -27,7 +40,12 @@
   .card-description{width:100%;max-width:225px}
   .hero-card-controls{gap:7px}
   .card-nav{font-size:6.5px}
+  .notion-project-bar{flex-basis:58px;padding:0 18px}
+  .notion-project-actions{gap:14px}
+  .notion-project-actions a{font-size:7px}
+  .notion-project-close{font-size:23px}
 }
+
 @media (prefers-reduced-motion:reduce){
-  .card-close,.card-nav{transition:none}
+  .card-close,.card-nav,.notion-project-close{transition:none}
 }
