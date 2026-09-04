@@ -136,68 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
     prevButton?.addEventListener('click', event => { event.stopPropagation(); changeCard(-1); });
     nextButton?.addEventListener('click', event => { event.stopPropagation(); changeCard(1); });
 
-    // Native case studies load directly from their HTML files.
-    // Only the remaining legacy Revenue Optimization card uses the Notion overlay.
-    const openNotionProject = ({ event, notionUrl, notionPageUrl, title }) => {
-        event.preventDefault();
-        event.stopPropagation();
-        if (document.querySelector('#notion-project-modal')) return;
-        const modal = document.createElement('div');
-        modal.id = 'notion-project-modal';
-        modal.className = 'notion-project-modal';
-        modal.setAttribute('role', 'dialog');
-        modal.setAttribute('aria-modal', 'true');
-        modal.setAttribute('aria-label', `${title} case study`);
-        modal.setAttribute('aria-hidden', 'false');
-        modal.innerHTML = `
-            <div class="notion-project-shell">
-                <div class="notion-project-bar">
-                    <a class="notion-project-brand" href="#top" aria-label="Back to Naveen home">Naveen</a>
-                    <div class="notion-project-actions">
-                        <a href="${notionPageUrl}" target="_blank" rel="noopener">OPEN NOTION ↗</a>
-                        <button type="button" class="notion-project-close" aria-label="Close project">×</button>
-                    </div>
-                </div>
-                <div class="notion-project-frame">
-                    <iframe src="${notionUrl}" title="${title}" loading="eager" allowfullscreen></iframe>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        document.body.classList.add('notion-project-open');
-        modal.querySelector('.notion-project-close').addEventListener('click', closeNotionProject);
-        modal.querySelector('.notion-project-brand').addEventListener('click', event => {
-            event.preventDefault();
-            closeNotionProject();
-            window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-        });
-        modal.addEventListener('click', event => { if (event.target === modal) closeNotionProject(); });
-        if (reduceMotion || typeof gsap === 'undefined') modal.style.opacity = '1';
-        else gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power3.out' });
-        modal.querySelector('.notion-project-brand').focus();
-    };
-
-    const closeNotionProject = () => {
-        const modal = document.querySelector('#notion-project-modal');
-        if (!modal) return;
-        modal.classList.remove('open');
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('notion-project-open');
-        if (reduceMotion || typeof gsap === 'undefined') {
-            modal.remove();
-            return;
-        }
-        gsap.to(modal, { opacity: 0, duration: 0.28, ease: 'power2.in', onComplete: () => modal.remove() });
-    };
-
-    const revenueOptimizationCard = document.querySelector('a.project-card[href="case-studies/revenue-optimization.html"]');
-    const revenueOptimizationNotionUrl = 'https://naveendesign.notion.site/ebd//3d062e4ab852809085c3eb4fbe39ca89';
-    const revenueOptimizationPageUrl = 'https://app.notion.com/p/3d062e4ab852809085c3eb4fbe39ca89?pvs=204';
-    revenueOptimizationCard?.addEventListener('click', event => openNotionProject({ event, notionUrl: revenueOptimizationNotionUrl, notionPageUrl: revenueOptimizationPageUrl, title: 'Revenue Optimization Insights' }));
-
-    document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && document.querySelector('#notion-project-modal')) closeNotionProject();
-    });
+    // Native case studies must navigate directly to their HTML files.
+    // No Notion overlay is attached to native case-study cards.
 
     if (reduceMotion || typeof gsap === 'undefined') {
         document.querySelectorAll('.reveal').forEach(element => { element.style.opacity = '1'; element.style.transform = 'none'; });
