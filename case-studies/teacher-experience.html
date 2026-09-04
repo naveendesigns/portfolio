@@ -5,23 +5,171 @@
     <title>Teacher Experience | Naveen Kumar</title>
     <meta name="description" content="Naveen Kumar's product design case study for the Hurrey teacher experience.">
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Albert+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
     <style>
-        .teacher-hero-image{width:100%;height:auto;display:block;object-fit:contain;background:#c9d8cc}
-        .teacher-visual-full{height:auto!important;min-height:0!important;overflow:visible!important;background:#c9d8cc}
+        .teacher-placeholder{width:100%;min-height:clamp(280px,42vw,680px);display:grid;place-items:center;background:#c9d8cc;color:#172018;font:600 12px/1 'Albert Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:32px}
+        .teacher-placeholder.small{min-height:clamp(220px,30vw,460px)}
+        .teacher-placeholder.tall{min-height:clamp(360px,52vw,820px)}
+        .teacher-placeholder span{max-width:320px}
+        .teacher-image-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:28px 0}
+        .teacher-image-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+        .teacher-note{margin:24px 0;padding:24px 28px;border-left:3px solid currentColor;background:#f4f4ef}
+        .teacher-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:32px 0}
+        .teacher-stat{padding:28px;background:#f4f4ef}
+        .teacher-stat strong{display:block;font:600 clamp(24px,3vw,42px)/1.05 'Unbounded',sans-serif;margin-bottom:10px}
+        .teacher-stat span{font:500 13px/1.45 'Albert Sans',sans-serif}
+        .teacher-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:28px 0}
+        .teacher-feature{padding:26px;background:#f4f4ef}
+        .teacher-feature h3{font:600 18px/1.25 'Unbounded',sans-serif;margin:0 0 10px}
+        .teacher-feature p{margin:0}
+        @media(max-width:700px){.teacher-image-grid,.teacher-image-grid.three,.teacher-stats,.teacher-feature-grid{grid-template-columns:1fr}.teacher-placeholder{min-height:260px}}
     </style>
 </head>
 <body class="case-page">
     <nav class="case-nav"><a href="../">NAVEEN®</a><a href="../#work">← BACK TO WORK</a></nav>
     <main class="case-main">
-        <header class="case-hero"><p class="case-kicker">03 · HURREY · AI + IOT SAAS · EDUCATION</p><h1>Redesigning the<br><em>Teacher Experience.</em></h1><p class="case-summary">A ground-up redesign of the teacher application to make everyday classroom workflows easier to navigate and understand.</p><div class="case-facts"><div><span>ROLE</span><strong>Sole Product Designer</strong></div><div><span>FOCUS</span><strong>UX · IA · AI</strong></div><div><span>STANDARD</span><strong>WCAG 2.0</strong></div></div></header>
-        <div class="case-visual visual-teacher case-large-visual teacher-visual-full"><img class="teacher-hero-image" src="../assets/teacher-experience.jpg" alt="Teacher experience product screens" loading="eager"></div>
+        <header class="case-hero">
+            <p class="case-kicker">03 · HURREY · AI + IOT SAAS · EDUCATION</p>
+            <h1>Redesigning the<br><em>Teacher Experience.</em></h1>
+            <p class="case-summary">A ground-up redesign of the teacher application to make everyday classroom workflows easier to navigate, understand and act on.</p>
+            <div class="case-facts">
+                <div><span>ROLE</span><strong>Sole Product Designer</strong></div>
+                <div><span>FOCUS</span><strong>UX · IA · AI</strong></div>
+                <div><span>STANDARD</span><strong>WCAG 2.0</strong></div>
+            </div>
+        </header>
+
+        <div class="teacher-placeholder tall"><span>Hero image placeholder<br>Teacher Experience</span></div>
+
         <article class="case-content">
-            <section><p class="case-label">01 / CONTEXT</p><h2>One app had to support an entire teaching day.</h2><p>The teacher experience brought together classroom activity, attendance, performance, timetable information, notes, homework and connected classroom tools. The existing structure made it difficult to understand what mattered now versus what could wait.</p></section>
-            <section><p class="case-label">02 / REFRAMING THE EXPERIENCE</p><h2>Start with the class. Then reveal the detail.</h2><ul><li>Created a clearer class-level information architecture.</li><li>Introduced a current-class view so teachers could orient themselves quickly.</li><li>Surfaced AI recommendations and performance signals at useful moments.</li><li>Redesigned Hurrey Konnect with device status, whiteboard and file interactions.</li><li>Created reusable universal cards for consistent information presentation.</li><li>Reworked student profiles, syllabus, timetable, leave and combined attendance and events.</li></ul></section>
-            <section><p class="case-label">03 / RESEARCH + TESTING</p><h2>The interface should help teachers act, not decode.</h2><p>I conducted user interviews and testing throughout the redesign. Teachers found the new version easier to navigate and understand compared with the previous experience.</p></section>
-            <section><p class="case-label">04 / RESULT</p><h2>A more coherent teacher workflow.</h2><p>The redesign brought AI recommendations into context, established reusable product patterns and created a clearer foundation for future teacher-facing features. The work also passed WCAG 2.0 compliance.</p></section>
+            <section>
+                <p class="case-label">01 / ABOUT HURREY</p>
+                <h2>An AI-enabled classroom network built around equal learning opportunities.</h2>
+                <p>Hurrey is an AI-enabled IoT-based SaaS product company providing equal learning opportunities through an interconnected classroom network.</p>
+                <p>My focus was to totally redesign the teacher experience, improve functionality and create a more intuitive user experience.</p>
+                <p>Hurrey has Admin, Teacher and Student logins. This case study focuses on the teacher experience. I was the sole designer from start to finish, collaborating closely with developers and other designers throughout the project.</p>
+                <div class="teacher-feature-grid">
+                    <div class="teacher-feature"><h3>Designers</h3><p>Worked together for timely feedback and design direction.</p></div>
+                    <div class="teacher-feature"><h3>Developers</h3><p>Worked closely to ensure the final output matched the design accurately.</p></div>
+                </div>
+            </section>
+
+            <section>
+                <p class="case-label">02 / THE STARTING POINT</p>
+                <h2>The first version made simple tasks harder than they needed to be.</h2>
+                <p>The project was one of the first products to adopt the new design system. Looking at the existing teacher application, I found opportunities to improve both the visual experience and the underlying information architecture.</p>
+                <div class="teacher-placeholder"><span>Image placeholder<br>Teachers before.jpg</span></div>
+                <p class="case-label">OLDER VERSION · TEACHERS APPLICATION</p>
+            </section>
+
+            <section>
+                <p class="case-label">03 / APPLICATION TOUR</p>
+                <h2>Onboarding became the moment to teach the product.</h2>
+                <p>Teachers struggled to use the application at one go. Even simple flows created doubts and confusion. I explored an application tour during onboarding because onboarding is the one flow where a user is expected to move through a linear path.</p>
+                <div class="teacher-placeholder small"><span>Image / GIF placeholder<br>Naveen.gif</span></div>
+                <p>The goal was not to add another layer of UI, but to reduce the learning curve and help teachers understand the application before they needed to use its more complex features.</p>
+            </section>
+
+            <section>
+                <p class="case-label">04 / TEACHER'S DASHBOARD</p>
+                <h2>Make the current class the starting point for decisions.</h2>
+                <p>Hurrey was adding more AI features, including recommendations based on prerequisites and performance at class and student level, AI attendance and other intelligent classroom capabilities. The product needed to communicate this AI SaaS positioning without making the interface harder to use.</p>
+                <div class="teacher-placeholder tall"><span>Image placeholder<br>teachers Dashboard.jpg</span></div>
+                <p class="case-label">NEW VERSION · TEACHER'S DASHBOARD</p>
+                <div class="teacher-image-grid">
+                    <div class="teacher-placeholder small"><span>Image placeholder<br>teachers Dashboard card.jpg</span></div>
+                    <div class="teacher-placeholder small"><span>Image placeholder<br>Dashboard detail</span></div>
+                </div>
+                <p>The dashboard dynamically reflects the teacher's current class based on assigned classes and time or period. I emphasized AI recommendations and surfaced tools that help teachers teach, manage and maintain the class.</p>
+                <p>Each card needed to be valuable and informative enough to support a decision at a glance. Metrics show syllabus progress and performance from assessments, exams and concept understanding, including percentage increase or decrease. AI recommendations were brought out of the class view so they could be seen earlier.</p>
+                <p>AI attendance using facial recognition was also surfaced at both class and student level. The new dashboard increased engagement compared with the previous design because teachers could view and edit more details directly.</p>
+            </section>
+
+            <section>
+                <p class="case-label">05 / HURREY KONNECT</p>
+                <h2>Give a connected classroom product the space to explain itself.</h2>
+                <p>Hurrey Konnect turns a normal TV into a Smart Class TV. Teachers can cast learning aids from the app while the device connects to the classroom network.</p>
+                <p>The old Konnect experience used a floating menu that hid features. A dedicated screen made the product's potential and capabilities more visible.</p>
+                <div class="teacher-placeholder tall"><span>Image placeholder<br>teachers Dashboard card-1.jpg</span></div>
+                <p class="case-label">NEW VERSION · HURREY KONNECT</p>
+                <p>The redesign made device connection status visible, allowed the whiteboard to mirror the mobile experience to the TV, clarified supported file formats and introduced class or subject-specific features. For example, a math solver could be shown specifically to a math teacher.</p>
+                <p>The separation between the dashboard and Konnect also created a clearer product model and improved teaching efficiency.</p>
+            </section>
+
+            <section>
+                <p class="case-label">06 / CLASS VIEW</p>
+                <h2>The most complex screen needed the clearest information architecture.</h2>
+                <p>The class view was the most cluttered area of the application. Teacher testing showed that users struggled to navigate it, so I gathered information from teachers in different schools and used those findings to rethink the structure.</p>
+                <div class="teacher-placeholder"><span>Image placeholder<br>Teachers class view before.jpg</span></div>
+                <p class="case-label">OLD VERSION · CLASS VIEW</p>
+                <p>The old experience created confusion between Syllabus and Insights even though they contained similar information. Teachers had to move through multiple steps to understand the class, switch between syllabus and insights and inspect students. The interface was cluttered and lacked a clear information architecture.</p>
+                <div class="teacher-placeholder tall"><span>Image placeholder<br>teachers class view.jpg</span></div>
+                <p class="case-label">NEW VERSION · CLASS VIEW</p>
+                <p>I iterated through different layouts and selected the final structure based on clarity and usability. Class performance was brought into view at a glance, reducing the number of steps needed to understand what was happening.</p>
+                <p>AI recommendations at topic-level performance helped teachers make decisions. Teacher notes and homework could be added directly, with the potential for notes to evolve into a lesson planner. Cross-subject performance also broke the silo between subjects and showed the broader class standard.</p>
+            </section>
+
+            <section>
+                <p class="case-label">07 / SYLLABUS</p>
+                <h2>Turn performance data into something a teacher can act on.</h2>
+                <div class="teacher-placeholder tall"><span>Image placeholder<br>teachers class view- syllabus.jpg</span></div>
+                <p>The syllabus tab enables teachers to view, edit and map content while seeing chapter-specific performance data. A period prediction estimates how many periods may be needed to complete a chapter based on performance and knowledge-grasping capacity.</p>
+            </section>
+
+            <section>
+                <p class="case-label">08 / STUDENT EXPERIENCE</p>
+                <h2>Bring academic and non-academic information together without losing clarity.</h2>
+                <p>The goal was to introduce innovative features that make learning fun and easy while ensuring concepts are learned correctly. Academic and non-academic data ultimately ends up in the student profile, so I designed sections with enough structure to support future additions.</p>
+                <p>AI recommendations received more emphasis in the student profile. The class view was also categorized around information architecture so important content became more accessible.</p>
+                <div class="teacher-placeholder tall"><span>Image placeholder<br>teachers card.jpg</span></div>
+                <p>The universal card design reduced cognitive load, remained visually appealing, made information easier to scan and emphasized important data points.</p>
+            </section>
+
+            <section>
+                <p class="case-label">09 / OTHER PRODUCT FEATURES</p>
+                <h2>Design the supporting workflows as one coherent system.</h2>
+                <div class="teacher-feature-grid">
+                    <div class="teacher-feature"><h3>Leave management</h3><p>A dedicated flow for managing teacher leave.</p></div>
+                    <div class="teacher-feature"><h3>Attendance + events</h3><p>Combined information to reduce fragmentation across everyday tasks.</p></div>
+                    <div class="teacher-feature"><h3>Teacher profile</h3><p>A structured home for teacher information and future capabilities.</p></div>
+                    <div class="teacher-feature"><h3>Timetable</h3><p>A clearer view of the teacher's schedule and daily context.</p></div>
+                </div>
+                <div class="teacher-placeholder small"><span>Image placeholder<br>teachers other.jpg</span></div>
+            </section>
+
+            <section>
+                <p class="case-label">10 / USER TESTING</p>
+                <h2>Validate whether the redesign actually made the product easier to use.</h2>
+                <p>I interviewed teachers about the new AI and application functionalities. I explained how the application worked and asked for their opinions on both the new and old versions.</p>
+                <div class="teacher-stats">
+                    <div class="teacher-stat"><strong>Better</strong><span>Overall usability compared with the old experience.</span></div>
+                    <div class="teacher-stat"><strong>Faster</strong><span>Easier navigation with less explanation required.</span></div>
+                    <div class="teacher-stat"><strong>Clearer</strong><span>Functionality became easier to understand, though OCR and face recognition still needed explanation.</span></div>
+                </div>
+                <p>Teachers found the overall usability good compared with the old experience. Navigation was easier and they could understand functionality with less explanation. OCR and face recognition were harder to understand and remained areas for further clarity.</p>
+            </section>
+
+            <section>
+                <p class="case-label">11 / AI AS A DESIGN ACCELERATOR</p>
+                <h2>I used AI to move faster, not to outsource the design decisions.</h2>
+                <p>I used AI to explore ideas, challenge interaction patterns, structure complex information and accelerate repetitive design work. I remained responsible for the product direction, UX decisions, design iterations and validation with teachers and the team.</p>
+                <div class="teacher-note"><strong>My role in the process</strong><br><br>AI helped me explore and iterate faster. My responsibility was to decide what was right for the product, translate the findings into a coherent experience and work with the team to make it real.</div>
+            </section>
+
+            <section>
+                <p class="case-label">12 / WHAT I LEARNED</p>
+                <h2>Complex products become clearer when information, intelligence and workflow work together.</h2>
+                <ul>
+                    <li>Learned more about backend processes, percentages and the data points behind product decisions.</li>
+                    <li>Teacher interviews revealed opportunities around lesson planners and Konnect usage.</li>
+                    <li>Discussing upcoming features helped shape the product foundation for future capabilities.</li>
+                    <li>Improved my understanding of WCAG and accessibility. The project passed WCAG 2.0 compliance.</li>
+                </ul>
+                <p>The biggest learning was that AI features only create value when they appear at the right moment and are presented in a way teachers can understand and act on.</p>
+            </section>
         </article>
+
         <a class="case-next" href="school-admissions.html"><span>NEXT CASE STUDY</span><strong>School Admissions →</strong></a>
     </main>
 </body>
