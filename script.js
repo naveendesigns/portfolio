@@ -25,13 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentCard = 0;
     let cardIsOpen = true;
     let cardAnimating = false;
-    let lastScrollY = window.scrollY;
     let ticking = false;
 
     const setNavState = () => {
-        const currentScrollY = window.scrollY;
-        nav.classList.add('scrolled');
-        lastScrollY = currentScrollY;
+        nav?.classList.add('scrolled');
         ticking = false;
     };
 
@@ -62,17 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const renderCard = () => {
+        if (!cardEmoji || !cardTitle || !cardDescription || !cardProgress) return;
         const item = personalCards[currentCard];
         cardEmoji.textContent = item.emoji;
         cardTitle.textContent = item.title;
         cardDescription.textContent = item.description;
         cardProgress.textContent = `${String(currentCard + 1).padStart(2, '0')} / ${String(personalCards.length).padStart(2, '0')}`;
-        prevButton.disabled = personalCards.length < 2;
-        nextButton.disabled = personalCards.length < 2;
+        if (prevButton) prevButton.disabled = personalCards.length < 2;
+        if (nextButton) nextButton.disabled = personalCards.length < 2;
     };
 
     const showCard = () => {
-        if (cardIsOpen || cardAnimating) return;
+        if (cardIsOpen || cardAnimating || !card || !heroTitle) return;
         cardAnimating = true;
         cardIsOpen = true;
         heroTitle.setAttribute('aria-expanded', 'true');
@@ -87,26 +85,26 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const hideCard = () => {
-        if (!cardIsOpen || cardAnimating) return;
+        if (!cardIsOpen || cardAnimating || !card) return;
         cardAnimating = true;
         if (reduceMotion || typeof gsap === 'undefined') {
             card.style.opacity = '0';
             card.classList.add('is-closed');
             cardIsOpen = false;
-            heroTitle.setAttribute('aria-expanded', 'false');
+            heroTitle?.setAttribute('aria-expanded', 'false');
             cardAnimating = false;
             return;
         }
         gsap.to(card, { opacity: 0, scale: 0.9, y: 24, rotate: 3, duration: 0.52, ease: 'power3.inOut', onComplete: () => {
             card.classList.add('is-closed');
             cardIsOpen = false;
-            heroTitle.setAttribute('aria-expanded', 'false');
+            heroTitle?.setAttribute('aria-expanded', 'false');
             cardAnimating = false;
         } });
     };
 
     const changeCard = (direction) => {
-        if (!cardIsOpen || cardAnimating || personalCards.length < 2) return;
+        if (!cardIsOpen || cardAnimating || personalCards.length < 2 || !card) return;
         cardAnimating = true;
         currentCard = (currentCard + direction + personalCards.length) % personalCards.length;
         if (reduceMotion || typeof gsap === 'undefined') {
@@ -138,20 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
     prevButton?.addEventListener('click', event => { event.stopPropagation(); changeCard(-1); });
     nextButton?.addEventListener('click', event => { event.stopPropagation(); changeCard(1); });
 
-    // Reusable Notion case-study overlay pattern.
-    const closeNotionProject = () => {
-        const modal = document.querySelector('#notion-project-modal');
-        if (!modal) return;
-        modal.classList.remove('open');
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('notion-project-open');
-        if (reduceMotion || typeof gsap === 'undefined') {
-            modal.remove();
-            return;
-        }
-        gsap.to(modal, { opacity: 0, duration: 0.28, ease: 'power2.in', onComplete: () => modal.remove() });
-    };
-
+    // Native case studies load directly from their HTML files.
+    // Only the remaining legacy Revenue Optimization card uses the Notion overlay.
     const openNotionProject = ({ event, notionUrl, notionPageUrl, title }) => {
         event.preventDefault();
         event.stopPropagation();
@@ -191,15 +177,18 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.querySelector('.notion-project-brand').focus();
     };
 
-    const typographyCard = document.querySelector('a.project-card[href="case-studies/typography-system.html"]');
-    const typographyNotionUrl = 'https://naveendesign.notion.site/ebd//3d062e4ab8528026befaca694ce28efb';
-    const typographyPageUrl = 'https://naveendesign.notion.site/Building-a-Scalable-Typography-System-25d62e4ab852800ca075ea04f14ca91d';
-    typographyCard?.addEventListener('click', event => openNotionProject({ event, notionUrl: typographyNotionUrl, notionPageUrl: typographyPageUrl, title: 'Building a Scalable Typography System' }));
-
-    const schoolAdmissionsCard = document.querySelector('a.project-card[href="case-studies/school-admissions.html"]');
-    const schoolAdmissionsNotionUrl = 'https://naveendesign.notion.site/ebd//3d062e4ab85280cabf6dd82bff217836';
-    const schoolAdmissionsPageUrl = 'https://app.notion.com/p/3d062e4ab85280cabf6dd82bff217836?pvs=204';
-    schoolAdmissionsCard?.addEventListener('click', event => openNotionProject({ event, notionUrl: schoolAdmissionsNotionUrl, notionPageUrl: schoolAdmissionsPageUrl, title: 'School Admission Platform' }));
+    const closeNotionProject = () => {
+        const modal = document.querySelector('#notion-project-modal');
+        if (!modal) return;
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('notion-project-open');
+        if (reduceMotion || typeof gsap === 'undefined') {
+            modal.remove();
+            return;
+        }
+        gsap.to(modal, { opacity: 0, duration: 0.28, ease: 'power2.in', onComplete: () => modal.remove() });
+    };
 
     const revenueOptimizationCard = document.querySelector('a.project-card[href="case-studies/revenue-optimization.html"]');
     const revenueOptimizationNotionUrl = 'https://naveendesign.notion.site/ebd//3d062e4ab852809085c3eb4fbe39ca89';
