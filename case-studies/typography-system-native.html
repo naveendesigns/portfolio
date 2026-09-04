@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f1ea">
+  <title>Building a Scalable Typography System | Naveen Kumar</title>
+  <style>
+    :root{--bg:#f4f1ea;--ink:#111;--muted:#68655e;--line:#c9c4ba;--accent:#d9ff3f;--serif:Georgia,"Times New Roman",serif;--sans:Arial,Helvetica,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);overflow-x:hidden}
+    a{color:inherit;text-decoration:none}.wrap{width:min(1240px,calc(100% - 48px));margin:auto}
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:24px 0;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.08em;text-transform:uppercase;position:relative;z-index:2}.back{display:flex;gap:8px;align-items:center}.back span{transition:transform .3s}.back:hover span{transform:translateX(-5px)}
+    .hero{padding:clamp(80px,12vw,170px) 0 100px}.eyebrow{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:28px}.hero h1{font-size:clamp(58px,10vw,150px);line-height:.82;letter-spacing:-.075em;font-weight:500;max-width:1100px;margin:0}.hero h1 em{font-family:var(--serif);font-weight:400}.intro{display:grid;grid-template-columns:1fr 2fr;gap:60px;margin-top:90px;padding-top:25px;border-top:1px solid var(--line)}.intro-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.intro p{font-size:clamp(20px,2.2vw,31px);line-height:1.18;letter-spacing:-.035em;margin:0;max-width:850px}
+    .placeholder{background:#ded9cf;min-height:360px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.placeholder:before{content:"IMAGE PLACEHOLDER";font-size:9px;letter-spacing:.15em;color:#8b867d}.hero-images{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:70px}.hero-images .placeholder{min-height:300px}.hero-images .placeholder:nth-child(2){transform:translateY(35px)}
+    section{padding:130px 0}.section-grid{display:grid;grid-template-columns:1fr 2fr;gap:60px}.section-number{font-size:10px;letter-spacing:.1em;color:var(--muted)}h2{font-size:clamp(40px,6vw,82px);font-weight:500;line-height:.9;letter-spacing:-.06em;margin:0 0 35px}h2 em{font-family:var(--serif);font-weight:400}.copy{font-size:18px;line-height:1.55;max-width:760px}.copy p{margin:0 0 24px}.copy ul{padding-left:20px}.copy li{margin:0 0 13px}.callout{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px 0;margin:55px 0;font-family:var(--serif);font-size:clamp(22px,3vw,38px);line-height:1.1}
+    .inspiration{margin-top:70px}.wide-placeholder{min-height:540px}.caption{font-size:10px;color:var(--muted);margin-top:12px;letter-spacing:.04em}.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:60px}.principle{border:1px solid var(--line);padding:28px;min-height:210px;transition:transform .35s,background .35s}.principle:hover{transform:translateY(-8px);background:var(--accent)}.principle b{font-size:12px;text-transform:uppercase;letter-spacing:.08em}.principle p{font-size:15px;line-height:1.45;margin-top:55px}.footer{padding:80px 0 35px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:10px;letter-spacing:.08em;text-transform:uppercase}.reveal{opacity:0;transform:translateY(35px)}
+    @media(max-width:700px){.wrap{width:min(100% - 28px,1240px)}.nav{padding:18px 0}.hero{padding:80px 0 65px}.hero h1{font-size:clamp(50px,16vw,82px)}.intro,.section-grid{grid-template-columns:1fr;gap:25px}.intro{margin-top:60px}.hero-images{grid-template-columns:1fr;gap:8px}.hero-images .placeholder{min-height:230px}.hero-images .placeholder:nth-child(2){transform:none}.placeholder{min-height:260px}section{padding:85px 0}.section-grid{gap:35px}.wide-placeholder{min-height:360px}.principles{grid-template-columns:1fr}.footer{gap:20px;flex-direction:column}.reveal{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav"><a class="back" href="../index.html"><span>←</span> Back to work</a><span>Case Study / 01</span></nav>
+    <header class="hero">
+      <div class="eyebrow reveal">Design systems · Typography</div>
+      <h1 class="reveal">Building a <em>Scalable</em><br>Typography System</h1>
+      <div class="intro reveal"><div class="intro-label">Overview</div><div><p>Typography is the backbone of any design system. For consistency, scalability, and developer handoff, I created a <strong>token-based typography system</strong> that defines font sizes, line heights, and font weights as reusable design tokens.</p><p class="copy" style="margin-top:28px">How I transformed inconsistent typography into a robust, token-based design system that improved consistency, developer efficiency, and scalability across our entire product.</p></div></div>
+      <div class="hero-images"><div class="placeholder reveal"></div><div class="placeholder reveal"></div><div class="placeholder reveal"></div></div>
+    </header>
+
+    <section><div class="section-grid"><div class="section-number">01 / Starting point</div><div><h2>How did I <em>start?</em></h2><div class="copy"><ul><li>I audited the <strong>existing screens and typography styles</strong> across the product.</li><li>I noticed <strong>inconsistent usage</strong> of font sizes and line heights.</li><li>To validate my approach, I compared with <strong>industry-leading design systems</strong> like Material Design and Tailwind.</li><li>Then I mapped everything into a <strong>clean, minimal scale</strong>.</li></ul></div><div class="callout">Typography inconsistencies cause confusion for both designers and developers. Creating tokens reduces duplication and enforces consistency across the product.</div></div></div></section>
+
+    <section><div class="section-grid"><div class="section-number">02 / References</div><div><h2>Framework <em>Inspirations</em></h2><div class="copy"><p>I looked at established design systems to understand how mature products structure typography scales, naming, and reusable tokens.</p></div><div class="inspiration"><div class="placeholder wide-placeholder reveal"></div><div class="caption">Placeholder for the framework comparison visual from the original Notion case study.</div></div></div></div></section>
+
+    <section><div class="section-grid"><div class="section-number">03 / Outcome</div><div><h2>A typography library built to <em>scale.</em></h2><div class="copy"><p>The outcome was a <strong>typography library</strong> that:</p><ul><li>Standardizes text styles across the product.</li><li>Improves developer efficiency by providing ready-to-use tokens.</li><li>Ensures scalability when adding or modifying styles in the future.</li></ul></div><div class="principles"><article class="principle reveal"><b>Consistency</b><p>One shared language for typography across the product.</p></article><article class="principle reveal"><b>Efficiency</b><p>Ready-to-use tokens reduce repetitive decisions and handoff friction.</p></article><article class="principle reveal"><b>Scalability</b><p>A system that can grow without introducing new inconsistencies.</p></article></div></div></div></section>
+
+    <footer class="footer"><a href="../index.html">Naveen Kumar</a><a href="../index.html#work">View all work ↗</a></footer>
+  </div>
+  <script>
+    const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduceMotion && 'IntersectionObserver' in window){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.animate([{opacity:0,transform:'translateY(35px)'},{opacity:1,transform:'translateY(0)'}],{duration:700,easing:'cubic-bezier(.16,1,.3,1)',fill:'forwards'});io.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>io.observe(el));}
+  </script>
+</body>
+</html>
