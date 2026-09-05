@@ -3,16 +3,16 @@
 }
 
 .ai-twin-wrap {
-    margin-top: clamp(80px, 10vw, 130px);
+    margin: 0 0 clamp(58px, 7vw, 90px);
 }
 
 .ai-twin-card {
     position: relative;
     display: grid;
-    grid-template-columns: 1.25fr .75fr;
-    gap: 40px;
-    min-height: 250px;
-    padding: clamp(28px, 4vw, 48px);
+    grid-template-columns: 1.35fr .65fr;
+    gap: 30px;
+    min-height: 190px;
+    padding: clamp(24px, 3vw, 34px);
     overflow: hidden;
     background: var(--ink);
     color: var(--white);
@@ -35,8 +35,8 @@
 .ai-twin-card::after {
     content: 'AI / PROFESSIONAL WORK';
     position: absolute;
-    right: 24px;
-    bottom: 20px;
+    right: 20px;
+    bottom: 17px;
     font-family: var(--mono);
     font-size: 7px;
     letter-spacing: .1em;
@@ -44,7 +44,7 @@
 }
 
 .ai-twin-card:hover {
-    transform: translateY(-7px);
+    transform: translateY(-5px);
     border-color: rgba(101,216,137,.45);
 }
 
@@ -56,7 +56,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 190px;
+    min-height: 130px;
 }
 
 .ai-twin-status {
@@ -87,11 +87,11 @@
 }
 
 .ai-twin-title {
-    max-width: 760px;
-    margin-top: 28px;
+    max-width: 700px;
+    margin-top: 22px;
     font-family: var(--body);
-    font-size: clamp(34px, 4.6vw, 66px);
-    line-height: .9;
+    font-size: clamp(30px, 3.7vw, 52px);
+    line-height: .92;
     letter-spacing: -.06em;
     font-weight: 600;
 }
@@ -101,12 +101,25 @@
     font-style: normal;
 }
 
-.ai-twin-description {
-    max-width: 500px;
-    margin-top: 20px;
-    color: #a2a29c;
-    font-size: 12px;
-    line-height: 1.65;
+.ai-twin-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    margin-top: 22px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #777770;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: .08em;
+    color: var(--white);
+    transition: color .25s ease, border-color .25s ease, gap .35s var(--ease);
+}
+
+.ai-twin-card:hover .ai-twin-cta {
+    color: var(--ai-green);
+    border-color: var(--ai-green);
+    gap: 13px;
 }
 
 .ai-twin-action {
@@ -118,7 +131,7 @@
 
 .ai-twin-orbit {
     position: relative;
-    width: min(210px, 30vw);
+    width: min(150px, 20vw);
     aspect-ratio: 1;
     border: 1px solid #3a3a37;
     border-radius: 50%;
@@ -135,9 +148,7 @@
     border-radius: 50%;
 }
 
-.ai-twin-orbit::before {
-    inset: 20%;
-}
+.ai-twin-orbit::before { inset: 20%; }
 
 .ai-twin-orbit::after {
     width: 7px;
@@ -150,14 +161,14 @@
 }
 
 .ai-twin-mark {
-    width: 62px;
-    height: 62px;
+    width: 52px;
+    height: 52px;
     display: grid;
     place-items: center;
     background: var(--accent);
     color: var(--white);
     font-family: var(--body);
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 700;
     letter-spacing: -.05em;
     transform: rotate(-5deg);
@@ -170,7 +181,7 @@
 
 @keyframes aiTwinFloat {
     0%, 100% { transform: translateY(0) rotate(-2deg); }
-    50% { transform: translateY(-8px) rotate(1deg); }
+    50% { transform: translateY(-6px) rotate(1deg); }
 }
 
 @media (max-width: 760px) {
@@ -179,27 +190,19 @@
         min-height: 0;
     }
 
-    .ai-twin-content {
-        min-height: 0;
-    }
+    .ai-twin-content { min-height: 0; }
 
     .ai-twin-action {
         justify-content: flex-start;
-        margin-top: 28px;
+        margin-top: 22px;
     }
 
-    .ai-twin-orbit {
-        width: 150px;
-    }
+    .ai-twin-orbit { width: 110px; }
 
-    .ai-twin-card::after {
-        display: none;
-    }
+    .ai-twin-card::after { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .ai-twin-status-dot,
-    .ai-twin-orbit {
-        animation: none;
-    }
+    .ai-twin-orbit { animation: none; }
 }
