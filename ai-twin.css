@@ -123,30 +123,65 @@
 }
 
 .ai-twin-action {
-    position: relative;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-end;
     align-self: stretch;
-    min-height: 150px;
 }
 
-.ai-twin-image {
+.ai-twin-orbit {
+    position: relative;
+    width: min(150px, 20vw);
+    aspect-ratio: 1;
+    border: 1px solid #3a3a37;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    animation: aiTwinFloat 5s ease-in-out infinite;
+}
+
+.ai-twin-orbit::before,
+.ai-twin-orbit::after {
+    content: '';
     position: absolute;
-    right: -12px;
-    bottom: -12px;
-    width: min(360px, 34vw);
-    max-width: none;
-    height: auto;
-    display: block;
-    object-fit: contain;
-    transform-origin: bottom right;
-    transition: transform .5s var(--ease);
-    pointer-events: none;
+    border: 1px solid #3a3a37;
+    border-radius: 50%;
 }
 
-.ai-twin-card:hover .ai-twin-image {
-    transform: translateY(-3px) scale(1.015);
+.ai-twin-orbit::before { inset: 20%; }
+
+.ai-twin-orbit::after {
+    width: 7px;
+    height: 7px;
+    right: 13%;
+    top: 23%;
+    border: 0;
+    background: var(--accent);
+    box-shadow: 0 0 20px rgba(255,73,63,.35);
+}
+
+.ai-twin-mark {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: var(--white);
+    font-family: var(--body);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -.05em;
+    transform: rotate(-5deg);
+    transition: transform .45s var(--ease);
+}
+
+.ai-twin-card:hover .ai-twin-mark {
+    transform: rotate(0deg) scale(1.08);
+}
+
+@keyframes aiTwinFloat {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-6px) rotate(1deg); }
 }
 
 @media (max-width: 760px) {
@@ -158,21 +193,16 @@
     .ai-twin-content { min-height: 0; }
 
     .ai-twin-action {
-        justify-content: flex-end;
-        min-height: 180px;
+        justify-content: flex-start;
         margin-top: 22px;
     }
 
-    .ai-twin-image {
-        right: -12px;
-        bottom: -12px;
-        width: min(300px, 76vw);
-    }
+    .ai-twin-orbit { width: 110px; }
 
     .ai-twin-card::after { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .ai-twin-status-dot,
-    .ai-twin-image { animation: none; transition: none; }
+    .ai-twin-orbit { animation: none; }
 }
