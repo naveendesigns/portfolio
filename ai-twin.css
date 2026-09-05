@@ -206,3 +206,43 @@
     .ai-twin-status-dot,
     .ai-twin-orbit { animation: none; }
 }
+
+/* AI Twin navigation CTA */
+.ai-twin-nav {
+    order: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    margin-left: auto;
+    margin-right: 28px;
+    padding: 10px 14px;
+    background: #ff493f;
+    color: #f7f7f4;
+    border: 1px solid #ff493f;
+    font-family: var(--mono);
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: .02em;
+    text-transform: none;
+    white-space: nowrap;
+    transition: transform .3s var(--ease), background .25s ease, color .25s ease;
+}
+
+.ai-twin-nav:hover {
+    background: #f7f7f4;
+    color: #111111;
+    transform: translateY(-2px);
+}
+
+.site-nav .brand { order: 1; }
+.site-nav .nav-links { order: 3; }
+.site-nav .menu-toggle { order: 4; }
+
+@media (max-width: 760px) {
+    .ai-twin-nav {
+        margin-right: 16px;
+        padding: 9px 11px;
+        font-size: 9px;
+    }
+}
