@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DesignOS — Design with your team's knowledge, not from scratch.</title>
+<meta name="description" content="DesignOS connects your design system, research, product decisions and engineering context into one intelligent layer. AI-native product design infrastructure.">
+<meta name="theme-color" content="#F7F7F8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Crect%20x='1'%20y='1'%20width='22'%20height='22'%20rx='6'%20fill='%2316171A'/%3E%3Crect%20x='7'%20y='7'%20width='10'%20height='10'%20rx='2.5'%20fill='%233F4DE8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#F7F7F8; --surface:#FFFFFF; --surface-2:#F2F2F4; --surface-3:#E9E9EC;
+  --ink:#16171A; --ink-2:#52555C; --ink-3:#74777F;
+  --line:#E7E7EA; --line-2:#DCDDE1;
+  --accent:#3F4DE8; --accent-d:#3340CE; --acc-text:#3F4DE8;
+  --accent-soft:#EEF0FD; --accent-line:#C6CBF8;
+  --danger:#C7382F;
+  --sans:'Geist',-apple-system,'Segoe UI',sans-serif;
+  --mono:'Geist Mono',ui-monospace,'SF Mono',monospace;
+  --sh-sm:0 1px 2px rgba(16,17,20,.05);
+  --sh-md:0 1px 2px rgba(16,17,20,.04),0 12px 32px -14px rgba(16,17,20,.12);
+  --sh-lg:0 24px 64px -20px rgba(16,17,20,.28);
+}
+.dark{
+  background:#0F1013;color:#F2F2F5;
+  --surface:#15161A;--surface-2:#1B1C21;--surface-3:#232429;
+  --ink:#F2F2F5;--ink-2:#A7A9B1;--ink-3:#7C7F88;
+  --line:#242529;--line-2:#2E2F35;
+  --acc-text:#8A92FF;--accent-soft:rgba(86,96,242,.13);--accent-line:rgba(86,96,242,.42);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{font:400 16px/1.6 var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:#D9DDF9}
+img{max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+ul{list-style:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;z-index:200;background:var(--ink);color:#fff;padding:8px 14px;border-radius:8px;font-size:13px}
+.skip:focus{left:8px}
+.mono{font-family:var(--mono)}
+svg.ic{display:inline-block;vertical-align:-3px;flex:none}
+
+/* ============ LAYOUT UTILITIES ============ */
+.container{max-width:1200px;margin:0 auto;padding:0 32px}
+.container.wide{max-width:1320px}
+.section{padding:112px 0}
+.section.tight{padding:88px 0}
+.section-head{max-width:660px;margin-bottom:56px}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.eyebrow{display:flex;align-items:center;gap:10px;font:500 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);margin-bottom:22px}
+.eyebrow::before{content:"";width:7px;height:7px;background:var(--acc-text);flex:none}
+h1.h1{font-size:clamp(38px,5.1vw,64px);font-weight:600;letter-spacing:-.035em;line-height:1.04}
+h2.h2{font-size:clamp(30px,3.4vw,44px);font-weight:600;letter-spacing:-.024em;line-height:1.12}
+h3{letter-spacing:-.012em}
+.lead{font-size:17px;color:var(--ink-2);margin-top:20px;line-height:1.65}
+.lead.center{margin-left:auto;margin-right:auto}
+[data-reveal]{opacity:0;transform:translateY(18px);transition:opacity .65s cubic-bezier(.2,.7,.3,1),transform .65s cubic-bezier(.2,.7,.3,1)}
+[data-reveal].on{opacity:1;transform:none}
+
+/* ============ BUTTONS ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 20px;border-radius:9px;font-size:14.5px;font-weight:500;border:1px solid transparent;transition:background .18s,border-color .18s,color .18s,transform .18s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-d)}
+.btn-outline{background:var(--surface);border-color:var(--line-2);color:var(--ink)}
+.btn-outline:hover{border-color:var(--ink-3)}
+.btn-ghost{color:var(--ink-2)}
+.btn-ghost:hover{color:var(--ink);background:var(--surface-2)}
+.btn-sm{height:32px;padding:0 13px;font-size:13px;border-radius:7px}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:#000}
+.btn.done{background:var(--accent-soft);color:var(--acc-text);border-color:var(--accent-line)}
+.dark .btn-outline{background:transparent;border-color:var(--line-2);color:var(--ink)}
+.dark .btn-outline:hover{border-color:#484A52}
+.kbd{font:500 10.5px var(--mono);border:1px solid var(--line-2);border-bottom-width:2px;padding:2px 6px;border-radius:5px;color:var(--ink-3);background:var(--surface)}
+
+/* ============ NAV ============ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:60;height:70px;transition:height .3s ease,background .3s ease,border-color .3s ease,backdrop-filter .3s ease;border-bottom:1px solid transparent}
+.nav.scrolled{height:58px;background:rgba(247,247,248,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
+.nav-in{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:10px;font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+.nav-links{display:flex;gap:26px;align-items:center}
+.nav-links a{font-size:13.5px;color:var(--ink-2);transition:color .15s}
+.nav-links a:hover{color:var(--ink)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.kbd-btn{display:flex;align-items:center;gap:6px;height:32px;padding:0 10px;border:1px solid var(--line-2);border-radius:7px;font-size:12.5px;color:var(--ink-2);background:var(--surface)}
+.kbd-btn:hover{border-color:var(--ink-3);color:var(--ink)}
+.menu-btn{display:none;width:36px;height:36px;align-items:center;justify-content:center;border:1px solid var(--line-2);border-radius:8px;color:var(--ink)}
+.mmenu{display:none;position:fixed;top:58px;left:0;right:0;z-index:59;background:var(--surface);border-bottom:1px solid var(--line);padding:14px 24px 22px;box-shadow:var(--sh-md)}
+.mmenu.open{display:block}
+.mmenu a{display:block;padding:11px 4px;font-size:15px;color:var(--ink);border-bottom:1px solid var(--line)}
+.mmenu .row{display:flex;gap:10px;margin-top:16px}
+
+/* ============ HERO ============ */
+.hero{padding:158px 0 96px;text-align:center}
+.hero .lead{max-width:640px}
+.hero-cta{display:flex;gap:12px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+.hero-live{display:flex;align-items:center;gap:9px;justify-content:center;margin-top:26px;font-size:12.5px;color:var(--ink-3)}
+.hero-live i{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ============ APP SHELL (product) ============ */
+.app{background:var(--surface);border:1px solid var(--line-2);border-radius:13px;box-shadow:var(--sh-md);overflow:hidden;text-align:left}
+.app-side{width:208px;flex:none;background:#FAFAFB;border-right:1px solid var(--line);display:flex;flex-direction:column;padding:12px 0}
+.side-brand{display:flex;align-items:center;gap:9px;padding:4px 16px 14px;font-size:14px;font-weight:600}
+.side-brand .ws{margin-left:auto;font:400 10.5px var(--mono);color:var(--ink-3);border:1px solid var(--line);padding:2px 6px;border-radius:5px}
+.side-brand .ws:hover{color:var(--ink-2)}
+.side-item{display:flex;align-items:center;gap:10px;height:34px;padding:0 11px;margin:1px 9px;border-radius:7px;font-size:13.5px;color:var(--ink-2);cursor:pointer;transition:background .15s,color .15s;border:0;width:calc(100% - 18px);text-align:left}
+.side-item:hover{background:var(--surface-3);color:var(--ink)}
+.side-item.active{background:#EBEBEE;color:var(--ink);font-weight:500}
+.side-item .aidot{margin-left:auto;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.side-item svg{color:var(--ink-3)}
+.side-item.active svg{color:var(--ink)}
+.side-foot{margin-top:auto;padding:12px 16px 4px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-size:9.5px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none}
+.avatar.g{background:#5B5EA8}
+.avatar.r{background:#8A5B44}
+.side-foot .nm{font-size:12px;font-weight:500;line-height:1.25}
+.side-foot .rl{font-size:10.5px;color:var(--ink-3)}
+.app-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.proj-head{display:flex;align-items:center;gap:14px;padding:13px 20px;border-bottom:1px solid var(--line)}
+.proj-head .t{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.proj-head .m{font:400 11px var(--mono);color:var(--ink-3)}
+.proj-head .avs{margin-left:auto;display:flex}
+.proj-head .avs .avatar{margin-left:-6px;border:2px solid var(--surface)}
+.tabs{display:flex;gap:2px;padding:0 14px;border-bottom:1px solid var(--line)}
+.tab{padding:9px 13px;font-size:13px;color:var(--ink-3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s}
+.tab:hover{color:var(--ink-2)}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--ink);font-weight:500}
+.app-body{flex:1;display:flex;min-height:0}
+
+/* ============ HERO DEMO ============ */
+.hero-app{height:684px;margin-top:64px;display:flex}
+.hero-app .stage-col{flex:1;min-width:0;display:flex;flex-direction:column}
+.canvas{flex:1;min-height:0;overflow:auto;background:#F1F1F3;background-image:radial-gradient(circle,#D9D9DD 1px,transparent 1.1px);background-size:22px 22px;display:flex;align-items:flex-start;justify-content:center;padding:34px 24px;position:relative}
+.canvas.center{align-items:center}
+.frame{width:352px;background:#fff;border:1px solid var(--line-2);border-radius:12px;box-shadow:0 10px 30px -14px rgba(16,17,20,.16);padding:22px;position:relative}
+.frame-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.frame-top .ws{font-size:13px;font-weight:600}
+.frame-top .sec{display:flex;align-items:center;gap:6px;color:var(--ink-3);font:400 10px var(--mono)}
+.frame h4{font-size:18px;font-weight:600;letter-spacing:-.02em;margin-bottom:14px}
+.f-lbl{font:500 9.5px var(--mono);letter-spacing:.14em;color:var(--ink-3);margin:14px 0 7px}
+.f-row{display:flex;justify-content:space-between;font-size:13px;padding:3.5px 0;color:var(--ink-2)}
+.f-row.tot{font-weight:600;color:var(--ink);border-top:1px solid var(--line);margin-top:5px;padding-top:9px}
+.f-row .v{font-family:var(--mono);font-size:12.5px}
+.paycard{display:flex;align-items:center;gap:10px;border:1px solid var(--line-2);border-radius:9px;padding:10px 12px;background:var(--surface)}
+.paycard .radio{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--line-2);flex:none;position:relative}
+.paycard.sel .radio{border-color:var(--accent)}
+.paycard.sel .radio::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
+.paycard .pc-n{font-size:13px}
+.paycard .pc-e{font:400 11px var(--mono);color:var(--ink-3);margin-left:auto}
+.pay-add{display:flex;align-items:center;gap:8px;color:var(--ink-3);font-size:12.5px;padding:9px 4px}
+.f-check{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-2);margin:12px 2px 16px}
+.f-check .box{width:15px;height:15px;border:1.5px solid var(--line-2);border-radius:4px;flex:none}
+.pay-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;height:42px;background:var(--accent);color:#fff;border-radius:9px;font-size:14px;font-weight:500}
+.sel-ring{position:relative;outline:1.5px solid var(--accent);outline-offset:3px;border-radius:11px}
+.sel-tag{position:absolute;top:-27px;left:0;background:var(--accent);color:#fff;font:500 10px var(--mono);padding:2.5px 7px;border-radius:4px 4px 0 0;letter-spacing:.03em}
+.veil{position:absolute;inset:0;background:rgba(18,19,23,.4);border-radius:12px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s}
+.veil.in{opacity:1;pointer-events:auto}
+.cmodal{width:262px;background:#fff;border-radius:11px;border:1px solid var(--line-2);box-shadow:0 18px 44px -12px rgba(16,17,20,.3);padding:16px;transform:scale(.95);transition:transform .35s cubic-bezier(.2,.8,.3,1)}
+.veil.in .cmodal{transform:scale(1)}
+.cmodal .tag{display:flex;align-items:center;gap:6px;font:500 9.5px var(--mono);color:var(--acc-text);background:var(--accent-soft);border-radius:5px;padding:3px 7px;width:max-content;margin-bottom:10px}
+.cmodal h5{font-size:14.5px;font-weight:600;margin-bottom:5px}
+.cmodal p{font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-bottom:13px}
+.cmodal .row{display:flex;gap:8px;justify-content:flex-end}
+.applied-chip{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--accent-line);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--ink);box-shadow:var(--sh-sm);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+.applied-chip.in{opacity:1;pointer-events:auto}
+.applied-chip button{color:var(--acc-text);font-size:12px;font-weight:500}
+.applied-chip button:hover{text-decoration:underline}
+
+/* context / review tabs */
+.ctxpane,.revpane{flex:1;overflow:auto;padding:20px}
+.ctx-h{font:500 10px var(--mono);letter-spacing:.15em;color:var(--ink-3);margin-bottom:12px}
+.ctxrow{display:flex;align-items:center;gap:11px;padding:11px 4px;border-bottom:1px solid var(--line)}
+.ctxrow svg{color:var(--ink-3)}
+.ctxrow .n{font-size:13.5px}
+.ctxrow .st{margin-left:auto;font:400 11px var(--mono);color:var(--ink-3)}
+.ctxrow .dt{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.ctxfoot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font:400 11px var(--mono);color:var(--ink-3)}
+.thr{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px}
+.thr-h{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.thr-h .n{font-size:12.5px;font-weight:500}
+.thr-h .t{font:400 10.5px var(--mono);color:var(--ink-3);margin-left:auto}
+.thr p{font-size:13px;color:var(--ink-2);line-height:1.55}
+.thr .rep{margin-top:11px;padding-top:11px;border-top:1px solid var(--line);display:flex;gap:9px}
+.thr .rep p{font-size:12.5px}
+.evlink{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:12px;color:var(--acc-text);font-weight:500}
+.evlink:hover{text-decoration:underline}
+.aichip{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font:400 10px var(--mono);color:var(--ink-3);border:1px solid var(--line);border-radius:5px;padding:3px 7px}
+.rev-in{display:flex;align-items:center;gap:9px;border:1px solid var(--line-2);border-radius:9px;padding:9px 13px;color:var(--ink-3);font-size:13px;margin-top:4px}
+
+/* ============ AI PANEL ============ */
+.ai{width:346px;flex:none;border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0;background:var(--surface)}
+.ai-head{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.ai-head .t{font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:7px}
+.ai-head .t svg{color:var(--accent)}
+.ai-head .live{margin-left:auto;font:400 10px var(--mono);color:var(--ink-3);display:flex;align-items:center;gap:6px}
+.ai-head .live i{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2.4s infinite}
+.ai-chips{padding:12px 14px;border-bottom:1px solid var(--line)}
+.ai-chips .lbl{font:500 9.5px var(--mono);letter-spacing:.15em;color:var(--ink-3);margin-bottom:9px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;padding:5.5px 10px;border:1px solid var(--line-2);border-radius:6px;color:var(--ink-2);background:var(--surface);transition:all .15s;text-align:left}
+.chip:hover{border-color:var(--ink-3);color:var(--ink)}
+.chip.on{border-color:var(--accent);color:var(--ink);background:var(--accent-soft);font-weight:500}
+.ai-thread{flex:1;overflow-y:auto;padding:16px;scrollbar-width:thin}
+.ai-thread::-webkit-scrollbar{width:8px}
+.ai-thread::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:4px}
+.ai-q{margin-bottom:16px}
+.ai-q .who{font:500 10px var(--mono);color:var(--ink-3);letter-spacing:.1em}
+.ai-q p{font-size:14px;font-weight:500;margin-top:4px;line-height:1.45}
+.ai-r{border:1px solid var(--line);border-radius:11px;padding:14px;animation:in .4s both}
+.ai-rhead{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;margin-bottom:11px}
+.ai-rhead svg{color:var(--accent)}
+.ai-rhead .tm{margin-left:auto;font:400 10px var(--mono);color:var(--ink-3);font-weight:400}
+.consult{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;transition:opacity .3s}
+.consult .lbl{font:500 9.5px var(--mono);color:var(--ink-3);letter-spacing:.1em}
+.consult.done{opacity:.75}
+.src{display:inline-flex;align-items:center;gap:6px;font:400 10.5px var(--mono);color:var(--ink-3);border:1px solid var(--line-2);border-radius:6px;padding:4px 9px;transition:all .25s}
+.src .st{width:10px;height:10px;display:inline-flex;align-items:center;justify-content:center}
+.src.checking{color:var(--acc-text);border-color:var(--accent-line)}
+.src.checking .st::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite}
+.src.ok{color:var(--ink-2);border-color:var(--line-2)}
+.src.ok .st{color:var(--accent)}
+.ai-sum{font-size:13.5px;line-height:1.6;color:var(--ink);min-height:20px}
+.ai-sum.typing::after{content:"";display:inline-block;width:2px;height:13px;background:var(--accent);margin-left:2px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.ai-block{border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin-top:10px}
+.ai-block .bl{font:500 9.5px var(--mono);letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;margin-bottom:8px}
+.rec{display:flex;align-items:center;gap:8px}
+.rec svg{color:var(--acc-text)}
+.rec code{font:500 13px var(--mono);color:var(--ink)}
+.ai-block ul li{font-size:12.5px;color:var(--ink-2);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.ai-block ul li::before{content:"";position:absolute;left:1px;top:10px;width:5px;height:5px;background:var(--ink-3)}
+.evrow{display:flex;align-items:center;gap:9px;padding:5px 0;cursor:pointer;border-radius:5px}
+.evrow:hover .evname{text-decoration:underline;text-decoration-color:var(--line-2)}
+.evtag{font:500 9px var(--mono);color:var(--ink-3);border:1px solid var(--line-2);border-radius:4px;padding:1.5px 5px;letter-spacing:.05em}
+.evname{font-size:12.5px;color:var(--ink-2)}
+.evrow svg{margin-left:auto;color:var(--ink-3)}
+.evsn{display:none;font-size:12px;color:var(--ink-2);border-left:2px solid var(--line-2);margin:2px 0 7px 26px;padding:2px 0 2px 10px;line-height:1.5}
+.ai-block.open .evsn{display:block;animation:in .3s both}
+.ai-block.open .evrow svg{transform:rotate(90deg)}
+.conf{display:flex;align-items:center;gap:10px}
+.conf .bar{flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden}
+.conf .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.conf .pct{font:500 12px var(--mono);color:var(--ink)}
+.ai-actions{display:flex;gap:8px;margin-top:12px}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pend{opacity:0}
+.pend.on{opacity:1;transition:opacity .4s}
+
+/* ============ PROBLEM ============ */
+.kmap{position:relative;height:430px;border:1px solid var(--line-2);border-radius:13px;background:var(--surface);margin-bottom:26px;overflow:hidden}
+.klines{position:absolute;inset:0;width:100%;height:100%}
+.klines line{stroke:var(--line-2);stroke-dasharray:4 5;stroke-width:1}
+.knode{position:absolute;display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line-2);border-radius:9px;padding:9px 13px;box-shadow:var(--sh-sm);transition:transform .2s,border-color .2s}
+.knode:hover{transform:translateY(-2px);border-color:var(--ink-3)}
+.knode svg{color:var(--ink-3)}
+.knode .n{font-size:13px;font-weight:500;line-height:1.2}
+.knode .s{font:400 10px var(--mono);color:var(--ink-3)}
+.kcenter{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:172px;height:172px;border:1.5px dashed var(--ink-3);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;background:rgba(255,255,255,.6)}
+.kcenter .t{font-size:13.5px;font-weight:600;line-height:1.3}
+.kcenter .s{font-size:11px;color:var(--ink-3);margin-top:5px;line-height:1.4}
+.knode[data-reveal],.kcenter[data-reveal]{transform:none}
+.prob-punch{font-size:clamp(21px,2.4vw,27px);font-weight:600;letter-spacing:-.015em;max-width:640px;margin:60px 0 14px}
+.prob-punch span{color:var(--ink-2)}
+.probs{margin-top:44px;border-top:1px solid var(--line-2)}
+.prob{display:grid;grid-template-columns:64px 220px 1fr;gap:26px;padding:30px 0;border-bottom:1px solid var(--line-2)}
+.prob .num{font:400 13px var(--mono);color:var(--ink-3);padding-top:3px}
+.prob h3{font-size:17.5px;font-weight:600}
+.prob p{font-size:14.5px;color:var(--ink-2);line-height:1.65}
+.prob p em{font-style:normal;color:var(--ink)}
+
+/* ============ INSIGHT ============ */
+.insight{padding:132px 0;text-align:center}
+.insight .eyebrow{justify-content:center}
+.insight .stmt{font-size:clamp(28px,3.8vw,46px);font-weight:600;letter-spacing:-.025em;line-height:1.22;max-width:900px;margin:0 auto}
+.insight .stmt em{font-style:normal;text-decoration:underline;text-decoration-color:var(--acc-text);text-decoration-thickness:2px;text-underline-offset:8px}
+.insight .sub{margin-top:28px;font-size:17.5px;color:var(--ink-2)}
+
+/* ============ HOW ============ */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line-2)}
+.step{padding:30px 30px 8px 0;position:relative}
+.step::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;background:var(--surface);border:1.5px solid var(--ink-3);border-radius:2px}
+.step .n{font:400 12px var(--mono);color:var(--ink-3)}
+.step h3{font-size:18px;font-weight:600;margin:9px 0 8px}
+.step p{font-size:14px;color:var(--ink-2);line-height:1.6}
+.pipeline{margin-top:52px;border:1px solid var(--line-2);border-radius:11px;background:var(--surface);padding:18px 22px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.pipeline .lbl{font:500 10px var(--mono);letter-spacing:.15em;color:var(--ink-3);margin-right:6px}
+.pipe{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.pipe b{font:500 12px var(--mono);font-weight:500;border:1px solid var(--line-2);border-radius:6px;padding:5px 10px;background:var(--surface-2)}
+.pipe svg{color:var(--ink-3)}
+.pipe .loop{font:400 11px var(--mono);color:var(--ink-3);margin-left:auto}
+
+/* ============ WORKFLOW (scroll) ============ */
+.wf-hint{display:flex;align-items:center;gap:9px;font:500 10.5px var(--mono);letter-spacing:.14em;color:var(--ink-3);margin-top:-34px;margin-bottom:44px}
+.wf-grid{display:grid;grid-template-columns:minmax(0,1fr) 442px;gap:72px;align-items:start}
+.wf-left{position:relative;padding-left:30px}
+.wf-rail{position:absolute;left:2px;top:10px;bottom:10px;width:2px;background:var(--line)}
+.wf-fill{position:absolute;left:0;top:0;width:6px;height:6px;border-radius:50%;background:var(--accent);transition:top .5s cubic-bezier(.2,.7,.3,1)}
+.wf-rail .track-fill{position:absolute;left:0;top:0;width:2px;background:var(--accent);height:0;transition:height .5s}
+.wf-step{min-height:52vh;display:flex;flex-direction:column;justify-content:center;padding:24px 0;transition:opacity .35s}
+.wf-step .n{font:400 12px var(--mono);color:var(--ink-3)}
+.wf-step h3{font-size:20px;font-weight:600;margin:8px 0 9px;letter-spacing:-.015em;color:var(--ink-3);transition:color .35s}
+.wf-step p{font-size:14.5px;color:var(--ink-3);line-height:1.6;max-width:400px;transition:color .35s}
+.wf-step.on h3{color:var(--ink)}
+.wf-step.on p{color:var(--ink-2)}
+.wf-stage-wrap{position:sticky;top:92px}
+.stage{border:1px solid var(--line-2);border-radius:13px;background:var(--surface);box-shadow:var(--sh-md);overflow:hidden}
+.stage-h{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);font-size:13.5px;font-weight:600}
+.stage-h svg{color:var(--accent)}
+.stage-h .fr{margin-left:auto;font:400 10.5px var(--mono);color:var(--ink-3);border:1px solid var(--line);padding:2px 7px;border-radius:5px}
+.stage-b{padding:18px;min-height:398px;display:flex;flex-direction:column;gap:12px}
+.sin{animation:in .5s cubic-bezier(.2,.7,.3,1) both}
+.s-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;color:var(--ink-3);padding:26px 0}
+.s-prompt svg{color:var(--ink-3);opacity:.6;margin-bottom:10px}
+.s-prompt .t{font-size:13.5px;color:var(--ink-2);font-weight:500}
+.s-prompt .s{font-size:12px;margin-top:3px}
+.fthumb{width:190px;border:1.5px dashed var(--accent);border-radius:10px;padding:12px;margin-top:18px;text-align:left;background:var(--surface)}
+.fthumb .fl{font:400 9.5px var(--mono);color:var(--acc-text);margin-bottom:8px}
+.fthumb .ln{height:7px;border-radius:3px;background:var(--surface-3);margin-bottom:6px}
+.fthumb .ln.s{width:60%}
+.s-ask{display:flex;align-items:center;gap:10px;border:1px solid var(--line-2);border-radius:10px;padding:11px 13px}
+.s-ask .q{font-size:13.5px;font-weight:500;flex:1;min-height:19px}
+.s-ask .q.typing::after{content:"";display:inline-block;width:2px;height:13px;background:var(--accent);margin-left:2px;animation:blink 1s steps(1) infinite}
+.s-ask svg{color:var(--accent)}
+.s-consult .lbl{font:500 9.5px var(--mono);letter-spacing:.14em;color:var(--ink-3);display:block;margin-bottom:8px}
+.s-src{display:flex;align-items:center;gap:9px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;font-size:12.5px;color:var(--ink-2)}
+.s-src svg{color:var(--ink-3)}
+.s-src .st{margin-left:auto;width:14px;height:14px;display:flex;align-items:center;justify-content:center;color:var(--accent)}
+.s-src.check .st::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite}
+.s-src.ok .st{color:var(--accent)}
+.s-donenote{font:400 10.5px var(--mono);color:var(--ink-3);margin-top:4px}
+.s-rec{border:1px solid var(--line);border-radius:10px;padding:12px}
+.s-rec .bl{font:500 9.5px var(--mono);letter-spacing:.14em;color:var(--ink-3);margin-bottom:8px}
+.s-acts{display:flex;gap:8px}
+.s-acc{display:flex;align-items:center;gap:9px;border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:9px;padding:9px 13px;font-size:12.5px;font-weight:500;color:var(--ink)}
+.s-acc svg{color:var(--acc-text)}
+.s-learn{border:1px solid var(--line);border-radius:10px;padding:13px}
+.s-learn .h{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600}
+.s-learn .h svg{color:var(--acc-text)}
+.s-learn .d{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.s-learn .tag{font:400 9.5px var(--mono);color:var(--acc-text);background:var(--accent-soft);border-radius:5px;padding:3px 7px;width:max-content;margin-top:11px}
+
+/* ============ SKILLS ============ */
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.skill{border:1px solid var(--line-2);border-radius:11px;background:var(--surface);padding:22px;text-align:left;display:flex;flex-direction:column;transition:border-color .2s,transform .2s,box-shadow .2s}
+.skill:hover{border-color:var(--ink-3);transform:translateY(-2px);box-shadow:var(--sh-md)}
+.skill .icb{width:40px;height:40px;border:1px solid var(--line-2);border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);margin-bottom:16px;background:var(--surface-2)}
+.skill h3{font-size:16.5px;font-weight:600}
+.skill p{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin-top:7px;flex:1}
+.skill .ft{display:flex;align-items:center;gap:7px;margin-top:18px;font-size:13px;font-weight:500;color:var(--ink-3);transition:color .2s}
+.skill:hover .ft{color:var(--acc-text)}
+.infra{margin-top:60px;border:1px solid var(--line-2);border-radius:13px;background:var(--surface-2);padding:30px 34px;display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center}
+.infra .lbl{font:500 10px var(--mono);letter-spacing:.16em;color:var(--ink-3);margin-bottom:13px}
+.infra .q{font-size:18.5px;font-weight:500;letter-spacing:-.012em;line-height:1.45}
+.infra .n{margin-top:16px;font-size:13px;color:var(--ink-2);display:flex;gap:8px;align-items:center}
+.infra .n svg{color:var(--ink-3)}
+.flowv{display:flex;flex-direction:column;align-items:flex-start;gap:0;font:500 12px var(--mono)}
+.flowv b{border:1px solid var(--line-2);border-radius:6px;padding:5px 11px;background:var(--surface);font-weight:500}
+.flowv svg{color:var(--ink-3);margin:4px 6px}
+
+/* ============ DESIGN SYSTEM ============ */
+.ds-app{display:flex;min-height:520px}
+.ds-tree{width:244px;flex:none;border-right:1px solid var(--line);background:#FAFAFB;padding:16px 0;overflow-y:auto;max-height:560px}
+.tg{font:500 9.5px var(--mono);letter-spacing:.16em;color:var(--ink-3);padding:12px 18px 7px}
+.titem{display:flex;align-items:center;gap:9px;width:calc(100% - 18px);margin:0 9px;padding:7px 10px;border-radius:7px;font-size:13px;color:var(--ink-2);transition:all .15s;border:0;text-align:left;position:relative}
+.titem svg{color:var(--ink-3)}
+.titem .use{margin-left:auto;font:400 10px var(--mono);color:var(--ink-3);opacity:0;transition:opacity .15s}
+.titem:hover{background:var(--surface-3);color:var(--ink)}
+.titem:hover .use{opacity:1}
+.titem.on{background:#EBEBEE;color:var(--ink);font-weight:500}
+.titem.on::before{content:"";position:absolute;left:0;top:7px;bottom:7px;width:2.5px;border-radius:2px;background:var(--accent)}
+.ds-detail{flex:1;min-width:0;padding:26px 30px;overflow-y:auto;max-height:560px}
+.ds-crumb{font:400 10.5px var(--mono);color:var(--ink-3);letter-spacing:.08em}
+.ds-detail h3{font-size:20px;font-weight:600;margin:6px 0 4px}
+.ds-meta{font:400 11px var(--mono);color:var(--ink-3)}
+.ds-sec{margin-top:22px;display:grid;grid-template-columns:98px 1fr;gap:14px;padding-top:16px;border-top:1px solid var(--line)}
+.ds-sec .lb{font:500 9.5px var(--mono);letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;padding-top:2px}
+.ds-sec .vv{font-size:13.5px;color:var(--ink-2);line-height:1.6}
+.ds-sec .vv.standout{color:var(--ink);font-size:15px}
+.tagchips{display:flex;flex-wrap:wrap;gap:6px}
+.tchip{font-size:12px;border:1px solid var(--line-2);border-radius:6px;padding:4px 10px;color:var(--ink-2)}
+.tchip.m{font-family:var(--mono);font-size:11.5px}
+.ds-sec ul li{font-size:13.5px;color:var(--ink-2);padding:2.5px 0 2.5px 15px;position:relative}
+.ds-sec ul li::before{content:"";position:absolute;left:1px;top:11px;width:5px;height:5px;background:var(--ink-3)}
+.aicard{margin-top:26px;border:1px solid var(--accent-line);border-left:2.5px solid var(--accent);border-radius:10px;background:var(--accent-soft);padding:16px 18px}
+.aicard .h{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600}
+.aicard .h svg{color:var(--acc-text)}
+.aicard p{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.aicard .row{display:flex;gap:8px;margin-top:13px}
+
+/* ============ EVOLUTION ============ */
+.evo-head{display:flex;align-items:center;gap:11px;font:400 11px var(--mono);color:var(--ink-3);margin-bottom:14px}
+.evo-head .dt{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2.2s infinite}
+.evo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.evo{border:1px solid var(--line-2);border-radius:11px;background:var(--surface);padding:20px;position:relative;min-height:196px}
+.evo .team{position:absolute;top:14px;right:14px;font:400 10px var(--mono);color:var(--ink-3);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
+.evo svg.big{color:var(--ink-3);margin-bottom:14px}
+.evo h4{font-size:14px;font-weight:600;margin-bottom:5px}
+.evo p{font-size:12.5px;color:var(--ink-2);line-height:1.55}
+.evo .act{margin-top:14px}
+.evo .act .lk{font-size:12.5px;color:var(--acc-text);font-weight:500}
+.evo .act .lk:hover{text-decoration:underline}
+.cmp-wrap{margin-top:22px;border:1px solid var(--line-2);border-radius:11px;background:var(--surface);overflow-x:auto}
+table.cmp{width:100%;border-collapse:collapse;min-width:620px}
+.cmp th{font:500 10px var(--mono);letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase;text-align:left;padding:11px 16px;border-bottom:1px solid var(--line)}
+.cmp td{font:400 11.5px var(--mono);color:var(--ink-2);padding:9px 16px;border-bottom:1px solid var(--line)}
+.cmp tr:last-child td{border-bottom:0}
+.cmp td:first-child{color:var(--ink-3)}
+.cmp td.mm{color:var(--acc-text);background:var(--accent-soft);border-left:1px solid var(--accent-line);border-right:1px solid var(--accent-line)}
+.evo-res{display:flex;align-items:center;gap:26px;margin-top:24px;flex-wrap:wrap}
+.evo-res .st{font-size:16.5px;font-weight:600;letter-spacing:-.01em}
+.sim{flex:1;min-width:220px;display:flex;align-items:center;gap:12px}
+.sim .bar{flex:1;height:5px;background:var(--surface-3);border-radius:3px;overflow:hidden}
+.sim .bar i{display:block;height:100%;width:0;background:var(--ink);transition:width 1s cubic-bezier(.2,.7,.2,1)}
+.sim .pct{font:500 13px var(--mono)}
+.evo-reco{margin-top:22px;display:flex;align-items:center;gap:16px;border:1px solid var(--line-2);border-radius:11px;background:var(--surface);padding:18px 20px;flex-wrap:wrap}
+.evo-reco .h{display:flex;align-items:center;gap:9px;font-size:15.5px;font-weight:600}
+.evo-reco .h svg{color:var(--accent)}
+.evo-reco .row{margin-left:auto;display:flex;gap:8px}
+
+/* ============ RESEARCH ============ */
+.res-grid{display:grid;grid-template-columns:5fr 6fr;gap:64px;align-items:start}
+.memo{border:1px solid var(--line-2);border-radius:12px;background:var(--surface);padding:24px}
+.memo .lbl{font:500 9.5px var(--mono);letter-spacing:.15em;color:var(--ink-3);margin-bottom:12px}
+.memo .ins{font-size:20px;font-weight:600;letter-spacing:-.015em;line-height:1.35}
+.memo .stat{display:flex;align-items:baseline;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.memo .stat b{font:500 26px var(--mono);letter-spacing:-.02em}
+.memo .stat span{font-size:12.5px;color:var(--ink-2);line-height:1.45}
+.impl{margin-top:16px;border:1px solid var(--accent-line);border-left:2.5px solid var(--accent);border-radius:10px;background:var(--accent-soft);padding:18px 20px}
+.impl .lbl{font:500 9.5px var(--mono);letter-spacing:.15em;color:var(--acc-text);margin-bottom:8px}
+.impl .t{font-size:16.5px;font-weight:600;letter-spacing:-.01em;line-height:1.4}
+.impl .row{margin-top:14px}
+.evstack{display:flex;flex-direction:column;gap:12px}
+.evcard{border:1px solid var(--line-2);border-radius:11px;background:var(--surface);padding:19px 21px;transition:border-color .2s,transform .2s}
+.evcard:hover{border-color:var(--ink-3);transform:translateY(-1px)}
+.evcard .q{font-size:15.5px;line-height:1.5;letter-spacing:-.005em}
+.evcard .src{margin-top:12px;display:flex;align-items:center;gap:8px;font:400 10.5px var(--mono);color:var(--ink-3)}
+.evcard .src svg{color:var(--ink-3)}
+.res-rule{display:flex;align-items:center;gap:10px;margin-top:22px;font-size:13px;color:var(--ink-2)}
+.res-rule svg{color:var(--acc-text)}
+
+/* ============ DECISION ============ */
+.dec-grid{display:grid;grid-template-columns:5fr 6fr;gap:56px;align-items:start;margin-top:56px}
+.askbar{display:flex;align-items:center;gap:11px;border:1px solid var(--line-2);border-radius:11px;background:var(--surface);padding:14px 16px}
+.askbar .lbl{font:500 9.5px var(--mono);color:var(--ink-3);letter-spacing:.12em;display:block;margin-bottom:5px}
+.askbar .q{font-size:14.5px;font-weight:500;line-height:1.45;flex:1}
+.askbar svg{color:var(--acc-text)}
+.flowcard{margin-top:18px;border:1px solid var(--line-2);border-radius:12px;background:var(--surface);padding:20px}
+.flowcard .hd{display:flex;justify-content:space-between;font:400 10.5px var(--mono);color:var(--ink-3);margin-bottom:18px;letter-spacing:.08em}
+.flow{display:flex;align-items:stretch;gap:9px;flex-wrap:wrap}
+.flnode{border:1px solid var(--line-2);border-radius:10px;padding:10px 14px;background:var(--surface-2);min-width:120px}
+.flnode .n{font-size:13px;font-weight:500;line-height:1.3}
+.flnode .s{font:400 10px var(--mono);color:var(--ink-3);margin-top:3px}
+.flnode.new{border-color:var(--accent-line);background:var(--accent-soft);animation:pop .45s cubic-bezier(.2,.8,.3,1) both}
+.flnode.new .ap{display:inline-flex;align-items:center;gap:5px;font:500 9px var(--mono);color:var(--acc-text);letter-spacing:.08em;margin-bottom:4px}
+@keyframes pop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+.flarr{align-self:center;color:var(--ink-3);animation:in .4s both}
+.recchip{display:none;margin-top:16px;align-items:center;gap:9px;font-size:12px;color:var(--ink-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.recchip.in{display:flex;animation:in .4s both}
+.recchip svg{color:var(--acc-text)}
+.recchip .mono{color:var(--ink-3)}
+.dstack{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;padding:2px 2px 4px}
+.dhead svg{color:var(--accent)}
+.dhead .tm{margin-left:auto;font:400 10px var(--mono);color:var(--ink-3)}
+.dcard{border:1px solid var(--line-2);border-radius:11px;background:var(--surface);padding:17px 19px}
+.dcard .h{display:flex;align-items:center;gap:9px;font:500 10px var(--mono);letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase}
+.dcard .h svg{color:var(--ink-3)}
+.dcard p{font-size:13.5px;color:var(--ink);line-height:1.6;margin-top:9px}
+.dcard .src{font:400 10.5px var(--mono);color:var(--ink-3);margin-top:10px}
+.dcard.reco{border-color:var(--accent-line);background:var(--accent-soft)}
+.dcard.reco .h{color:var(--acc-text)}
+.dcard.reco .rt{font-size:17px;font-weight:600;letter-spacing:-.01em;margin-top:9px}
+.dcard .det{display:none;margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.dcard.open .det{display:block;animation:in .35s both}
+.dcard .det .q{font-size:12.5px;color:var(--ink-2);border-left:2px solid var(--line-2);padding:2px 0 2px 11px;margin-bottom:9px;line-height:1.5}
+.drow{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.fu{display:none;flex-direction:column;gap:10px}
+.fu.in{display:flex;animation:in .4s both}
+.fu .fq{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:500}
+.fu .fq .who{font:500 10px var(--mono);color:var(--ink-3)}
+.fu .fa{border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:15px 17px}
+.fu .fa .h{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600}
+.fu .fa .h svg{color:var(--accent)}
+.fu .fa p{font-size:13px;color:var(--ink-2);margin-top:8px;line-height:1.6}
+.fu .fa .src{font:400 10.5px var(--mono);color:var(--ink-3);margin-top:9px}
+
+/* ============ CONTROL ============ */
+.chain{display:flex;align-items:stretch;gap:10px}
+.cblock{flex:1;border:1px solid var(--line-2);border-radius:12px;background:var(--surface);padding:22px}
+.cblock .n{font:400 12px var(--mono);color:var(--ink-3)}
+.cblock .icb{margin:13px 0 12px;color:var(--ink-2)}
+.cblock h3{font-size:16.5px;font-weight:600}
+.cblock p{font-size:13px;color:var(--ink-2);line-height:1.55;margin-top:7px}
+.chain .carr{align-self:center;color:var(--ink-3)}
+.ctrl-quote{margin:72px auto 0;text-align:center;max-width:760px}
+.ctrl-quote .q{font-size:clamp(23px,2.9vw,33px);font-weight:600;letter-spacing:-.02em;line-height:1.3}
+.ctrl-quote .s{margin-top:16px;font-size:15px;color:var(--ink-2)}
+.ctrl-quote .s b{color:var(--ink);font-weight:500}
+
+/* ============ DASHBOARD ============ */
+.dash{height:640px;display:flex}
+.dash-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.dash-top{display:flex;align-items:center;gap:12px;padding:11px 20px;border-bottom:1px solid var(--line)}
+.dsearch{flex:1;max-width:380px;display:flex;align-items:center;gap:9px;border:1px solid var(--line-2);border-radius:8px;padding:7px 12px;color:var(--ink-3);font-size:13px;background:var(--surface);cursor:text}
+.dsearch:hover{border-color:var(--ink-3)}
+.dsearch .k{margin-left:auto}
+.ibtn{width:32px;height:32px;border:1px solid var(--line-2);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);position:relative}
+.ibtn:hover{border-color:var(--ink-3)}
+.ibtn .nd{position:absolute;top:7px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.dash-body{flex:1;overflow-y:auto;padding:26px 28px}
+.dash-body h3.g{font-size:22px;font-weight:600;letter-spacing:-.02em}
+.dash-body .sub{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink-2);margin-top:5px}
+.dash-body .sub a{color:var(--acc-text);font-weight:500}
+.dash-body .sub a:hover{text-decoration:underline}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
+.stat{border:1px solid var(--line-2);border-radius:11px;background:var(--surface);padding:15px 17px}
+.stat .h{display:flex;align-items:center;gap:8px;color:var(--ink-3)}
+.stat .num{font:500 24px var(--sans);letter-spacing:-.03em;margin-top:9px}
+.stat .lb{font-size:12.5px;color:var(--ink-2);margin-top:1px}
+.stat .sb{font:400 10.5px var(--mono);color:var(--ink-3);margin-top:7px}
+.dash-cols{display:grid;grid-template-columns:7fr 5fr;gap:14px;margin-top:14px}
+.dpanel{border:1px solid var(--line-2);border-radius:11px;background:var(--surface);padding:18px 19px}
+.dpanel .h{font:500 10px var(--mono);letter-spacing:.15em;color:var(--ink-3);margin-bottom:6px}
+.drowi{display:flex;align-items:center;gap:14px;padding:13px 2px;border-bottom:1px solid var(--line);transition:opacity .3s}
+.drowi:last-child{border-bottom:0}
+.drowi .t{font-size:14px;font-weight:500}
+.drowi .m{font:400 10.5px var(--mono);color:var(--ink-3);margin-top:3px}
+.drowi .row{margin-left:auto;display:flex;gap:7px;flex:none}
+.drowi.done .row,.drowi.done .t{opacity:.55}
+.drowi .okc{display:none;margin-left:auto;align-items:center;gap:7px;font-size:12.5px;color:var(--acc-text);font-weight:500}
+.drowi.done .okc{display:flex}
+.bars{display:flex;gap:7px;align-items:flex-end;height:76px;margin-top:14px;padding:0 2px}
+.bar{flex:1;background:var(--surface-3);border-radius:3px 3px 0 0}
+.bar.hi{background:var(--accent)}
+.bars-x{display:flex;justify-content:space-between;font:400 9px var(--mono);color:var(--ink-3);margin-top:7px;padding:0 2px}
+.cov{margin-top:18px}
+.cov .cl{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-2)}
+.cov .cl b{font:500 12px var(--mono);color:var(--ink)}
+.cov .bar2{height:5px;background:var(--surface-3);border-radius:3px;margin-top:8px;overflow:hidden}
+.cov .bar2 i{display:block;height:100%;width:0;background:var(--accent);transition:width 1s .3s}
+.feed{margin-top:18px}
+.feed .fi{display:flex;gap:9px;align-items:flex-start;padding:7px 0;font-size:12.5px;color:var(--ink-2)}
+.feed .fi svg{color:var(--ink-3);margin-top:2px}
+.feed .fi .tm{margin-left:auto;font:400 10px var(--mono);color:var(--ink-3);flex:none}
+
+/* ============ SEARCH ============ */
+.sbox{border:1px solid var(--line-2);border-radius:12px;background:var(--surface);overflow:hidden;box-shadow:var(--sh-md)}
+.sbox-in{display:flex;align-items:center;gap:11px;padding:15px 18px;border-bottom:1px solid var(--line)}
+.sbox-in svg{color:var(--ink-3)}
+.sbox-in input{flex:1;border:0;outline:0;background:none;font:400 15px var(--sans);color:var(--ink)}
+.sbox-in input::placeholder{color:var(--ink-3)}
+.sres{max-height:400px;overflow-y:auto;padding:10px 8px 14px}
+.sgrp{font:500 9.5px var(--mono);letter-spacing:.16em;color:var(--ink-3);padding:12px 12px 6px;text-transform:uppercase}
+.srow{display:flex;align-items:center;gap:11px;width:100%;padding:8px 12px;border-radius:8px;text-align:left;transition:background .12s}
+.srow svg.gl{color:var(--ink-3)}
+.srow .t{font-size:13.5px;font-weight:500}
+.srow .s{font-size:12px;color:var(--ink-3);margin-top:1px}
+.srow .go{margin-left:auto;color:var(--ink-3);opacity:0}
+.srow:hover,.srow.act{background:var(--surface-2)}
+.srow:hover .go,.srow.act .go{opacity:1}
+.sans{margin:8px 12px 6px;border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:10px;padding:14px 16px}
+.sans .h{display:flex;align-items:center;gap:8px;font:500 9.5px var(--mono);letter-spacing:.15em;color:var(--acc-text)}
+.sans .h svg{color:var(--acc-text)}
+.sans p{font-size:13.5px;line-height:1.6;margin-top:9px;min-height:20px}
+.sans p.typing::after{content:"";display:inline-block;width:2px;height:13px;background:var(--accent);margin-left:2px;animation:blink 1s steps(1) infinite}
+.sans .srcs{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.sans .srcs span{font:400 10.5px var(--mono);color:var(--ink-2);border:1px solid var(--line-2);background:var(--surface);border-radius:5px;padding:2.5px 7px}
+.sans .cf{display:flex;align-items:center;gap:10px;margin-top:12px}
+.sans .cf .bar{flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden;max-width:180px}
+.sans .cf .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .8s}
+.sans .cf .pct{font:500 11.5px var(--mono)}
+.sans .lk{margin-top:11px;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--acc-text);font-weight:500}
+.sans .lk:hover{text-decoration:underline}
+.sfoot{display:flex;align-items:center;gap:16px;padding:10px 18px;border-top:1px solid var(--line);font:400 10.5px var(--mono);color:var(--ink-3)}
+.ex-q{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.ex-q .lbl{font:500 9.5px var(--mono);letter-spacing:.15em;color:var(--ink-3);align-self:center;margin-right:4px}
+.overlay{position:fixed;inset:0;background:rgba(15,16,19,.5);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:90;display:flex;align-items:flex-start;justify-content:center;padding:9vh 20px;overflow-y:auto;animation:fadein .2s}
+@keyframes fadein{from{opacity:0}}
+.cmdk{width:min(640px,100%);animation:pop .22s cubic-bezier(.2,.8,.3,1)}
+.cmdk .sres{max-height:52vh}
+
+/* ============ MODAL ============ */
+.modal{width:min(620px,100%);background:var(--surface);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--sh-lg);animation:pop .25s cubic-bezier(.2,.8,.3,1);position:relative;padding:28px 30px;max-height:84vh;overflow-y:auto;margin-top:4vh}
+.mclose{position:absolute;top:16px;right:16px;width:32px;height:32px;border:1px solid var(--line-2);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);background:var(--surface)}
+.mclose:hover{border-color:var(--ink-3);color:var(--ink)}
+.sk-top{display:flex;gap:15px;align-items:center;margin-bottom:24px;padding-right:40px}
+.sk-ic{width:46px;height:46px;border:1px solid var(--line-2);border-radius:11px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;color:var(--ink-2)}
+.sk-top h3{font-size:19px;font-weight:600}
+.sk-tag{font:400 10.5px var(--mono);color:var(--ink-3)}
+dl.spec>div{display:grid;grid-template-columns:96px 1fr;gap:16px;padding:13px 0;border-top:1px solid var(--line)}
+dl.spec dt{font:500 9.5px var(--mono);letter-spacing:.13em;color:var(--ink-3);text-transform:uppercase;padding-top:3px}
+dl.spec dd{font-size:13.5px;color:var(--ink-2);line-height:1.6}
+dl.spec dd.standout{color:var(--ink);font-size:14.5px}
+.ex{border:1px solid var(--line-2);border-radius:11px;background:var(--surface-2);padding:17px 19px;margin-top:6px}
+.ex .ex-h{font:500 9.5px var(--mono);letter-spacing:.15em;color:var(--ink-3);margin-bottom:11px}
+.ex .ex-q{font-size:13.5px;font-weight:500;margin:0;display:block}
+.ex .ex-run{margin-top:13px;min-height:30px}
+.ex .ex-run .out{font-size:13px;line-height:1.6;color:var(--ink-2);margin-top:11px;animation:in .35s both}
+.ex .ex-run .srcs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.ex .ex-run .srcs span{font:400 10.5px var(--mono);border:1px solid var(--line-2);border-radius:5px;padding:2px 7px;color:var(--ink-3);background:var(--surface)}
+.mvar{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:11px}
+.mvar .h{display:flex;align-items:center;justify-content:space-between}
+.mvar .t{font-size:14px;font-weight:500}
+.mvar .fl{font-size:12.5px;color:var(--ink-2);margin-top:3px}
+.mvar .diffs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.mvar .diffs span{font:400 10.5px var(--mono);color:var(--ink-2);border:1px solid var(--line-2);border-radius:5px;padding:2px 7px;background:var(--surface)}
+.mvar .lk{margin-top:11px;font-size:12px;color:var(--acc-text);font-weight:500}
+.mvar .lk:hover{text-decoration:underline}
+.mfoot{display:flex;gap:9px;margin-top:20px;align-items:center;flex-wrap:wrap}
+.mfoot .n{font-size:12.5px;color:var(--ink-3);margin-right:auto}
+.betain input{width:100%;border:1px solid var(--line-2);border-radius:9px;padding:11px 14px;font:400 14.5px var(--sans);outline:0;margin:18px 0 6px}
+.betain input:focus{border-color:var(--accent)}
+.betain .err{display:none;font-size:12.5px;color:var(--danger)}
+.betain .err.on{display:block}
+.betain .ok{display:none;text-align:center;padding:20px 0 8px}
+.betain .ok.on{display:block;animation:in .4s both}
+.betain .ok svg{color:var(--accent)}
+.betain .ok .t{font-size:16.5px;font-weight:600;margin-top:11px}
+.betain .ok .s{font-size:12.5px;color:var(--ink-3);margin-top:6px}
+
+/* ============ CTA / FOOTER ============ */
+.cta{padding:136px 0 120px;text-align:center}
+.cta .stmt{font-size:clamp(30px,4.2vw,50px);font-weight:600;letter-spacing:-.03em;line-height:1.14;max-width:860px;margin:0 auto}
+.cta .sub{margin:26px auto 0;max-width:520px;font-size:16.5px;color:var(--ink-2)}
+.cta .row{display:flex;gap:12px;justify-content:center;margin-top:38px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line)}
+.foot-in{display:flex;gap:40px;align-items:flex-start;padding:52px 0 0;flex-wrap:wrap}
+.foot-in .tag{font-size:14px;color:var(--ink-2);margin-top:10px;max-width:280px;line-height:1.55}
+.foot-links{display:flex;gap:28px;flex-wrap:wrap;margin-left:auto}
+.foot-links a{font-size:13.5px;color:var(--ink-2)}
+.foot-links a:hover{color:var(--ink)}
+.foot-bot{display:flex;gap:18px;justify-content:space-between;padding:26px 0 34px;margin-top:44px;border-top:1px solid var(--line);flex-wrap:wrap;font-size:12.5px;color:var(--ink-3)}
+.foot-bot .mono{font-size:11px}
+
+/* ============ TOASTS ============ */
+#toasts{position:fixed;bottom:22px;right:22px;z-index:120;display:flex;flex-direction:column;gap:9px;pointer-events:none}
+.toast{display:flex;align-items:center;gap:10px;background:#16171A;color:#F2F2F5;border:1px solid #2E2F35;border-radius:10px;padding:11px 16px;font-size:13.5px;box-shadow:var(--sh-lg);max-width:360px;animation:tin .3s cubic-bezier(.2,.8,.3,1)}
+.toast svg{color:#8A92FF}
+.toast.out{opacity:0;transform:translateY(8px);transition:all .3s}
+@keyframes tin{from{opacity:0;transform:translateY(10px)}}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:1080px){
+  .hero-app{height:auto;flex-direction:column}
+  .app-side{display:none}
+  .hero-app .stage-col{min-height:0}
+  .canvas{min-height:430px;align-items:center}
+  .app-body{flex-direction:column}
+  .ai{width:100%;border-left:0;border-top:1px solid var(--line)}
+  .ai::before{content:"";display:block;height:4px;width:40px;border-radius:2px;background:var(--line-2);margin:10px auto 0}
+  .ai::after{order:-1}
+  .ai-thread{max-height:400px}
+  .ai-head{margin-top:-14px}
+  .dash{height:auto;flex-direction:column}
+  .dash-body{overflow:visible}
+  .ds-app{flex-direction:column}
+  .ds-tree{width:100%;max-height:none;display:flex;flex-wrap:wrap;gap:4px;padding:14px;border-right:0;border-bottom:1px solid var(--line)}
+  .tg{width:100%;padding:8px 4px 2px}
+  .titem{width:auto;margin:0}
+  .titem .use{display:none}
+  .titem.on::before{display:none}
+  .ds-detail{max-height:none;padding:22px}
+  .wf-grid{grid-template-columns:1fr;gap:36px}
+  .wf-stage-wrap{position:sticky;top:70px;z-index:5}
+  .stage-b{min-height:0;padding:14px}
+  .s-prompt{padding:8px 0}
+  .wf-step{min-height:46vh}
+  .skills{grid-template-columns:1fr 1fr}
+  .infra{grid-template-columns:1fr;gap:32px}
+  .res-grid,.dec-grid{grid-template-columns:1fr;gap:40px}
+  .steps{grid-template-columns:1fr 1fr}
+  .evo-grid{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .container{padding:0 20px}
+  .section{padding:84px 0}
+  .nav-links,.nav-right .ghosty{display:none}
+  .menu-btn{display:flex}
+  .hero{padding:132px 0 72px}
+  .skills{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .prob{grid-template-columns:44px 1fr;gap:12px}
+  .prob p{grid-column:2}
+  .kmap{height:auto;padding:20px;display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+  .klines,.kcenter{display:none}
+  .knode{position:static}
+  .stats{grid-template-columns:1fr 1fr}
+  .dash-cols{grid-template-columns:1fr}
+  .chain{flex-direction:column}
+  .chain .carr{transform:rotate(90deg);align-self:center;margin:-2px 0}
+  .pipeline .loop{margin-left:0}
+  #toasts{left:20px;right:20px}
+  .toast{max-width:none}
+  .foot-links{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  [data-reveal]{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ============ NAVIGATION ============ -->
+<header class="nav" id="siteNav">
+  <div class="container nav-in">
+    <a class="brand" href="#top" aria-label="DesignOS home">
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7.5" y="7.5" width="9" height="9" rx="2.5" fill="#3F4DE8"/></svg>
+      DesignOS
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#product">Product</a>
+      <a href="#how">How it works</a>
+      <a href="#skills">AI Skills</a>
+      <a href="#designsystem">Design System</a>
+      <a href="#research">Research</a>
+    </nav>
+    <div class="nav-right">
+      <button class="kbd-btn" id="navKbd" aria-label="Open search (Command K)"><span data-icon="search" data-size="13"></span><span class="kbd">⌘K</span></button>
+      <button class="btn btn-ghost btn-sm ghosty" id="signIn">Sign in</button>
+      <button class="btn btn-primary btn-sm" id="tryBtn">Try DesignOS</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span data-icon="menu" data-size="18"></span></button>
+    </div>
+  </div>
+</header>
+<div class="mmenu" id="mobileMenu">
+  <a href="#product">Product</a>
+  <a href="#how">How it works</a>
+  <a href="#skills">AI Skills</a>
+  <a href="#designsystem">Design System</a>
+  <a href="#research">Research</a>
+  <div class="row">
+    <button class="btn btn-outline" style="flex:1" id="signInM">Sign in</button>
+    <button class="btn btn-primary" style="flex:1" id="tryBtnM">Try DesignOS</button>
+  </div>
+</div>
+
+<main id="main">
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="container">
+    <div class="eyebrow" style="justify-content:center" data-reveal>AI-native product design</div>
+    <h1 class="h1" data-reveal style="--d:60ms">Design with your team&rsquo;s knowledge, not&nbsp;from&nbsp;scratch.</h1>
+    <p class="lead center" data-reveal style="--d:130ms">DesignOS connects your design system, research, product decisions and engineering context into one intelligent layer — so designers can make better decisions without hunting for context.</p>
+    <div class="hero-cta" data-reveal style="--d:200ms">
+      <a class="btn btn-primary" href="#product">Explore the product</a>
+      <a class="btn btn-outline" href="#how">See how it works</a>
+    </div>
+    <div class="hero-live" data-reveal style="--d:260ms"><i aria-hidden="true"></i>Everything on this page is interactive — no screenshots.</div>
+
+    <!-- ============ HERO PRODUCT DEMO ============ -->
+    <div class="app hero-app" id="heroApp" data-reveal style="--d:200ms;margin-top:64px">
+      <aside class="app-side" aria-label="DesignOS navigation">
+        <div class="side-brand">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7.5" y="7.5" width="9" height="9" rx="2.5" fill="#3F4DE8"/></svg>
+          DesignOS
+          <button class="ws" aria-label="Switch workspace">Atlas / Product</button>
+        </div>
+        <div id="heroSide"></div>
+        <div class="side-foot">
+          <span class="avatar">NK</span>
+          <span><span class="nm">Naveen Kumar</span><br><span class="rl">Product Design</span></span>
+        </div>
+      </aside>
+      <div class="app-main">
+        <div class="proj-head">
+          <span class="t">Checkout redesign</span>
+          <span class="m">Sprint 24 · Payments team</span>
+          <span class="avs"><span class="avatar g">PR</span><span class="avatar r">RH</span></span>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Project views">
+          <button class="tab" role="tab" aria-selected="true" data-tab="design">Design</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="context">Context</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="review">Review</button>
+        </div>
+        <div class="app-body">
+          <div class="stage-col">
+            <!-- DESIGN TAB -->
+            <div class="canvas center" id="tabDesign" role="tabpanel">
+              <div class="frame">
+                <div class="frame-top">
+                  <span class="ws">Atlas</span>
+                  <span class="sec"><span data-icon="lock" data-size="12"></span>SECURE CHECKOUT</span>
+                </div>
+                <h4>Checkout</h4>
+                <div class="f-lbl">ORDER</div>
+                <div class="f-row"><span>Pro — Annual</span><span class="v">$180.00</span></div>
+                <div class="f-row"><span>Tax</span><span class="v">$14.40</span></div>
+                <div class="f-row tot"><span>Total</span><span class="v">$194.40</span></div>
+                <div class="f-lbl">PAYMENT METHOD</div>
+                <div class="paycard sel"><span class="radio" aria-hidden="true"></span><span data-icon="card" data-size="17"></span><span class="pc-n">Visa</span><span class="pc-e">•• 4242</span></div>
+                <div class="pay-add"><span data-icon="plus" data-size="14"></span>Add payment method</div>
+                <label class="f-check"><span class="box" aria-hidden="true"></span>Save card for future payments</label>
+                <div class="sel-ring"><span class="sel-tag">Button / Primary</span><div class="pay-btn">Pay $194.40</div></div>
+                <div class="veil" id="frameVeil">
+                  <div class="cmodal" role="dialog" aria-label="Confirm payment">
+                    <span class="tag"><span data-icon="sparkle" data-size="11"></span>APPLIED FROM DESIGN SYSTEM</span>
+                    <h5>Confirm payment</h5>
+                    <p>You're about to be charged $194.40 to Visa •• 4242.</p>
+                    <div class="row">
+                      <button class="btn btn-outline btn-sm" id="cmCancel">Cancel</button>
+                      <button class="btn btn-primary btn-sm" id="cmConfirm">Confirm payment</button>
+                    </div>
+                    <div class="f-lbl" style="margin:13px 0 0">MODAL / CONFIRMATION · DS v3.2</div>
+                  </div>
+                </div>
+              </div>
+              <div class="applied-chip" id="appliedChip">
+                <span data-icon="check" data-size="13"></span>1 recommendation applied
+                <button id="undoChip">Undo</button>
+              </div>
+            </div>
+            <!-- CONTEXT TAB -->
+            <div class="ctxpane" id="tabContext" role="tabpanel" hidden>
+              <div class="ctx-h">PROJECT CONTEXT</div>
+              <div class="ctxrow"><span data-icon="pen" data-size="15"></span><span class="n">Figma · Payments v2</span><span class="dt" aria-hidden="true"></span><span class="st">synced 2m ago</span></div>
+              <div class="ctxrow"><span data-icon="layers" data-size="15"></span><span class="n">Design System v3.2</span><span class="dt" aria-hidden="true"></span><span class="st">synced 8m ago</span></div>
+              <div class="ctxrow"><span data-icon="flask" data-size="15"></span><span class="n">Research · 61 studies</span><span class="dt" aria-hidden="true"></span><span class="st">indexed</span></div>
+              <div class="ctxrow"><span data-icon="scale" data-size="15"></span><span class="n">Decisions · 1,204 logged</span><span class="dt" aria-hidden="true"></span><span class="st">indexed</span></div>
+              <div class="ctxrow"><span data-icon="file" data-size="15"></span><span class="n">Guidelines · 88 docs</span><span class="dt" aria-hidden="true"></span><span class="st">indexed</span></div>
+              <div class="ctxfoot">
+                <span>1,847 relationships mapped</span>
+                <button class="btn btn-ghost btn-sm" id="resync">Resync</button>
+              </div>
+            </div>
+            <!-- REVIEW TAB -->
+            <div class="revpane" id="tabReview" role="tabpanel" hidden>
+              <div class="ctx-h">REVIEW · 2 OPEN THREADS</div>
+              <div class="thr">
+                <div class="thr-h"><span class="avatar g">PR</span><span class="n">Priya</span><span class="t">2h</span></div>
+                <p>Can we show the running total before payment? People in the checkout study hesitated exactly here.</p>
+                <a class="evlink" href="#research"><span data-icon="link" data-size="12"></span>Checkout study 2025 · finding #12</a>
+                <div class="rep"><span class="avatar r">RH</span><p>Good catch — DesignOS flagged the same thing in my review this morning.</p></div>
+                <span class="aichip"><span data-icon="sparkle" data-size="10"></span>AI · matches research finding #12</span>
+              </div>
+              <div class="thr">
+                <div class="thr-h"><span class="avatar r">RH</span><span class="n">Rohan</span><span class="t">1h</span></div>
+                <p>Should the confirmation step become a bottom sheet below 480px?</p>
+                <span class="aichip"><span data-icon="check" data-size="10"></span>Answered · Mobile guidelines ✓</span>
+              </div>
+              <div class="rev-in"><span data-icon="msg" data-size="14"></span>Add a comment…</div>
+            </div>
+          </div>
+          <!-- AI PANEL -->
+          <aside class="ai" aria-label="Ask DesignOS">
+            <div class="ai-head">
+              <span class="t"><span data-icon="sparkle" data-size="14"></span>Ask DesignOS</span>
+              <span class="live"><i aria-hidden="true"></i>4 sources live</span>
+            </div>
+            <div class="ai-chips">
+              <div class="lbl">SUGGESTED</div>
+              <div class="chips" id="qChips"></div>
+            </div>
+            <div class="ai-thread" id="aiThread" aria-live="polite">
+              <div class="s-prompt" style="padding:40px 10px"><span data-icon="sparkle" data-size="22"></span><span class="t">Ask about this design</span><span class="s">Pick a question above — or just watch.</span></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section class="section" id="problem">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow">The problem</div>
+      <h2 class="h2">Your team&rsquo;s knowledge is everywhere.</h2>
+      <p class="lead">Figma files, Notion docs, Slack threads, GitHub repos, research reports, the design system — and a lot of it lives in people&rsquo;s heads.</p>
+    </div>
+    <div class="kmap" data-reveal aria-label="Map of scattered knowledge sources">
+      <svg class="klines" aria-hidden="true">
+        <line x1="14%" y1="17%" x2="42%" y2="10%"/><line x1="44%" y1="10%" x2="70%" y2="18%"/>
+        <line x1="72%" y1="20%" x2="80%" y2="46%"/><line x1="80%" y1="48%" x2="68%" y2="74%"/>
+        <line x1="66%" y1="76%" x2="44%" y2="88%"/><line x1="42%" y1="86%" x2="12%" y2="76%"/>
+        <line x1="12%" y1="74%" x2="10%" y2="20%"/><line x1="14%" y1="18%" x2="44%" y2="88%"/>
+        <line x1="80%" y1="46%" x2="12%" y2="74%"/><line x1="70%" y1="18%" x2="66%" y2="74%"/>
+      </svg>
+      <div class="knode" style="left:6%;top:12%" data-reveal><span data-icon="pen" data-size="16"></span><span><span class="n">Figma</span><br><span class="s">3,400 files</span></span></div>
+      <div class="knode" style="left:36%;top:5%" data-reveal data-delay="80"><span data-icon="file" data-size="16"></span><span><span class="n">Notion</span><br><span class="s">280 docs</span></span></div>
+      <div class="knode" style="left:66%;top:13%" data-reveal data-delay="160"><span data-icon="msg" data-size="16"></span><span><span class="n">Slack</span><br><span class="s">48 channels</span></span></div>
+      <div class="knode" style="left:76%;top:42%" data-reveal data-delay="240"><span data-icon="branch" data-size="16"></span><span><span class="n">GitHub</span><br><span class="s">12 repos</span></span></div>
+      <div class="knode" style="left:62%;top:70%" data-reveal data-delay="320"><span data-icon="flask" data-size="16"></span><span><span class="n">Research</span><br><span class="s">61 studies</span></span></div>
+      <div class="knode" style="left:8%;top:68%" data-reveal data-delay="400"><span data-icon="layers" data-size="16"></span><span><span class="n">Design System</span><br><span class="s">v3.2</span></span></div>
+      <div class="knode" style="left:37%;top:80%" data-reveal data-delay="480"><span data-icon="users" data-size="16"></span><span><span class="n">People</span><br><span class="s">in their heads</span></span></div>
+      <div class="kcenter" data-reveal data-delay="560">
+        <span class="t">Your next design decision</span>
+        <span class="s">needs context from all of it — and gets none of it.</span>
+      </div>
+    </div>
+    <p class="prob-punch" data-reveal>Designers spend time <em style="font-style:normal;color:var(--ink)">finding</em> context instead of using it. <span>The knowledge exists. It&rsquo;s just never in the room when the decision is made.</span></p>
+    <div class="probs">
+      <div class="prob" data-reveal>
+        <span class="num">01</span>
+        <h3>Fragmented knowledge</h3>
+        <p>The reasoning behind important decisions lives across tools that don&rsquo;t talk to each other — so every project starts with <em>archaeology</em>.</p>
+      </div>
+      <div class="prob" data-reveal data-delay="90">
+        <span class="num">02</span>
+        <h3>Repeated questions</h3>
+        <p>&ldquo;Do we already have a pattern for this?&rdquo; gets asked in Slack every week — <em>and answered differently every time</em>.</p>
+      </div>
+      <div class="prob" data-reveal data-delay="180">
+        <span class="num">03</span>
+        <h3>Lost context</h3>
+        <p>Six months after a project ships, nobody remembers why the design is the way it is. <em>Including the people who designed it.</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSIGHT ============ -->
+<section class="dark insight">
+  <div class="container">
+    <div class="eyebrow" data-reveal>The insight</div>
+    <p class="stmt" data-reveal data-delay="80">The problem isn&rsquo;t a lack of documentation. It&rsquo;s a lack of <em>context at the moment a decision is made</em>.</p>
+    <p class="sub" data-reveal data-delay="160">DesignOS turns existing knowledge into an active design capability.</p>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow">How DesignOS works</div>
+      <h2 class="h2">From scattered knowledge to working context.</h2>
+    </div>
+    <div class="steps">
+      <div class="step" data-reveal><span class="n">01</span><h3>Connect</h3><p>Connect the tools where your design knowledge already lives. No migration, no re-documentation.</p></div>
+      <div class="step" data-reveal data-delay="90"><span class="n">02</span><h3>Understand</h3><p>DesignOS maps relationships between components, decisions, research and guidelines — a living graph of how your product thinks.</p></div>
+      <div class="step" data-reveal data-delay="180"><span class="n">03</span><h3>Assist</h3><p>While designers work, the system offers contextual recommendations — always with evidence and confidence attached.</p></div>
+      <div class="step" data-reveal data-delay="270"><span class="n">04</span><h3>Learn</h3><p>Approved decisions and new patterns feed back into the knowledge base. The system gets sharper with every decision.</p></div>
+    </div>
+    <div class="pipeline" data-reveal>
+      <span class="lbl">THE LOOP</span>
+      <div class="pipe" id="pipe"></div>
+      <span class="loop">↺ learning loops back into knowledge</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CORE WORKFLOW (scroll-driven) ============ -->
+<section class="section" id="workflow" style="padding-top:40px">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow">Core product workflow</div>
+      <h2 class="h2">From question to decision in seconds.</h2>
+    </div>
+    <div class="wf-hint" data-reveal><span data-icon="chev-down" data-size="13"></span>SCROLL — THE PANEL FOLLOWS ALONG</div>
+    <div class="wf-grid">
+      <div class="wf-left" id="wfSteps">
+        <div class="wf-rail"><span class="track-fill" id="wfTrack"></span><span class="wf-fill" id="wfFill" style="top:0"></span></div>
+        <div class="wf-step"><span class="n">STEP 1</span><h3>Design</h3><p>A designer creates a new interface — here, a payment step for checkout. New frame, familiar problem.</p></div>
+        <div class="wf-step"><span class="n">STEP 2</span><h3>Ask</h3><p>One question, asked where the work happens — not in another tab. &ldquo;Is there an existing pattern for this?&rdquo;</p></div>
+        <div class="wf-step"><span class="n">STEP 3</span><h3>Understand</h3><p>DesignOS searches the design system, research, previous decisions and product guidelines — 18 matches.</p></div>
+        <div class="wf-step"><span class="n">STEP 4</span><h3>Recommend</h3><p>The best-matching pattern is suggested — with its rules, its evidence, and a confidence score.</p></div>
+        <div class="wf-step"><span class="n">STEP 5</span><h3>Decide</h3><p>The designer accepts, modifies or rejects. Judgment stays human — the record stays attributable.</p></div>
+        <div class="wf-step"><span class="n">STEP 6</span><h3>Learn</h3><p>Decision #247 joins the knowledge base. The next question starts further ahead.</p></div>
+      </div>
+      <div class="wf-stage-wrap">
+        <div class="stage">
+          <div class="stage-h"><span data-icon="sparkle" data-size="14"></span>Ask DesignOS<span class="fr">Payment step</span></div>
+          <div class="stage-b" id="wfStage"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AI SKILLS ============ -->
+<section class="section" id="skills">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow">AI Skills</div>
+      <h2 class="h2">Give AI a role, not just a prompt.</h2>
+      <p class="lead">DesignOS uses specialized AI Skills for specific product-design tasks — instead of one generic assistant guessing at everything.</p>
+    </div>
+    <div class="skills" id="skillGrid"></div>
+    <div class="infra" data-reveal>
+      <div>
+        <div class="lbl">UNDER THE HOOD</div>
+        <p class="q">DesignOS can use reusable AI capabilities, such as specialized Skills, to apply your team&rsquo;s knowledge consistently.</p>
+        <p class="n"><span data-icon="info" data-size="14"></span>The assistant is the surface. Skills are the machinery.</p>
+      </div>
+      <div class="flowv" id="flowv"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DESIGN SYSTEM ============ -->
+<section class="section tight" id="designsystem">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow">Design System intelligence</div>
+      <h2 class="h2">Your design system shouldn&rsquo;t just document patterns. It should understand them.</h2>
+      <p class="lead">Select a component, token or pattern — DesignOS answers with usage rules, live adoption, and the reasoning behind it.</p>
+    </div>
+    <div class="app ds-app" data-reveal>
+      <div class="ds-tree" id="dsTree" aria-label="Design system browser"></div>
+      <div class="ds-detail" id="dsDetail"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SYSTEM EVOLUTION ============ -->
+<section class="section tight" id="evolution" style="padding-top:64px">
+  <div class="container">
+    <div data-reveal>
+      <div class="evo-head"><span class="dt" aria-hidden="true"></span>PATTERN DETECTION · PAYMENTS + PROJECTS + NOTIFICATIONS · 2 DAYS AGO</div>
+      <h2 class="h2" style="font-size:clamp(26px,2.8vw,36px)">New pattern detected</h2>
+      <p class="lead" style="margin-top:14px">DesignOS noticed that three product teams independently created similar empty-state components in the last 30 days.</p>
+    </div>
+    <div class="evo-grid" style="margin-top:40px">
+      <div class="evo" data-reveal>
+        <span class="team">PAYMENTS</span>
+        <span class="big" data-icon="inbox" data-size="26"></span>
+        <h4>No transactions yet</h4>
+        <p>Your first payout will appear here after your next billing cycle.</p>
+        <div class="act"><a class="lk" href="#" data-toast="Opening Figma file…">View payout schedule</a></div>
+      </div>
+      <div class="evo" data-reveal data-delay="90">
+        <span class="team">PROJECTS</span>
+        <span class="big" data-icon="folder" data-size="26"></span>
+        <h4>No projects</h4>
+        <p>Create your first project to start collaborating with your team.</p>
+        <div class="act"><button class="btn btn-primary btn-sm">New project</button></div>
+      </div>
+      <div class="evo" data-reveal data-delay="180">
+        <span class="team">NOTIFICATIONS</span>
+        <span class="big" data-icon="bell" data-size="26"></span>
+        <h4>You&rsquo;re all caught up</h4>
+        <p>We&rsquo;ll let you know when something needs your attention.</p>
+        <div class="act"><button class="btn btn-outline btn-sm">Notification settings</button></div>
+      </div>
+    </div>
+    <div class="cmp-wrap" data-reveal>
+      <table class="cmp">
+        <thead><tr><th>Structure</th><th>Payments</th><th>Projects</th><th>Notifications</th></tr></thead>
+        <tbody>
+          <tr><td>Icon</td><td>24px · ink-3</td><td>24px · ink-3</td><td>24px · ink-3</td></tr>
+          <tr><td>Title</td><td>15/600</td><td>15/600</td><td>15/600</td></tr>
+          <tr><td>Body</td><td>13/400</td><td>13/400</td><td>13/400</td></tr>
+          <tr><td>Action</td><td class="mm">text link</td><td class="mm">primary button</td><td class="mm">ghost button</td></tr>
+          <tr><td>Spacing</td><td>space-6</td><td class="mm">space-5</td><td>space-6</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="evo-res" data-reveal>
+      <span class="st">These patterns share 82% of their structure.</span>
+      <div class="sim"><div class="bar"><i id="simBar"></i></div><span class="pct">82%</span></div>
+    </div>
+    <div class="evo-reco" data-reveal>
+      <span class="h"><span data-icon="sparkle" data-size="16"></span>Create a standardized Empty State component?</span>
+      <div class="row" id="evoActions">
+        <button class="btn btn-primary btn-sm" id="evoReview">Review proposal</button>
+        <button class="btn btn-outline btn-sm" id="evoDismiss">Dismiss</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESEARCH ============ -->
+<section class="section" id="research">
+  <div class="container">
+    <div class="res-grid">
+      <div>
+        <div class="section-head" style="margin-bottom:36px" data-reveal>
+          <div class="eyebrow">Product knowledge</div>
+          <h2 class="h2">Connect decisions to evidence.</h2>
+          <p class="lead">Insights in DesignOS always arrive with their sources attached — research never floats free.</p>
+        </div>
+        <div class="memo" data-reveal>
+          <div class="lbl">INSIGHT · CANCELLATION STUDY 2025</div>
+          <p class="ins">Users struggle to understand cancellation consequences.</p>
+          <div class="stat">
+            <b>12<span style="font-size:15px;color:var(--ink-3)">/31</span></b>
+            <span>research participants expressed uncertainty about what happens after they cancel.</span>
+          </div>
+        </div>
+        <div class="impl" data-reveal data-delay="120">
+          <div class="lbl">DESIGN IMPLICATION</div>
+          <p class="t">Make cancellation consequences explicit before confirmation.</p>
+          <div class="row"><button class="btn btn-outline btn-sm" data-toast="Opening research repository…">View research</button></div>
+        </div>
+        <p class="res-rule" data-reveal data-delay="180"><span data-icon="shield" data-size="15"></span>DesignOS never presents an insight without showing its source.</p>
+      </div>
+      <div class="evstack">
+        <div class="evcard" data-reveal>
+          <p class="q">&ldquo;I don&rsquo;t know if I&rsquo;ll still have access until the end of the month, or right now.&rdquo;</p>
+          <span class="src"><span data-icon="user" data-size="12"></span>STUDY · P07 · CHECKOUT INTERVIEWS</span>
+        </div>
+        <div class="evcard" data-reveal data-delay="90">
+          <p class="q">&ldquo;It just cancelled. I didn&rsquo;t see anything about a refund, or what happens to my data.&rdquo;</p>
+          <span class="src"><span data-icon="user" data-size="12"></span>STUDY · P12 · CHECKOUT INTERVIEWS</span>
+        </div>
+        <div class="evcard" data-reveal data-delay="180">
+          <p class="q">214 support tickets tagged &ldquo;billing confusion&rdquo; — most cite charges arriving after cancelling.</p>
+          <span class="src"><span data-icon="msg" data-size="12"></span>SUPPORT DATA · LAST 12 MONTHS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DESIGN DECISION EXPERIENCE ============ -->
+<section class="dark section" id="decision">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow">Design decision experience</div>
+      <h2 class="h2">Make better decisions with context.</h2>
+      <p class="lead">A designer is building a subscription cancellation flow. One question decides the structure of the whole thing.</p>
+    </div>
+    <div class="dec-grid">
+      <div>
+        <div class="askbar" data-reveal>
+          <div style="flex:1">
+            <span class="lbl">DESIGNER&rsquo;S QUESTION</span>
+            <p class="q">Should cancellation happen immediately after clicking &ldquo;Cancel subscription&rdquo;?</p>
+          </div>
+          <span data-icon="send" data-size="17"></span>
+        </div>
+        <div class="flowcard" data-reveal data-delay="120">
+          <div class="hd"><span>CANCELLATION FLOW · <span id="flowVer">v0.3</span></span><span>PROTOTYPE</span></div>
+          <div class="flow" id="flowWrap">
+            <div class="flnode"><div class="n">Account settings</div><div class="s">current screen</div></div>
+            <span class="flarr" data-icon="arrow-right" data-size="16"></span>
+            <div class="flnode"><div class="n">Cancel subscription</div><div class="s">button · destructive</div></div>
+            <span class="flarr" data-icon="arrow-right" data-size="16"></span>
+            <div class="flnode" id="flEnd"><div class="n">Subscription canceled</div><div class="s" id="flEndSub">immediate · no undo</div></div>
+          </div>
+          <div class="recchip" id="recChip">
+            <span data-icon="check" data-size="14"></span>Decision #248 recorded
+            <span class="mono" id="recChipT">· logged 2:44 PM · you</span>
+          </div>
+        </div>
+      </div>
+      <div class="dstack">
+        <div class="dhead" data-reveal><span data-icon="sparkle" data-size="16"></span>DesignOS<span class="tm">4 SOURCES CONSULTED</span></div>
+        <div class="dcard" data-reveal data-delay="80">
+          <div class="h"><span data-icon="history" data-size="13"></span>Product history</div>
+          <p>The previous flow used a confirmation step. It was removed in 2023 to &ldquo;reduce friction&rdquo; — and reverted four weeks later.</p>
+          <div class="src">DECISION LOG · #96 · 2023</div>
+        </div>
+        <div class="dcard" data-reveal data-delay="160">
+          <div class="h"><span data-icon="flask" data-size="13"></span>Research</div>
+          <p>7 of 12 usability participants believed &ldquo;Cancel subscription&rdquo; was reversible. Two asked about refunds mid-task.</p>
+          <div class="src">CANCELLATION STUDY · 2025</div>
+        </div>
+        <div class="dcard" data-reveal data-delay="240">
+          <div class="h"><span data-icon="shield" data-size="13"></span>Accessibility</div>
+          <p>Confirmation is recommended for irreversible actions — cancellation ends access and deletes data after 30 days.</p>
+          <div class="src">WCAG 2.2 · 3.3.4 · GUIDELINE #42</div>
+        </div>
+        <div class="dcard reco" data-reveal data-delay="320" id="dRecCard">
+          <div class="h"><span data-icon="sparkle" data-size="13"></span>Recommendation</div>
+          <div class="rt">Use a confirmation step.</div>
+          <div class="conf" style="display:flex;align-items:center;gap:10px;margin-top:12px">
+            <div class="bar" style="flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden"><i id="dConfBar" style="display:block;height:100%;width:0;background:var(--accent);transition:width .9s cubic-bezier(.2,.7,.2,1)"></i></div>
+            <span class="mono" style="font:500 12px var(--mono)" id="dConfPct">0%</span>
+          </div>
+          <div class="drow">
+            <button class="btn btn-primary btn-sm" id="dApply">Apply pattern</button>
+            <button class="btn btn-outline btn-sm" id="dEvidence">View evidence</button>
+            <button class="btn btn-ghost btn-sm" id="dFollow">Ask follow-up</button>
+          </div>
+          <div class="det" id="dDet">
+            <p class="q">&ldquo;I pressed cancel and it just… gone. I thought I could undo it.&rdquo; — P03, cancellation study</p>
+            <p class="q">&ldquo;Removed the confirmation step to reduce friction; support tickets rose 18% in four weeks; reverted.&rdquo; — Decision #96</p>
+            <p class="q">&ldquo;Confirmable destruction: irreversible actions require review or undo.&rdquo; — Guideline #42</p>
+          </div>
+        </div>
+        <div class="fu" id="dFu">
+          <div class="fq"><span class="who">YOU ·</span>&ldquo;What should the confirmation say?&rdquo;</div>
+          <div class="fa">
+            <div class="h"><span data-icon="sparkle" data-size="13"></span>DesignOS</div>
+            <p>State the consequence and what&rsquo;s retained: &ldquo;Your plan stays active until Mar 28. Your data is kept for 30 days.&rdquo; — verb first, consequence before reassurance.</p>
+            <div class="src">CONTENT GUIDELINE #8 · DECISION #96</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DASHBOARD ============ -->
+<section class="section" id="workspace">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow">Product interface</div>
+      <h2 class="h2">Your day, organized around decisions.</h2>
+      <p class="lead">No feed to scroll, no dashboard to decode. Just the things that need a decision — and the context to make one.</p>
+    </div>
+    <div class="app dash" data-reveal>
+      <aside class="app-side" aria-label="DesignOS navigation">
+        <div class="side-brand">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7.5" y="7.5" width="9" height="9" rx="2.5" fill="#3F4DE8"/></svg>
+          DesignOS
+        </div>
+        <div id="dashSide"></div>
+        <div class="side-foot">
+          <span class="avatar">NK</span>
+          <span><span class="nm">Naveen Kumar</span><br><span class="rl">Product Design</span></span>
+        </div>
+      </aside>
+      <div class="dash-main">
+        <div class="dash-top">
+          <div class="dsearch" id="dashSearch" role="button" tabindex="0" aria-label="Open universal search">
+            <span data-icon="search" data-size="15"></span>Ask anything about your product…<span class="k kbd">⌘K</span>
+          </div>
+          <button class="ibtn" aria-label="Notifications"><span data-icon="bell" data-size="16"></span><span class="nd" aria-hidden="true"></span></button>
+          <button class="ibtn" aria-label="Profile"><span class="avatar" style="width:22px;height:22px">NK</span></button>
+        </div>
+        <div class="dash-body">
+          <h3 class="g">Good morning, Naveen.</h3>
+          <div class="sub"><span><b style="color:var(--ink)">3 design decisions</b> need your attention</span><a href="#dashList">Review all</a></div>
+          <div class="stats">
+            <div class="stat"><div class="h"><span data-icon="layers" data-size="14"></span>SYSTEM</div><div class="num">2</div><div class="lb">system inconsistencies</div><div class="sb">Button · 3 projects</div></div>
+            <div class="stat"><div class="h"><span data-icon="flask" data-size="14"></span>RESEARCH</div><div class="num">4</div><div class="lb">new research insights</div><div class="sb">Checkout study · 2025</div></div>
+            <div class="stat"><div class="h"><span data-icon="inbox" data-size="14"></span>PROPOSAL</div><div class="num">1</div><div class="lb">component proposal</div><div class="sb">Empty State / Standard</div></div>
+            <div class="stat"><div class="h"><span data-icon="sparkle" data-size="14"></span>AI</div><div class="num">6</div><div class="lb">AI recommendations</div><div class="sb">awaiting review</div></div>
+          </div>
+          <div class="dash-cols">
+            <div class="dpanel" id="dashList">
+              <div class="h">NEEDS YOUR ATTENTION</div>
+              <div class="drowi">
+                <div><div class="t">Confirmation step for cancellation flow</div><div class="m">AI RECOMMENDATION · 91% CONFIDENCE</div></div>
+                <div class="row"><button class="btn btn-outline btn-sm" data-go="#decision">Review</button><button class="btn btn-ink btn-sm" data-acc>Accept</button></div>
+                <span class="okc"><span data-icon="check" data-size="14"></span>Recorded</span>
+              </div>
+              <div class="drowi">
+                <div><div class="t">Empty State / Standard proposal</div><div class="m">SYSTEM EVOLUTION · 82% STRUCTURAL MATCH</div></div>
+                <div class="row"><button class="btn btn-outline btn-sm" data-go="#evolution">Review</button><button class="btn btn-ink btn-sm" data-acc>Accept</button></div>
+                <span class="okc"><span data-icon="check" data-size="14"></span>Recorded</span>
+              </div>
+              <div class="drowi">
+                <div><div class="t">Button variation in Billing</div><div class="m">DESIGN SYSTEM · 3 VARIANTS DETECTED</div></div>
+                <div class="row"><button class="btn btn-outline btn-sm" data-var>Review</button><button class="btn btn-ink btn-sm" data-acc>Accept</button></div>
+                <span class="okc"><span data-icon="check" data-size="14"></span>Recorded</span>
+              </div>
+            </div>
+            <div>
+              <div class="dpanel">
+                <div class="h">DECISIONS PER WEEK</div>
+                <div class="bars">
+                  <div class="bar" style="height:34%"></div><div class="bar" style="height:46%"></div><div class="bar" style="height:38%"></div>
+                  <div class="bar" style="height:56%"></div><div class="bar" style="height:62%"></div><div class="bar" style="height:48%"></div>
+                  <div class="bar" style="height:70%"></div><div class="bar hi" style="height:84%"></div>
+                </div>
+                <div class="bars-x"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span><span>W7</span><span>W8</span></div>
+              </div>
+              <div class="dpanel" style="margin-top:14px">
+                <div class="cov">
+                  <div class="cl"><span>Design system coverage</span><b>91%</b></div>
+                  <div class="bar2"><i id="covBar"></i></div>
+                </div>
+                <div class="feed">
+                  <div class="fi"><span data-icon="link" data-size="13"></span>New evidence linked — cancellation study<div class="tm">2M</div></div>
+                  <div class="fi"><span data-icon="check-circle" data-size="13"></span>Pattern adopted — Sheet / mobile confirmation<div class="tm">1H</div></div>
+                  <div class="fi"><span data-icon="sparkle" data-size="13"></span>6 recommendations generated from 4 skills<div class="tm">3H</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEARCH ============ -->
+<section class="section tight" id="search" style="padding-top:48px">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow">Universal search</div>
+      <h2 class="h2">Ask your product system.</h2>
+      <p class="lead">One search across components, guidelines, research, decisions and skills. Answers come grounded in your sources, with confidence attached.</p>
+    </div>
+    <div class="ex-q" data-reveal>
+      <span class="lbl">TRY</span>
+      <button class="chip on" data-ex="How should an empty state behave?">How should an empty state behave?</button>
+      <button class="chip" data-ex="Why do we confirm cancellation?">Why do we confirm cancellation?</button>
+      <button class="chip" data-ex="What does research say about billing?">What does research say about billing?</button>
+    </div>
+    <div id="searchInline" data-reveal></div>
+    <p class="res-rule" style="margin-top:22px" data-reveal><span data-icon="command" data-size="15"></span><span class="mono" style="font:400 12px var(--mono)">⌘K</span>&nbsp;opens search from anywhere on this page — it works like this: type, or press&nbsp;<span class="mono" style="font:400 12px var(--mono)">↵</span>&nbsp;to ask.</p>
+  </div>
+</section>
+
+<!-- ============ HUMAN CONTROL ============ -->
+<section class="section" id="control">
+  <div class="container">
+    <div class="section-head center" style="margin-left:auto;margin-right:auto" data-reveal>
+      <div class="eyebrow" style="justify-content:center">Human control</div>
+      <h2 class="h2">AI recommends. Designers decide.</h2>
+    </div>
+    <div class="chain">
+      <div class="cblock" data-reveal><span class="n">01</span><div class="icb"><span data-icon="sparkle" data-size="19"></span></div><h3>Recommendation</h3><p>The AI proposes a possible decision — and never silently applies one.</p></div>
+      <span class="carr" data-icon="arrow-right" data-size="17"></span>
+      <div class="cblock" data-reveal data-delay="80"><span class="n">02</span><div class="icb"><span data-icon="link" data-size="19"></span></div><h3>Evidence</h3><p>Every proposal shows where it came from — sources, linked and inspectable.</p></div>
+      <span class="carr" data-icon="arrow-right" data-size="17"></span>
+      <div class="cblock" data-reveal data-delay="160"><span class="n">03</span><div class="icb"><span data-icon="target" data-size="19"></span></div><h3>Confidence</h3><p>Uncertainty is stated, not hidden. Low confidence means &ldquo;check this yourself&rdquo;.</p></div>
+      <span class="carr" data-icon="arrow-right" data-size="17"></span>
+      <div class="cblock" data-reveal data-delay="240"><span class="n">04</span><div class="icb"><span data-icon="pen" data-size="19"></span></div><h3>Human decision</h3><p>Accept, modify, or reject. The call — and the record — stays with a person.</p></div>
+    </div>
+    <div class="ctrl-quote" data-reveal>
+      <p class="q">&ldquo;DesignOS is designed to support judgment, not replace it.&rdquo;</p>
+      <p class="s">Every recommendation is logged. <b>Every decision has a name next to it.</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="dark cta">
+  <div class="container">
+    <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" data-reveal style="margin-bottom:30px"><rect x="2" y="2" width="20" height="20" rx="6" fill="none" stroke="#F2F2F5" stroke-width="1.5"/><rect x="7.5" y="7.5" width="9" height="9" rx="2.5" fill="#3F4DE8"/></svg>
+    <p class="stmt" data-reveal>Your team&rsquo;s best design decisions shouldn&rsquo;t live in someone&rsquo;s memory.</p>
+    <p class="sub" data-reveal data-delay="90">Bring your design system, research and product knowledge together — and make it available at the moment decisions happen.</p>
+    <div class="row" data-reveal data-delay="180">
+      <button class="btn btn-primary" id="ctaBtn">Explore DesignOS</button>
+      <a class="btn btn-outline" href="#workflow">View the workflow</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="dark" style="padding-bottom:0">
+  <div class="container">
+    <div class="foot-in">
+      <div>
+        <a class="brand" href="#top">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7.5" y="7.5" width="9" height="9" rx="2.5" fill="#3F4DE8"/></svg>
+          DesignOS
+        </a>
+        <p class="tag">AI-native product design infrastructure.</p>
+      </div>
+      <nav class="foot-links" aria-label="Footer">
+        <a href="#product">Product</a>
+        <a href="#how">How it works</a>
+        <a href="#skills">AI Skills</a>
+        <a href="#designsystem">Design System</a>
+        <a href="#research">Research</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+    <div class="foot-bot">
+      <span id="about">DesignOS is an independent product-design concept by <b style="color:var(--ink-2);font-weight:500">Naveen Kumar</b> — not an existing company, and not affiliated with any product or company.</span>
+      <span class="mono">© 2026 · PRIVATE BETA, PLANNED Q2</span>
+    </div>
+  </div>
+</footer>
+
+<div id="toasts" aria-live="polite"></div>
+<div id="modalRoot"></div>
+
+<script>
+/* ================================================================
+   DesignOS — concept prototype
+   Vanilla JS, component-style architecture with local mock data.
+   ================================================================ */
+'use strict';
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- icon system (hand-drawn, stroke 1.75, 24px grid) ---------- */
+const ICONS = {
+  search:'<circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  'chev-down':'<path d="m6 9 6 6 6-6"/>',
+  'chev-right':'<path d="m9 6 6 6-6 6"/>',
+  'arrow-right':'<path d="M5 12h14m-6-6 6 6-6 6"/>',
+  menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  layers:'<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M4 13l8 4.4L20 13"/><path d="M4 16.8l8 4.4 8-4.4"/>',
+  scale:'<path d="M12 3v18M7 21h10M4 6.5h16"/><path d="M6.5 6.5 3.6 13a3.3 3.3 0 0 0 5.8 0L6.5 6.5z"/><path d="M17.5 6.5 14.6 13a3.3 3.3 0 0 0 5.8 0l-2.9-6.5z"/>',
+  sparkle:'<path d="M12 2.5l2.3 7.2 7.2 2.3-7.2 2.3L12 21.5l-2.3-7.2-7.2-2.3 7.2-2.3z"/>',
+  box:'<path d="M21 8.2 12 3 3 8.2v7.6L12 21l9-5.2z"/><path d="M3 8.2l9 5.2 9-5.2"/><path d="M12 13.4V21"/>',
+  type:'<path d="M5 6.5V5h14v1.5M12 5v14M9.5 19h5"/>',
+  ruler:'<path d="M3.5 16.5 16.5 3.5 20.5 7.5 7.5 20.5z"/><path d="m7 13 1.8 1.8M10 10l1.8 1.8M13 7l1.8 1.8"/>',
+  droplet:'<path d="M12 2.7s6.3 6.6 6.3 10.8a6.3 6.3 0 0 1-12.6 0C5.7 9.3 12 2.7 12 2.7z"/>',
+  square:'<rect x="4" y="4" width="16" height="16" rx="3"/>',
+  inbox:'<path d="M22 12h-5.5l-2 3h-5l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/>',
+  alert:'<circle cx="12" cy="12" r="9"/><path d="M12 8v4.5M12 15.8h.01"/>',
+  msg:'<path d="M21 14.5a2.5 2.5 0 0 1-2.5 2.5H8l-5 4V5.5A2.5 2.5 0 0 1 5.5 3h13A2.5 2.5 0 0 1 21 5.5z"/>',
+  bell:'<path d="M18 8.5a6 6 0 0 0-12 0c0 6.5-2.5 8.5-2.5 8.5h17S18 15 18 8.5z"/><path d="M13.7 20.5a2 2 0 0 1-3.4 0"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4.5 21c.8-3.5 3.9-5.5 7.5-5.5s6.7 2 7.5 5.5"/>',
+  users:'<circle cx="9" cy="8" r="3.6"/><path d="M2.5 20c.7-3.2 3.4-5 6.5-5s5.8 1.8 6.5 5"/><path d="M16 4.6a3.6 3.6 0 0 1 0 6.9M17.5 15.2c2.2.6 3.6 2.2 4 4.8"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3.2 2"/>',
+  history:'<path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1L3 8.5"/><path d="M3 3.5v5h5"/><path d="M12 7.5V12l3.5 2"/>',
+  link:'<path d="M10.2 13.8a4.6 4.6 0 0 0 6.9.4l2.8-2.8a4.6 4.6 0 0 0-6.5-6.5l-1.6 1.6"/><path d="M13.8 10.2a4.6 4.6 0 0 0-6.9-.4l-2.8 2.8a4.6 4.6 0 0 0 6.5 6.5l1.6-1.6"/>',
+  file:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
+  send:'<path d="M21.5 2.5 11 13"/><path d="M21.5 2.5 14.5 21.5l-3.4-8.1-8.1-3.4z"/>',
+  eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+  shield:'<path d="M12 2.5 20 6v6c0 4.8-3.4 8.2-8 9.5-4.6-1.3-8-4.7-8-9.5V6z"/><path d="m9 11.5 2 2 4-4"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
+  zap:'<path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/>',
+  lock:'<rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>',
+  card:'<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 9.5h19"/>',
+  receipt:'<path d="M6.5 2.5h11a1 1 0 0 1 1 1V21l-3-2-2.5 2-2.5-2-3 2V3.5a1 1 0 0 1 1-1z"/><path d="M9.5 7.5h5M9.5 11h5"/>',
+  enter:'<path d="M20 4v6.5a3.5 3.5 0 0 1-3.5 3.5H5"/><path d="m9 9.5-4.5 4.5L9 18.5"/>',
+  undo:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+  flask:'<path d="M9.5 3h5M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/><path d="M7.5 14.5h9"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+  'check-circle':'<circle cx="12" cy="12" r="9"/><path d="m8.5 12.2 2.4 2.4 4.6-4.8"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  pen:'<path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19z"/><path d="m14.5 6.5 3 3"/>',
+  branch:'<path d="M6 3v15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>',
+  command:'<path d="M9 9V6.5A2.5 2.5 0 1 0 6.5 9H9zm0 0v6m0-6h6m-6 6H6.5A2.5 2.5 0 1 0 9 17.5V15zm6-6h2.5A2.5 2.5 0 1 0 15 6.5V9zm0 0v6m0 0v2.5A2.5 2.5 0 1 0 17.5 15H15z"/>',
+  a11y:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="8.6" r="1.8"/><path d="M8.7 11.4h6.6M12 11.4v3.2M12 14.6l-2.7 4.4M12 14.6l2.7 4.4"/>',
+  play:'<path d="M7 4.5v15l12-7.5z"/>'
+};
+function ic(n,s=18){return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||''}</svg>`}
+function initIcons(root=document){$$('[data-icon]',root).forEach(el=>{el.innerHTML=ic(el.dataset.icon,+(el.dataset.size||18))})}
+
+/* ---------- shared helpers ---------- */
+function toast(msg,icon='check'){
+  const t=document.createElement('div');t.className='toast';
+  t.innerHTML=`${ic(icon,15)}<span>${msg}</span>`;
+  $('#toasts').append(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),350)},3600);
+}
+let lastFocus=null, activeOverlay=null;
+function openModal(html){
+  closeModal();
+  lastFocus=document.activeElement;
+  const ov=document.createElement('div');ov.className='overlay';
+  ov.innerHTML=`<div class="modal" role="dialog" aria-modal="true" tabindex="-1"><button class="mclose" aria-label="Close dialog">${ic('x',15)}</button>${html}</div>`;
+  $('#modalRoot').append(ov);activeOverlay=ov;
+  ov.addEventListener('mousedown',e=>{if(e.target===ov)closeModal()});
+  $('.mclose',ov).addEventListener('click',closeModal);
+  ov.querySelector('.modal').focus();
+  document.body.style.overflow='hidden';
+  initIcons(ov);
+  return ov;
+}
+function closeModal(){
+  if(!activeOverlay)return;
+  activeOverlay.remove();activeOverlay=null;document.body.style.overflow='';
+  if(lastFocus)lastFocus.focus();
+}
+async function typeInto(el,text,tok,speed=15){
+  el.classList.add('typing');
+  if(RM){el.textContent=text;el.classList.remove('typing');return}
+  for(let i=1;i<=text.length;i++){
+    if(tok&&tok.cancelled)return;
+    el.textContent=text.slice(0,i);
+    await sleep(speed);
+  }
+  el.classList.remove('typing');
+}
+function countConf(pctEl,barEl,pct){
+  if(RM){pctEl.textContent=pct+'%';barEl.style.width=pct+'%';return}
+  const t0=performance.now(),dur=850;
+  (function f(t){
+    const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3);
+    pctEl.textContent=Math.round(pct*e)+'%';
+    if(p<1)requestAnimationFrame(f);
+  })(t0);
+  requestAnimationFrame(()=>barEl.style.width=pct+'%');
+}
+
+/* ---------- nav ---------- */
+const nav=$('#siteNav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>10),{passive:true});
+const mm=$('#mobileMenu'),mb=$('#menuBtn');
+mb.addEventListener('click',()=>{
+  const open=mm.classList.toggle('open');
+  mb.setAttribute('aria-expanded',open);
+  mb.innerHTML=ic(open?'x':'menu',18);
+});
+ $$('a',mm).forEach(a=>a.addEventListener('click',()=>{mm.classList.remove('open');mb.innerHTML=ic('menu',18)}));
+function openBeta(){
+  const ov=openModal(`<div class="betain">
+    <h3 style="font-size:19px">Join the private beta</h3>
+    <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px;line-height:1.6">DesignOS heads to a private beta in 2026. Leave an email to hold a place — this concept stores nothing.</p>
+    <input type="email" id="betaEmail" placeholder="you@team.com" aria-label="Email">
+    <p class="err" id="betaErr">Enter a valid email address.</p>
+    <div class="mfoot" style="margin-top:14px"><button class="btn btn-primary" id="betaGo" style="width:100%">Request access</button></div>
+    <div class="ok" id="betaOk">${ic('check-circle',30)}<p class="t">You're on the list.</p><p class="s">№ 214 in queue · nothing was stored — this is a prototype.</p></div>
+  </div>`);
+  $('#betaGo',ov).addEventListener('click',()=>{
+    const v=$('#betaEmail',ov).value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){$('#betaErr',ov).classList.add('on');return}
+    $('#betaErr',ov).classList.remove('on');
+    $('#betaOk',ov).classList.add('on');
+    $('#betaGo',ov).style.display='none';
+  });
+}
+ $('#tryBtn').addEventListener('click',openBeta);
+ $('#tryBtnM').addEventListener('click',openBeta);
+ $('#ctaBtn').addEventListener('click',openBeta);
+ $('#signIn').addEventListener('click',()=>toast('Sign-in is disabled in this concept prototype.','info'));
+ $('#signInM').addEventListener('click',()=>toast('Sign-in is disabled in this concept prototype.','info'));
+ $('#navKbd').addEventListener('click',()=>openCmdk());
+
+/* ---------- reveal on scroll ---------- */
+const ro=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){
+    const d=+(e.target.dataset.delay||0);
+    setTimeout(()=>e.target.classList.add('on'),d);
+    ro.unobserve(e.target);
+  }
+}),{threshold:.15,rootMargin:'0px 0px -40px'});
+ $$('[data-reveal]').forEach(el=>ro.observe(el));
+
+/* ---------- product sidebar builder ---------- */
+const SIDE=[
+  {id:'overview',n:'Overview',i:'grid',go:'#workspace'},
+  {id:'projects',n:'Projects',i:'folder'},
+  {id:'ds',n:'Design System',i:'layers',go:'#designsystem'},
+  {id:'research',n:'Research',i:'flask',go:'#research'},
+  {id:'decisions',n:'Decisions',i:'scale',go:'#decision'},
+  {id:'skills',n:'AI Skills',i:'sparkle',go:'#skills',dot:true},
+];
+function buildSide(mountId,active){
+  const m=$(mountId);
+  m.innerHTML=SIDE.map(s=>`<button class="side-item ${s.id===active?'active':''}" data-id="${s.id}" ${s.go?`data-go="${s.go}"`:''}>${ic(s.i,15)}${s.n}${s.dot?'<span class="aidot" aria-hidden="true"></span>':''}</button>`).join('');
+  $$('.side-item',m).forEach(b=>b.addEventListener('click',()=>{
+    $$('.side-item',m).forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    if(b.dataset.go)$(b.dataset.go)?.scrollIntoView({behavior:RM?'auto':'smooth'});
+  }));
+}
+buildSide('#heroSide','projects');
+buildSide('#dashSide','overview');
+
+/* ---------- pipeline / flow diagrams ---------- */
+ $('#pipe').innerHTML=['Knowledge','Context','AI','Design Decision','System Learning']
+  .map(t=>`<b>${t}</b>`).join(ic('arrow-right',13));
+ $('#flowv').innerHTML=['Design Knowledge','Reusable Skill','Context','AI Reasoning','Recommendation']
+  .map(t=>`<b>${t}</b>`).join(`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M12 4v16m0 0-5-5m5 5 5-5"/></svg>`);
+ $('#flowv').insertAdjacentHTML('beforeend',`<p style="font:400 10.5px var(--mono);color:var(--ink-3);margin-top:12px">SKILLS TURN REPEATED AI WORKFLOWS INTO REUSABLE PRODUCT CAPABILITIES.</p>`);
+
+/* ================================================================
+   HERO DEMO — Ask DesignOS
+   ================================================================ */
+const QUESTIONS=[
+ {q:'Why should I use the existing confirmation modal here?',src:['Design System','Decisions','Guidelines'],
+  a:'Your design system already uses Confirmation Modal for destructive actions — reusing it keeps the checkout consistent and inherits its accessibility rules.',
+  rec:'Modal / Confirmation',
+  why:['This pattern is already used in Account deletion','Used in Subscription cancellation','Used in Payment removal'],
+  ev:[{t:'DS',n:'Design System v3.2',s:'Confirmation Modal — reserved for destructive or irreversible actions; requires an explicit confirm step.'},
+      {t:'FL',n:'Cancellation Flow',s:'Figma · Payments v2 — modal wired after “Cancel subscription” since v2.4.'},
+      {t:'GL',n:'Accessibility guideline #42',s:'Irreversible actions must be confirmable — WCAG 2.2 · 3.3.4.'}],
+  conf:94,apply:'modal'},
+ {q:'Why does this component exist?',src:['Design System','Decisions','Guidelines'],
+  a:'The primary action follows the Payments team’s “one action per screen” rule for money movement, set in the 2024 checkout rebuild.',
+  rec:'Button / Primary',
+  why:['One primary action per screen — checkout rule #3','Money movement requires filled emphasis','The label states the exact amount'],
+  ev:[{t:'DC',n:'Decision #138',s:'One-page checkout adopted; single CTA at order summary.'},
+      {t:'DS',n:'Design System v3.2',s:'Button / Primary — reserved for the view’s main action.'},
+      {t:'GL',n:'Checkout guidelines',s:'Rule 3: nothing competes with the pay action.'}],
+  conf:88},
+ {q:'Is there an existing pattern for this?',src:['Design System','Research'],
+  a:'Yes — payment details use a compact form pattern with inline validation, shipped in the billing update flow.',
+  rec:'Form / Payment Details',
+  why:['Inline validation reduced abandonment by 11%','Matches the Stripe layout already in production','Reuses Input / Currency'],
+  ev:[{t:'DS',n:'Payments module',s:'Form / Payment Details — 4 fields, inline errors, sticky CTA.'},
+      {t:'RS',n:'Checkout study 2025',s:'P14: “I liked seeing errors right under the field.”'},
+      {t:'CP',n:'Input / Currency',s:'Formats on blur · validates against token type-currency.'}],
+  conf:92},
+ {q:'What does our research say?',src:['Research','Support'],
+  a:'Users look for total-cost clarity before paying — 12 of 31 checkout participants hesitated at the review step.',
+  rec:'Surface order summary above payment',
+  why:['12 of 31 participants hesitated before the CTA','Totals were scanned 2.4× before paying','P07 asked “is tax included?” twice'],
+  ev:[{t:'RS',n:'Checkout study 2025',s:'12/31 hesitation at the review step.'},
+      {t:'RS',n:'Interview P07',s:'“Is tax included? I can’t tell from this screen.”'},
+      {t:'SU',n:'Support · billing',s:'214 tickets tagged “charge confusion”, trailing 12 months.'}],
+  conf:86},
+ {q:'Is this accessible?',src:['Guidelines','Audits'],
+  a:'Mostly — the Pay button passes contrast at 4.8:1, but card input errors currently rely on color alone.',
+  rec:'Add icon + text to error states',
+  why:['WCAG 1.4.1 — color is not the only signal','Guideline #12 requires icon + message','Screen readers skip color-only cues'],
+  ev:[{t:'GL',n:'Accessibility guideline #12',s:'Errors: icon, text, and aria-live announcement.'},
+      {t:'GL',n:'WCAG 2.2',s:'1.4.1 Use of Color (Level A).'},
+      {t:'AU',n:'Payments audit 2025',s:'3 color-only error states found.'}],
+  conf:90},
+ {q:'How should this behave on mobile?',src:['Design System','Guidelines'],
+  a:'Under 480px, bottom sheets replace modals across the product — confirmations included.',
+  rec:'Sheet / Confirmation (mobile)',
+  why:['Modals are hard to reach one-handed','The sheet already ships in mobile checkout','Guidelines set the 480px breakpoint'],
+  ev:[{t:'DS',n:'Sheet component',s:'Mobile alternative to Modal · v3.2.'},
+      {t:'GL',n:'Mobile guidelines',s:'Below 480px: sheet, not modal.'},
+      {t:'CP',n:'Checkout mobile spec',s:'Confirmation rendered as sheet since 1.4.'}],
+  conf:91},
+ {q:'Has this decision been made before?',src:['Decisions','Research'],
+  a:'Yes — in 2024 the team chose single-page checkout with a confirm step, over a two-step flow.',
+  rec:'Follow Decision #138',
+  why:['Two-step flow tested 9% slower to complete','Decision owner: Payments team','Revisited and upheld in Q1 2026'],
+  ev:[{t:'DC',n:'Decision #138',s:'One-page checkout + confirmation — Feb 2024.'},
+      {t:'RS',n:'A/B results Q3 2024',s:'Step 2 abandoned 9% more often.'},
+      {t:'SL',n:'#payments',s:'Thread “keeping one page” — 41 replies, upheld.'}],
+  conf:97},
+];
+const qChips=$('#qChips'),thread=$('#aiThread');
+qChips.innerHTML=QUESTIONS.map((q,i)=>`<button class="chip ${i===0?'on':''}" data-i="${i}">${q.q}</button>`).join('');
+let heroTok={cancelled:false};
+function resetCanvas(){
+  $('#frameVeil').classList.remove('in');
+  $('#appliedChip').classList.remove('in');
+}
+async function runQ(i){
+  heroTok.cancelled=true;const tok={cancelled:false};heroTok=tok;
+  resetCanvas();
+  $$('.chip',qChips).forEach((c,j)=>c.classList.toggle('on',j===i));
+  const d=QUESTIONS[i];
+  thread.innerHTML=`<div class="ai-q"><span class="who">YOU</span><p>${d.q}</p></div>
+  <div class="ai-r">
+    <div class="ai-rhead">${ic('sparkle',14)}DesignOS<span class="tm">now</span></div>
+    <div class="consult"><span class="lbl">CONSULTING</span>${d.src.map(s=>`<span class="src"><span class="st"></span>${s}</span>`).join('')}</div>
+    <p class="ai-sum"></p>
+    <div class="ai-block pend"><div class="bl">Recommendation</div><div class="rec">${ic('box',14)}<code>${d.rec}</code></div></div>
+    <div class="ai-block pend"><div class="bl">Why</div><ul>${d.why.map(w=>`<li>${w}</li>`).join('')}</ul></div>
+    <div class="ai-block pend evb"><div class="bl">Evidence · click to expand</div>${d.ev.map(e=>`<div class="evrow" tabindex="0" role="button"><span class="evtag">${e.t}</span><span class="evname">${e.n}</span>${ic('chev-right',13)}</div><div class="evsn">${e.s}</div>`).join('')}</div>
+    <div class="ai-conf pend" style="border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin-top:10px"><div class="bl" style="font:500 9.5px var(--mono);letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;margin-bottom:8px">Confidence</div><div class="conf"><div class="bar"><i></i></div><span class="pct">0%</span></div></div>
+    <div class="ai-actions pend"><button class="btn btn-primary btn-sm use">Use recommendation</button><button class="btn btn-outline btn-sm ev">View evidence</button></div>
+  </div>`;
+  $$('.evrow',thread).forEach(r=>r.addEventListener('click',()=>r.closest('.evb').classList.toggle('open')));
+  thread.scrollTop=0;
+  // sequential source consulting
+  const pills=$$('.src',thread);
+  for(const p of pills){
+    if(tok.cancelled)return;
+    p.classList.add('checking');await sleep(RM?0:460);
+    if(tok.cancelled)return;
+    p.classList.remove('checking');p.classList.add('ok');p.querySelector('.st').innerHTML=ic('check',11);
+    await sleep(RM?0:90);
+  }
+  $('.consult',thread).classList.add('done');
+  if(tok.cancelled)return;
+  await typeInto($('.ai-sum',thread),d.a,tok,14);
+  if(tok.cancelled)return;
+  // staggered reveal of blocks
+  const pends=$$('.pend',thread);
+  for(const b of pends){
+    if(tok.cancelled)return;
+    b.classList.add('on');await sleep(RM?0:120);
+  }
+  countConf($('.pct',thread),$('.conf .bar i',thread),d.conf);
+  const useBtn=$('.use',thread),evBtn=$('.ev',thread);
+  useBtn.addEventListener('click',()=>{
+    if(useBtn.classList.contains('done')){
+      useBtn.classList.remove('done');useBtn.textContent='Use recommendation';resetCanvas();return;
+    }
+    useBtn.classList.add('done');
+    if(d.apply==='modal'){
+      $('#frameVeil').classList.add('in');
+      $('#appliedChip').classList.add('in');
+      useBtn.innerHTML=`${ic('check',13)}Applied — Undo`;
+      toast('Modal / Confirmation applied to canvas — decision recorded.');
+    }else{
+      useBtn.innerHTML=`${ic('check',13)}Accepted — Undo`;
+      toast('Recommendation accepted — decision recorded.');
+    }
+  });
+  evBtn.addEventListener('click',()=>{
+    const b=$('.evb',thread);b.classList.toggle('open');
+    evBtn.textContent=b.classList.contains('open')?'Hide evidence':'View evidence';
+  });
+}
+qChips.addEventListener('click',e=>{const c=e.target.closest('.chip');if(c)runQ(+c.dataset.i)});
+ $('#undoChip').addEventListener('click',()=>{resetCanvas();toast('Recommendation undone — canvas restored.','undo')});
+ $('#cmCancel').addEventListener('click',()=>{$('#frameVeil').classList.remove('in');$('#appliedChip').classList.remove('in')});
+ $('#cmConfirm').addEventListener('click',()=>{
+  toast('Confirmed — prototype flow complete.');
+  setTimeout(()=>{$('#frameVeil').classList.remove('in')},700);
+});
+ $('#resync').addEventListener('click',()=>toast('All sources re-synced — 1,847 relationships.'));
+/* tabs */
+ $$('.tab').forEach(t=>t.addEventListener('click',()=>{
+  $$('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
+  const name=t.dataset.tab;
+  $('#tabDesign').hidden=name!=='design';
+  $('#tabContext').hidden=name!=='context';
+  $('#tabReview').hidden=name!=='review';
+}));
+/* autoplay first question when visible */
+const heroIO=new IntersectionObserver(es=>{
+  if(es[0].isIntersecting){heroIO.disconnect();setTimeout(()=>runQ(0),700)}
+},{threshold:.35});
+heroIO.observe($('#heroApp'));
+
+/* ================================================================
+   WORKFLOW — scroll-driven stage
+   ================================================================ */
+const wfStepEls=$$('.wf-step'),wfStage=$('#wfStage');
+let wfCur=-1,wfTok={cancelled:false};
+const SRC_ROWS=[['layers','Design System'],['flask','Research'],['scale','Decisions']];
+function block(html){const d=document.createElement('div');d.className='sin';d.innerHTML=html;return d}
+async function renderStage(n){
+  wfTok.cancelled=true;const tok={cancelled:false};wfTok=tok;
+  wfStage.innerHTML='';
+  if(n===0){
+    wfStage.append(block(`<div class="s-prompt">${ic('sparkle',24)}<span class="t">Ask about this frame</span><span class="s">Patterns, rules, research — in context.</span><div class="fthumb"><div class="fl">NEW FRAME · PAYMENT STEP</div><div class="ln"></div><div class="ln s"></div><div class="ln s"></div></div></div>`));
+    return;
+  }
+  const ask=block(`<div class="s-ask"><span class="q"></span>${ic('send',15)}</div>`);
+  wfStage.append(ask);
+  if(n===1){typeInto($('.q',ask),'Is there an existing pattern for this?',tok,26);return}
+  $('.q',ask).textContent='Is there an existing pattern for this?';
+  if(tok.cancelled)return;
+  const cons=block(`<div class="s-consult"><span class="lbl">CONSULTING</span>${SRC_ROWS.map(r=>`<div class="s-src" data-s="${r[1]}">${ic(r[0],14)}${r[1]}<span class="st"></span></div>`).join('')}<div class="s-donenote"></div></div>`);
+  wfStage.append(cons);
+  const rows=$$('.s-src',cons);
+  if(n===2){
+    for(const r of rows){
+      if(tok.cancelled)return;
+      r.classList.add('check');await sleep(RM?0:520);
+      if(tok.cancelled)return;
+      r.classList.remove('check');r.classList.add('ok');r.querySelector('.st').innerHTML=ic('check',12);
+    }
+    if(tok.cancelled)return;
+    $('.s-donenote',cons).textContent='18 MATCHES · 3 SOURCES';
+    return;
+  }
+  rows.forEach(r=>{r.classList.add('ok');r.querySelector('.st').innerHTML=ic('check',12)});
+  $('.s-donenote',cons).textContent='18 MATCHES · 3 SOURCES';
+  if(tok.cancelled)return;
+  const rec=block(`<div class="s-rec"><div class="bl">RECOMMENDATION</div><div class="rec">${ic('box',14)}<code>Form / Payment Details</code></div>
+    <div style="margin-top:11px">${[['DS','Payments module'],['RS','Checkout study 2025']].map(e=>`<div class="evrow" style="padding:3px 0"><span class="evtag">${e[0]}</span><span class="evname">${e[1]}</span></div>`).join('')}</div>
+    <div class="conf" style="margin-top:10px"><div class="bar" style="flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden"><i style="display:block;height:100%;width:0;background:var(--accent);transition:width .8s"></i></div><span class="mono" style="font:500 12px var(--mono)">0%</span></div></div>`);
+  wfStage.append(rec);
+  if(n===3){requestAnimationFrame(()=>{const b=$('.conf .bar i',rec),p=$('.conf .mono',rec);b.style.width='92%';p.textContent='92%'});return}
+  requestAnimationFrame(()=>{$('.conf .bar i',rec).style.width='92%';$('.conf .mono',rec).textContent='92%'});
+  if(tok.cancelled)return;
+  if(n===4){
+    const dec=block(`<div class="s-acts"><button class="btn btn-outline btn-sm">Modify</button><button class="btn btn-outline btn-sm">Reject</button><button class="btn btn-primary btn-sm acc">Accept</button></div>`);
+    wfStage.append(dec);
+    await sleep(RM?0:900);
+    if(tok.cancelled)return;
+    dec.innerHTML=`<div class="s-acc">${ic('check-circle',15)}Accepted · decision logged 2:41 PM</div>`;
+    return;
+  }
+  wfStage.append(block(`<div class="s-acc">${ic('check-circle',15)}Accepted · decision logged 2:41 PM</div>`));
+  if(tok.cancelled)return;
+  wfStage.append(block(`<div class="s-learn"><div class="h">${ic('sparkle',15)}Decision #247 recorded</div><div class="d">Payment step → Form / Payment Details. 4 relationships added to the knowledge graph — this pattern now informs future recommendations.</div><div class="tag">SYSTEM LEARNING</div></div>`));
+}
+function wfUpdate(){
+  const line=innerHeight*.5;let cur=0;
+  wfStepEls.forEach((el,i)=>{if(el.getBoundingClientRect().top<line)cur=i});
+  if(cur!==wfCur){
+    wfCur=cur;
+    wfStepEls.forEach((el,i)=>el.classList.toggle('on',i===cur));
+    renderStage(cur);
+    const p=cur/(wfStepEls.length-1);
+    $('#wfTrack').style.height=(p*100)+'%';
+    $('#wfFill').style.top=`calc(${p*100}% - 3px)`;
+  }
+}
+let wfTick=false;
+addEventListener('scroll',()=>{if(!wfTick){wfTick=true;requestAnimationFrame(()=>{wfUpdate();wfTick=false})}},{passive:true});
+wfUpdate();
+
+/* ================================================================
+   AI SKILLS
+   ================================================================ */
+const SKILLS=[
+ {n:'Design System Skill',i:'box',d:'Understand components, tokens and usage rules.',
+  p:'Answers component, token and pattern questions from your live design system — usage rules included, not just the spec sheet.',
+  inputs:['Component or layer selection','Token values','Frame context'],
+  ctx:['Figma libraries','Design system docs','Adoption telemetry'],
+  out:'The right component with its rules attached — never a lookalike.',
+  ev:['Component specs','Usage guidelines','Recent project usage'],avg:92,range:'88–96% · based on system coverage',
+  ex:{q:'Which component handles currency input?',steps:['Design System','Guidelines'],o:'Use Input / Currency — it formats on blur, validates against token type-currency, and pairs with helper text per guideline #31.'}},
+ {n:'UX Review Skill',i:'eye',d:'Evaluate flows against product patterns and usability principles.',
+  p:'Evaluates a flow against your product’s patterns and usability principles — before it reaches critique.',
+  inputs:['Flow steps','Screens or prototypes','Review checklist'],
+  ctx:['Product patterns','Past review notes','Usability principles'],
+  out:'Friction points and pattern deviations, ranked by severity.',
+  ev:['Pattern library','Review history','Heuristic set'],avg:86,range:'82–91% · based on pattern coverage',
+  ex:{q:'Review the checkout flow before Thursday’s critique.',steps:['UX patterns','Research'],o:'3 findings: missing order summary before payment (pattern: Form / Payment), modal on mobile (guideline: Sheet), and an unlabeled destructive action.'}},
+ {n:'Accessibility Skill',i:'a11y',d:'Identify accessibility risks and explain their impact.',
+  p:'Identifies accessibility risks — contrast, focus order, semantics — and explains the impact in product terms, with the rule cited.',
+  inputs:['Screens & layer trees','Color tokens','Interaction specs'],
+  ctx:['WCAG 2.2','Team accessibility guidelines','Past audits'],
+  out:'Risks with severity, affected users, and the exact rule cited.',
+  ev:['WCAG criteria','Team guidelines','Audit results'],avg:90,range:'85–94% · deterministic checks + AI review',
+  ex:{q:'Is the new payment form accessible?',steps:['WCAG 2.2','Guideline #12'],o:'One risk: card errors signal with color alone — fails 1.4.1. Add icon + text (guideline #12). Focus order and contrast pass.'}},
+ {n:'Research Skill',i:'flask',d:'Connect design decisions to research evidence.',
+  p:'Connects design decisions to research evidence — and never states an insight without its source.',
+  inputs:['Design decision or question','Flow or component','Target audience'],
+  ctx:['Interviews & studies','Support tickets','Analytics events'],
+  out:'Evidence-backed findings with participant counts and quotes.',
+  ev:['Study files','Interview notes','Ticket data'],avg:84,range:'80–89% · based on evidence coverage',
+  ex:{q:'What do we know about cancellation behavior?',steps:['Studies','Tickets'],o:'Two studies, 31 participants: users misread cancellation consequences — 7 of 12 believed “Cancel” was reversible. 3 linked tickets.'}},
+ {n:'Content Skill',i:'type',d:'Evaluate product language against content guidelines.',
+  p:'Evaluates product language against your content guidelines — voice, clarity, and microcopy patterns.',
+  inputs:['UI copy','Component context','Tone target'],
+  ctx:['Content guidelines','Voice & tone doc','Localization notes'],
+  out:'Rewrites with the rule cited — verbs first, consequence stated.',
+  ev:['Guideline docs','Voice & tone','Past rewrites'],avg:88,range:'84–92% · based on guideline coverage',
+  ex:{q:'Rewrite this confirmation message.',steps:['Content guidelines','Voice doc'],o:'“Your plan stays active until Mar 28.” — states the consequence first (guideline #8); passive voice removed.'}},
+ {n:'Product Strategy Skill',i:'target',d:'Connect design decisions to business and product goals.',
+  p:'Connects design decisions to product goals — so “why” questions get business answers, not guesses.',
+  inputs:['Decision or proposal','Screens in scope','Metrics of interest'],
+  ctx:['Product strategy docs','Roadmap context','Experiment results'],
+  out:'Alignment notes: which goal a decision serves, and what it risks.',
+  ev:['Strategy docs','Roadmap','Experiment results'],avg:82,range:'78–87% · based on strategy coverage',
+  ex:{q:'Should we invest in the empty states project?',steps:['Strategy','Roadmap'],o:'Empty states touch 3 Q3 retention bets — week-1 drop-off is the stated problem. One risk: 6 surfaces need coordinated rollout.'}},
+];
+ $('#skillGrid').innerHTML=SKILLS.map((s,i)=>`<button class="skill" data-i="${i}">
+  <span class="icb">${ic(s.i,19)}</span><h3>${s.n}</h3><p>${s.d}</p>
+  <span class="ft">View Skill ${ic('arrow-right',14)}</span></button>`).join('');
+ $('#skillGrid').addEventListener('click',e=>{
+  const c=e.target.closest('.skill');if(c)openSkill(+c.dataset.i);
+});
+function openSkill(i){
+  const s=SKILLS[i];
+  const ov=openModal(`<div class="sk-top"><span class="sk-ic">${ic(s.i,21)}</span><div><h3>${s.n}</h3><span class="sk-tag">AI SKILL · DESIGNOS</span></div></div>
+  <dl class="spec">
+    <div><dt>Purpose</dt><dd class="standout">${s.p}</dd></div>
+    <div><dt>Inputs</dt><dd><span class="tagchips">${s.inputs.map(t=>`<span class="tchip">${t}</span>`).join('')}</span></dd></div>
+    <div><dt>Context</dt><dd><span class="tagchips">${s.ctx.map(t=>`<span class="tchip">${t}</span>`).join('')}</span></dd></div>
+    <div><dt>Output</dt><dd>${s.out}</dd></div>
+    <div><dt>Evidence</dt><dd><span class="tagchips">${s.ev.map(t=>`<span class="tchip">${t}</span>`).join('')}</span></dd></div>
+    <div><dt>Confidence</dt><dd><span style="display:flex;align-items:center;gap:10px"><span style="flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden;display:block"><i style="display:block;height:100%;width:${s.avg}%;background:var(--accent)"></i></span><span class="mono" style="font:400 11.5px var(--mono);color:var(--ink-2)">${s.range}</span></span></dd></div>
+  </dl>
+  <div class="ex"><div class="ex-h">EXAMPLE RUN</div>
+    <span class="ex-q">${ic('user',14)} “${s.ex.q}”</span>
+    <div class="ex-run" id="exRun"><button class="btn btn-outline btn-sm" id="exGo">${ic('play',13)}Run example</button></div>
+  </div>`);
+  let ran=false;
+  $('#exGo',ov).addEventListener('click',async()=>{
+    if(ran)return;ran=true;
+    const run=$('#exRun',ov);
+    run.innerHTML=`<div class="srcs" style="display:flex;gap:7px;flex-wrap:wrap">${s.ex.steps.map(t=>`<span class="src">${t}<span class="st"></span></span>`).join('')}</div><p class="out"></p>`;
+    const pills=$$('.src',run);
+    for(const p of pills){p.classList.add('checking');await sleep(RM?0:480);p.classList.remove('checking');p.classList.add('ok');p.querySelector('.st').innerHTML=ic('check',11)}
+    await typeInto($('.out',run),s.ex.o,null,14);
+  });
+}
+
+/* ================================================================
+   DESIGN SYSTEM panel
+   ================================================================ */
+const DS={
+ button:{g:'Components',i:'box',name:'Button / Primary',uses:142,upd:'3d ago',ai:true,
+  p:'Carries the single most important action in a view — money, creation, confirmation.',
+  variants:['Primary','Secondary','Ghost','Destructive'],states:['Default','Hover','Focus','Active','Disabled','Loading'],
+  tokens:['space-3 · padding','radius-2 · 8px','text-body / medium','color-action','height 40px'],
+  usage:['One primary button per view','Labels are verbs — “Pay”, never “OK”','Never for navigation'],
+  a11y:'Focus ring 2px color-action · minimum target 40×40 · loading announced via aria-busy.'},
+ modal:{g:'Components',i:'msg',name:'Modal / Base',uses:38,upd:'2w ago',
+  p:'Focuses attention on one decision or task, above the page.',
+  variants:['Base','Confirmation','Form'],states:['Open','Closing','Scrim press'],
+  tokens:['elevation-3','radius-3 · 12px','space-5 · padding'],
+  usage:['Reserve for decisions that block the flow','Confirmation variant for destructive actions','Never stack modals'],
+  a11y:'Traps focus · closes on Esc · returns focus to the trigger.'},
+ input:{g:'Components',i:'type',name:'Input / Text',uses:216,upd:'5d ago',
+  p:'Collects a single line of structured input with inline validation.',
+  variants:['Text','Currency','Search'],states:['Default','Focus','Filled','Error','Disabled'],
+  tokens:['height 40px','text-body','color-border','focus ring 2px'],
+  usage:['Label always visible — never placeholder-only','Helper text below; error replaces it','Validate on blur'],
+  a11y:'Errors announced via aria-live · icon + text, never color alone.'},
+ dropdown:{g:'Components',i:'chev-down',name:'Dropdown / Menu',uses:57,upd:'1mo ago',
+  p:'Selects one option from a known set without leaving the page.',
+  variants:['Select','Action menu'],states:['Closed','Open','Keyboard nav'],
+  tokens:['radius-2','elevation-2','item height 36px'],
+  usage:['Max 8 visible items before adding search','No nested menus'],
+  a11y:'Full arrow-key navigation · selected item aria-checked.'},
+ card:{g:'Components',i:'square',name:'Card / Base',uses:98,upd:'2w ago',
+  p:'Groups related content into a scannable, tappable unit.',
+  variants:['Base','Interactive','Static'],states:['Default','Hover (interactive)','Pressed'],
+  tokens:['radius-3','space-4','elevation-0'],
+  usage:['Interactive cards get one tap target','No cards inside cards'],
+  a11y:'Whole-card tap target exposes an aria role.'},
+ table:{g:'Components',i:'grid',name:'Table / Data',uses:44,upd:'3w ago',
+  p:'Dense comparison and scanning of homogeneous records.',
+  variants:['Base','With bulk actions'],states:['Default','Row hover','Row selected'],
+  tokens:['row height 44px','text-body / regular','space-2'],
+  usage:['Sticky header beyond 8 rows','Empty state required — see Empty State pattern'],
+  a11y:'Sortable headers announce state · row selection announced.'},
+ typography:{g:'Tokens',i:'type',name:'Typography / Scale',uses:0,upd:'1mo ago',
+  p:'A five-step scale for product surfaces — no custom sizes anywhere.',
+  values:['Display 32/40 · Semibold','Title 20/28 · Semibold','Heading 16/24 · Semibold','Body 15/24 · Regular','Mono 13/20 · meta only'],
+  usage:['Never skip more than one step','Mono is for values and meta — never body copy'],
+  a11y:'Body stays at 15px minimum for reading comfort.'},
+ spacing:{g:'Tokens',i:'ruler',name:'Spacing / Grid',uses:0,upd:'1mo ago',
+  p:'A 4px base grid — everything sits on it.',
+  values:['space-1 · 4px','space-2 · 8px','space-3 · 12px','space-4 · 16px','space-5 · 24px','space-6 · 32px'],
+  usage:['Component internals use steps 1–3','Layout gaps use steps 4–6'],
+  a11y:'Consistent rhythm lowers cognitive load — WCAG 2.4 readable pacing.'},
+ color:{g:'Tokens',i:'droplet',name:'Color / Roles',uses:0,upd:'2w ago',
+  p:'Roles, not hexes — surfaces, ink, action, danger.',
+  values:['surface / #FFFFFF','surface-2 / #F2F2F4','ink / #16171A','action / #3F4DE8','danger / #C7382F'],
+  usage:['Action color is reserved for primary actions and AI indicators — never decoration','Danger never for emphasis, only destruction'],
+  a11y:'All text pairs meet 4.5:1 · non-text indicators 3:1.'},
+ radius:{g:'Tokens',i:'square',name:'Radius / Steps',uses:0,upd:'1mo ago',
+  p:'Two radii, mapped to elevation level.',
+  values:['radius-2 · 8px — controls','radius-3 · 12px — containers & overlays'],
+  usage:['Controls never borrow the container radius'],
+  a11y:'Larger radii on touch targets read as tappable.'},
+ elevation:{g:'Tokens',i:'layers',name:'Elevation / Levels',uses:0,upd:'1mo ago',
+  p:'Four levels, tied to layer — not to importance.',
+  values:['e-0 · flat, border only','e-1 · card','e-2 · popover','e-3 · modal'],
+  usage:['If two elements overlap, the higher layer gets the higher level'],
+  a11y:'Shadows never carry meaning on their own.'},
+ empty:{g:'Patterns',i:'inbox',name:'Empty State',uses:61,upd:'1w ago',
+  p:'Explains an absence, its cause, and the next action.',
+  structure:['Icon · 24 · ink-3 (decorative)','Title · Heading','One line of body','A single action'],
+  usage:['One action, never two','Never inside modals'],
+  a11y:'Icon marked decorative · action reachable in tab order after text.'},
+ error:{g:'Patterns',i:'alert',name:'Error State',uses:47,upd:'2w ago',
+  p:'Says what went wrong, why, and how to recover.',
+  structure:['Icon + code · mono','Plain-language cause','Recovery action'],
+  usage:['Never blame the user','Never “Something went wrong” alone'],
+  a11y:'Announced via aria-live · recovery action is the next tab stop.'},
+ confirmation:{g:'Patterns',i:'check-circle',name:'Confirmation',uses:33,upd:'1mo ago',
+  p:'A deliberate pause before destructive or irreversible actions.',
+  structure:['Modal or Sheet','Consequence stated first','Cancel stays neutral'],
+  usage:['Confirmation for irreversible actions only — not for every save'],
+  a11y:'Focus starts on the destructive label, not Cancel.'},
+ onboarding:{g:'Patterns',i:'users',name:'Onboarding',uses:12,upd:'2mo ago',
+  p:'Progressive disclosure of value — teach at the moment of use.',
+  structure:['3 steps maximum','Skip always visible','One skill per step'],
+  usage:['Never gate core flows behind tours'],
+  a11y:'Progress announced · Skip is a real button, not a corner link.'},
+};
+const DS_ORDER={Components:['button','modal','input','dropdown','card','table'],Tokens:['typography','spacing','color','radius','elevation'],Patterns:['empty','error','confirmation','onboarding']};
+const dsTree=$('#dsTree');
+dsTree.innerHTML=Object.entries(DS_ORDER).map(([g,keys])=>`<div class="tg">${g.toUpperCase()}</div>${keys.map(k=>`<button class="titem" data-k="${k}">${ic(DS[k].i,14)}${DS[k].name.split(' /')[0]}<span class="use">${DS[k].uses||''}</span></button>`).join('')}`).join('');
+function renderDS(k){
+  const d=DS[k];
+  $$('.titem',dsTree).forEach(t=>t.classList.toggle('on',t.dataset.k===k));
+  const chipRow=(label,arr,mono)=>arr?`<div class="ds-sec"><span class="lb">${label}</span><span class="tagchips">${arr.map(v=>`<span class="tchip ${mono?'m':''}">${v}</span>`).join('')}</span></div>`:'';
+  const listSec=(label,arr)=>arr?`<div class="ds-sec"><span class="lb">${label}</span><ul>${arr.map(v=>`<li>${v}</li>`).join('')}</ul></div>`:'';
+  $('#dsDetail').innerHTML=`
+    <div class="ds-crumb">${d.g.toUpperCase()} / ${d.name.split(' /')[0].toUpperCase()}</div>
+    <h3>${d.name}</h3>
+    <div class="ds-meta">${d.uses?`${d.uses} USES THIS QUARTER · `:''}DS v3.2 · UPDATED ${d.upd.toUpperCase()}</div>
+    <div class="ds-sec" style="border-top:0;padding-top:18px"><span class="lb">Purpose</span><span class="vv standout">${d.p}</span></div>
+    ${chipRow('Variants',d.variants)}
+    ${chipRow('States',d.states)}
+    ${chipRow('Tokens',d.tokens,true)}
+    ${chipRow('Values',d.values,true)}
+    ${chipRow('Anatomy',d.structure)}
+    ${listSec('Usage',d.usage)}
+    <div class="ds-sec"><span class="lb">Accessibility</span><span class="vv">${ic('shield',13)} ${d.a11y}</span></div>
+    ${d.ai?`<div class="aicard"><div class="h">${ic('sparkle',15)}This component has been used inconsistently in 3 recent projects.</div>
+      <p>Detected in Billing settings, Marketing site and Mobile checkout.</p>
+      <div class="row"><button class="btn btn-primary btn-sm" id="dsReview">Review variations</button></div></div>`:''}`;
+  const rv=$('#dsReview');
+  if(rv)rv.addEventListener('click',openVariations);
+}
+dsTree.addEventListener('click',e=>{const t=e.target.closest('.titem');if(t)renderDS(t.dataset.k)});
+renderDS('button');
+function openVariations(){
+  const ov=openModal(`<h3 style="font-size:19px">Button — 3 variations detected</h3>
+  <p style="font-size:13.5px;color:var(--ink-2);margin-top:7px">Same component, three drifts. Left unchecked, each becomes the local “correct” version.</p>
+  <div style="margin-top:20px">
+    ${[['Billing settings','Ghost button used as a primary action',['border 1.5px','radius 6','height 36']],
+       ['Marketing site','Custom padding and radius',['radius 4','space-4','label 14']],
+       ['Mobile checkout','Scaled-down primary',['height 36','text 14','shadow e-1']]]
+      .map(v=>`<div class="mvar"><div class="h"><span class="t">${v[0]}</span></div><div class="fl">${v[1]}</div>
+      <div class="diffs">${v[2].map(d=>`<span>${d}</span>`).join('')}</div><a class="lk" href="#" data-toast="Opening Figma file…">Open in Figma ${ic('arrow-right',12)}</a></div>`).join('')}
+  </div>
+  <div class="mfoot"><span class="n">Proposing Button / Primary as the standard.</span>
+  <button class="btn btn-primary btn-sm" id="std">Standardize across 3 projects</button>
+  <button class="btn btn-outline btn-sm" data-close>Dismiss</button></div>`);
+  $('#std',ov).addEventListener('click',()=>{closeModal();toast('Proposal #31 created — Billing, Marketing and Mobile notified.')});
+  $('[data-close]',ov).addEventListener('click',closeModal);
+  $$('[data-toast]',ov).forEach(a=>a.addEventListener('click',e=>{e.preventDefault();toast(a.dataset.toast,'link')}));
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-toast]');
+  if(t&&!t.closest('.modal')&&!t.closest('#modalRoot'))toast(t.dataset.toast,'link');
+});
+
+/* ================================================================
+   EVOLUTION
+   ================================================================ */
+const simIO=new IntersectionObserver(es=>{if(es[0].isIntersecting){simIO.disconnect();setTimeout(()=>{$('#simBar').style.width='82%'},400)}},{threshold:.4});
+simIO.observe($('#simBar'));
+function evoDone(msg,icon){
+  $('#evoActions').innerHTML=`<span class="okc" style="display:flex;margin-left:auto;align-items:center;gap:8px;color:var(--acc-text);font-weight:500;font-size:13.5px">${ic(icon,15)}${msg}</span>`;
+}
+ $('#evoDismiss').addEventListener('click',()=>{evoDone('Dismissed — DesignOS will keep watching this pattern.','undo');toast('Dismissed. DesignOS will keep watching this pattern.','undo')});
+ $('#evoReview').addEventListener('click',()=>{
+  const ov=openModal(`<h3 style="font-size:19px">Empty State / Standard — proposed component</h3>
+  <span class="sk-tag">SYSTEM PROPOSAL · #77</span>
+  <p style="font-size:13.5px;color:var(--ink-2);margin-top:12px;line-height:1.6">A single component merged from 3 team variants — shared structure, configurable action slot.</p>
+  <dl class="spec" style="margin-top:10px">
+    <div><dt>Anatomy</dt><dd><span class="tagchips">${['Icon · 24','Title · Heading','Body · one line','Action slot'].map(t=>`<span class="tchip">${t}</span>`).join('')}</span></dd></div>
+    <div><dt>Tokens</dt><dd><span class="tagchips">${['radius-3','space-5','scale / Heading+Body'].map(t=>`<span class="tchip m">${t}</span>`).join('')}</span></dd></div>
+    <div><dt>Rules</dt><dd><ul><li>One action — link or button, never both</li><li>Never inside modals</li><li>Icon is decorative</li></ul></dd></div>
+    <div><dt>Adoption</dt><dd>Replaces 6 surfaces across Payments, Projects and Notifications.</dd></div>
+  </dl>
+  <div class="mfoot"><span class="n">2 of 3 teams already reviewed.</span>
+  <button class="btn btn-primary btn-sm" id="evoCreate">Create component</button>
+  <button class="btn btn-outline btn-sm" data-close>Dismiss</button></div>`);
+  $('#evoCreate',ov).addEventListener('click',()=>{closeModal();evoDone('Empty State / Standard added to your design system.','check-circle');toast('Empty State / Standard added to Design System — proposal #77.')});
+  $('[data-close]',ov).addEventListener('click',()=>{closeModal();evoDone('Dismissed — DesignOS will keep watching this pattern.','undo')});
+});
+
+/* ================================================================
+   DECISION — apply pattern to the flow
+   ================================================================ */
+let dApplied=false;
+ $('#dApply').addEventListener('click',()=>{
+  if(dApplied){ // undo
+    dApplied=false;
+    $('#flNew')?.remove();$('#flNewArr')?.remove();
+    $('#flEndSub').textContent='immediate · no undo';
+    $('#flowVer').textContent='v0.3';
+    $('#recChip').classList.remove('in');
+    $('#dApply').classList.remove('done');$('#dApply').textContent='Apply pattern';
+    toast('Undone — flow restored to v0.3.','undo');return;
+  }
+  dApplied=true;
+  const end=$('#flEnd');
+  end.insertAdjacentHTML('beforebegin',
+    `<span class="flarr" id="flNewArr">${ic('arrow-right',16)}</span>
+     <div class="flnode new" id="flNew"><span class="ap">${ic('sparkle',10)} APPLIED</span><div class="n">Confirm cancellation</div><div class="s">consequence stated · neutral cancel</div></div>`);
+  $('#flEndSub').textContent='confirmed · two-step';
+  $('#flowVer').textContent='v0.4';
+  $('#recChip').classList.add('in');
+  $('#dApply').classList.add('done');$('#dApply').innerHTML=`${ic('check',13)}Pattern applied — Undo`;
+  toast('Confirmation step applied — decision #248 recorded.');
+});
+ $('#dEvidence').addEventListener('click',()=>{
+  $('#dRecCard').classList.toggle('open');
+  $('#dEvidence').textContent=$('#dRecCard').classList.contains('open')?'Hide evidence':'View evidence';
+});
+ $('#dFollow').addEventListener('click',()=>{
+  const fu=$('#dFu');fu.classList.toggle('in');
+  $('#dFollow').textContent=fu.classList.contains('in')?'Hide follow-up':'Ask follow-up';
+  if(fu.classList.contains('in'))typeInto($('.fa p',fu),'State the consequence and what’s retained: “Your plan stays active until Mar 28. Your data is kept for 30 days.” — verb first, consequence before reassurance.',null,13);
+});
+const dIO=new IntersectionObserver(es=>{if(es[0].isIntersecting){dIO.disconnect();setTimeout(()=>{countConf($('#dConfPct'),$('#dConfBar'),91)},600)}},{threshold:.35});
+dIO.observe($('#dRecCard'));
+
+/* ================================================================
+   DASHBOARD
+   ================================================================ */
+ $$('#dashList [data-acc]').forEach(b=>b.addEventListener('click',()=>{
+  const row=b.closest('.drowi');
+  if(row.classList.contains('done'))return;
+  row.classList.add('done');
+  toast('Decision recorded — future recommendations updated.');
+}));
+ $$('#dashList [data-go]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.go)?.scrollIntoView({behavior:RM?'auto':'smooth'})));
+ $$('#dashList [data-var]').forEach(b=>b.addEventListener('click',openVariations));
+const covIO=new IntersectionObserver(es=>{if(es[0].isIntersecting){covIO.disconnect();setTimeout(()=>$('#covBar').style.width='91%',400)}},{threshold:.4});
+covIO.observe($('#covBar'));
+const goCmdk=()=>openCmdk();
+ $('#dashSearch').addEventListener('click',goCmdk);
+ $('#dashSearch').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')goCmdk()});
+
+/* ================================================================
+   UNIVERSAL SEARCH — inline + ⌘K overlay
+   ================================================================ */
+const INDEX=[
+ {g:'Design System',gi:'layers',t:'Empty State guideline',s:'Patterns · anatomy & rules',go:'#designsystem'},
+ {g:'Design System',gi:'layers',t:'Button / Primary',s:'Components · 142 uses',go:'#designsystem'},
+ {g:'Design System',gi:'layers',t:'Typography / Scale',s:'Tokens · five steps',go:'#designsystem'},
+ {g:'Components',gi:'box',t:'EmptyState / Default',s:'Component · 6 uses in production',go:'#designsystem'},
+ {g:'Components',gi:'box',t:'Input / Currency',s:'Component · formats on blur',go:'#designsystem'},
+ {g:'Research',gi:'flask',t:'Empty state usability study',s:'2025 · 31 participants',go:'#research'},
+ {g:'Research',gi:'flask',t:'Cancellation study 2025',s:'Interviews · 12 participants',go:'#research'},
+ {g:'Research',gi:'flask',t:'Checkout study 2025',s:'Mixed methods · 31 participants',go:'#research'},
+ {g:'Decisions',gi:'scale',t:'Dashboard redesign decision',s:'#142 · Feb 2025 · data density rules',go:'#decision'},
+ {g:'Decisions',gi:'scale',t:'Decision #138 — one-page checkout',s:'Feb 2024 · Payments team',go:'#decision'},
+ {g:'Guidelines',gi:'file',t:'Accessibility guideline #42',s:'Confirmable destruction · WCAG 3.3.4',go:'#designsystem'},
+ {g:'Guidelines',gi:'file',t:'Mobile guidelines',s:'Below 480px: sheets, not modals',go:'#designsystem'},
+ {g:'AI Skill',gi:'sparkle',t:'UX Review Skill',s:'Evaluates flows against patterns',go:'#skills',skill:1},
+ {g:'AI Skill',gi:'sparkle',t:'Research Skill',s:'Connects decisions to evidence',go:'#skills',skill:3},
+];
+const GROUP_ORDER=['Design System','Components','Research','Decisions','Guidelines','AI Skill'];
+const AI_ANSWERS=[
+ {k:['empty'],go:'#designsystem',conf:89,src:['Empty State guideline','EmptyState / Default','UX Review Skill'],
+  t:'Empty states should explain the absence, why it happened, and the next action. Your guideline allows one action — and in tables, keep the headers so the structure persists.'},
+ {k:['cancel','confirm'],go:'#decision',conf:91,src:['Decision #96','Confirmation pattern','Cancellation study 2025'],
+  t:'Irreversible actions take a confirmation step; reversible ones shouldn’t. Cancellation needs it — 7 of 12 participants thought “Cancel” was reversible.'},
+ {k:['button'],go:'#designsystem',conf:93,src:['Button / Primary','Checkout guidelines'],
+  t:'Primary buttons carry the view’s main action — one per screen, with the amount in the label. Ghost variants are for secondary actions, never the money action.'},
+ {k:['research','study','evidence','billing'],go:'#research',conf:84,src:['Checkout study 2025','Support · billing'],
+  t:'Recent evidence: the 2025 checkout study (31 participants) and 214 support tickets tagged “billing confusion” both point to unclear consequences at cancellation.'},
+];
+function aiFor(q){
+  const lq=q.toLowerCase();
+  for(const a of AI_ANSWERS)if(a.k.some(k=>lq.includes(k)))return a;
+  return null;
+}
+function createSearch(mount,opts={}){
+  mount.innerHTML=`<div class="sbox">
+    <div class="sbox-in">${ic('search',17)}<input type="text" placeholder="Ask anything about your product…" aria-label="Search your product"></div>
+    <div class="sres"></div>
+    <div class="sfoot"><span>↑↓ NAVIGATE</span><span>↵ ASK DESIGNOS</span><span>${opts.overlay?'ESC TO CLOSE':'GROUNDED IN YOUR SOURCES'}</span></div>
+  </div>`;
+  const input=$('input',mount),res=$('.sres',mount);
+  let rows=[],active=-1,aiEl=null,tok={cancelled:false};
+  function resultRow(it){
+    return `<button class="srow" data-go="${it.go||''}" data-skill="${it.skill??''}">
+      ${ic(it.gi,15)}<span><span class="t">${it.t}</span><br><span class="s">${it.s}</span></span>
+      <span class="go">${ic('enter',14)}</span></button>`;
+  }
+  function render(){
+    const q=input.value.trim().toLowerCase();
+    tok.cancelled=true;
+    let html='';
+    if(aiEl)html+=aiEl;
+    const hits=INDEX.filter(it=>!q||it.t.toLowerCase().includes(q)||it.s.toLowerCase().includes(q));
+    if(!q&&!aiEl){
+      html+=`<div class="sgrp">SUGGESTED</div>`+INDEX.slice(0,4).map(resultRow).join('');
+    }else{
+      const groups={};
+      hits.forEach(it=>(groups[it.g]=groups[it.g]||[]).push(it));
+      GROUP_ORDER.forEach(g=>{
+        if(!groups[g])return;
+        html+=`<div class="sgrp">${g} · ${groups[g].length}</div>`+groups[g].map(resultRow).join('');
+      });
+      if(!hits.length&&!aiEl)html+=`<div class="sgrp">NO DIRECT MATCH — PRESS ↵ TO ASK DESIGNOS</div>`;
+    }
+    res.innerHTML=html;
+    rows=$$('.srow',res);active=-1;
+    $$('.srow',res).forEach(r=>r.addEventListener('click',()=>{
+      if(r.dataset.skill)openSkill(+r.dataset.skill);
+      else if(r.dataset.go)$(r.dataset.go)?.scrollIntoView({behavior:RM?'auto':'smooth'});
+      if(opts.onNavigate)opts.onNavigate();
+    }));
+  }
+  async function askAI(){
+    const q=input.value.trim();if(!q)return;
+    const a=aiFor(q);
+    const ans=a||{t:`Here’s what I found across your sources for “${q}” — the strongest matches are below.`,src:INDEX.slice(0,3).map(x=>x.t),go:null};
+    aiEl=`<div class="sans"><div class="h">${ic('sparkle',12)}ANSWER · GROUNDED IN YOUR SOURCES</div><p class="anst"></p>
+      <div class="srcs">${ans.src.map(s=>`<span>${s}</span>`).join('')}</div>
+      ${ans.conf?`<div class="cf"><div class="bar"><i></i></div><span class="pct">0%</span></div>`:''}
+      ${ans.go?`<a class="lk" href="${ans.go}">Open source ${ic('arrow-right',12)}</a>`:''}</div>`;
+    render();
+    // scroll answer into view inside results
+    const p=$('.sans p',res);
+    const t2={cancelled:false};
+    await typeInto(p,ans.t,t2,13);
+    if(ans.conf){
+      const bar=$('.sans .cf i',res),pct=$('.sans .cf .pct',res);
+      requestAnimationFrame(()=>{bar.style.width=ans.conf+'%';countConf(pct,bar,ans.conf)});
+    }
+    const lk=$('.sans .lk',res);
+    if(lk)lk.addEventListener('click',e=>{e.preventDefault();$(ans.go)?.scrollIntoView({behavior:RM?'auto':'smooth'});if(opts.onNavigate)opts.onNavigate()});
+  }
+  input.addEventListener('input',()=>{aiEl=null;render()});
+  input.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+      e.preventDefault();
+      if(!rows.length)return;
+      active=(active+(e.key==='ArrowDown'?1:-1)+rows.length)%rows.length;
+      rows.forEach((r,i)=>r.classList.toggle('act',i===active));
+      rows[active].scrollIntoView({block:'nearest'});
+    }else if(e.key==='Enter'){
+      e.preventDefault();
+      if(active>=0&&rows[active])rows[active].click();
+      else askAI();
+    }
+  });
+  render();
+  return {focus:()=>input.focus()};
+}
+createSearch($('#searchInline'));
+ $$('.ex-q .chip').forEach(c=>c.addEventListener('click',()=>{
+  $$('.ex-q .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
+}));
+ $$('[data-ex]').forEach(c=>c.addEventListener('click',()=>{
+  const inp=$('#searchInline input');
+  inp.value=c.dataset.ex;inp.dispatchEvent(new Event('input'));
+  inp.focus();
+  // trigger the AI answer
+  const ev=new KeyboardEvent('keydown',{key:'Enter'});
+  setTimeout(()=>inp.dispatchEvent(ev),60);
+}));
+
+/* ⌘K overlay */
+let cmdk=null,cmdkSearch=null;
+function openCmdk(){
+  if(cmdk){closeCmdk();return}
+  cmdk=document.createElement('div');
+  cmdk.className='overlay';cmdk.id='cmdk';
+  cmdk.innerHTML=`<div class="cmdk" role="dialog" aria-modal="true" aria-label="Universal search"><div id="cmdkMount"></div></div>`;
+  document.body.append(cmdk);
+  document.body.style.overflow='hidden';
+  cmdk.addEventListener('mousedown',e=>{if(e.target===cmdk)closeCmdk()});
+  cmdkSearch=createSearch($('#cmdkMount',cmdk),{overlay:true,onNavigate:closeCmdk});
+  setTimeout(()=>cmdkSearch.focus(),50);
+}
+function closeCmdk(){
+  if(!cmdk)return;
+  cmdk.remove();cmdk=null;document.body.style.overflow='';
+}
+addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){
+    e.preventDefault();
+    if(activeOverlay)closeModal();
+    openCmdk();
+  }else if(e.key==='Escape'){
+    if(cmdk)closeCmdk();
+    else if(activeOverlay)closeModal();
+    else if(mm.classList.contains('open')){mm.classList.remove('open');mb.innerHTML=ic('menu',18)}
+  }
+});
+
+/* init static icons */
+initIcons();
+</script>
+</body>
+</html>
