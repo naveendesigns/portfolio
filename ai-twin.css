@@ -1,0 +1,205 @@
+:root {
+    --ai-green: #65d889;
+}
+
+.ai-twin-wrap {
+    margin-top: clamp(80px, 10vw, 130px);
+}
+
+.ai-twin-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.25fr .75fr;
+    gap: 40px;
+    min-height: 250px;
+    padding: clamp(28px, 4vw, 48px);
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--white);
+    border: 1px solid #292929;
+    cursor: pointer;
+    isolation: isolate;
+    transition: transform .55s var(--ease), border-color .35s ease;
+}
+
+.ai-twin-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(circle at 85% 20%, rgba(101,216,137,.12), transparent 32%), linear-gradient(110deg, transparent 0%, rgba(255,255,255,.025) 45%, transparent 70%);
+    transform: translateX(-20%);
+    transition: transform .8s var(--ease);
+}
+
+.ai-twin-card::after {
+    content: 'AI / PROFESSIONAL WORK';
+    position: absolute;
+    right: 24px;
+    bottom: 20px;
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: .1em;
+    color: #777770;
+}
+
+.ai-twin-card:hover {
+    transform: translateY(-7px);
+    border-color: rgba(101,216,137,.45);
+}
+
+.ai-twin-card:hover::before {
+    transform: translateX(8%);
+}
+
+.ai-twin-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 190px;
+}
+
+.ai-twin-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    width: fit-content;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: #b5b5ad;
+}
+
+.ai-twin-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ai-green);
+    box-shadow: 0 0 0 0 rgba(101,216,137,.5);
+    animation: aiTwinPulse 1.8s ease-out infinite;
+}
+
+@keyframes aiTwinPulse {
+    0% { box-shadow: 0 0 0 0 rgba(101,216,137,.5); opacity: 1; }
+    55% { box-shadow: 0 0 0 7px rgba(101,216,137,0); opacity: .8; }
+    100% { box-shadow: 0 0 0 0 rgba(101,216,137,0); opacity: 1; }
+}
+
+.ai-twin-title {
+    max-width: 760px;
+    margin-top: 28px;
+    font-family: var(--body);
+    font-size: clamp(34px, 4.6vw, 66px);
+    line-height: .9;
+    letter-spacing: -.06em;
+    font-weight: 600;
+}
+
+.ai-twin-title em {
+    color: #777770;
+    font-style: normal;
+}
+
+.ai-twin-description {
+    max-width: 500px;
+    margin-top: 20px;
+    color: #a2a29c;
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+.ai-twin-action {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: stretch;
+}
+
+.ai-twin-orbit {
+    position: relative;
+    width: min(210px, 30vw);
+    aspect-ratio: 1;
+    border: 1px solid #3a3a37;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    animation: aiTwinFloat 5s ease-in-out infinite;
+}
+
+.ai-twin-orbit::before,
+.ai-twin-orbit::after {
+    content: '';
+    position: absolute;
+    border: 1px solid #3a3a37;
+    border-radius: 50%;
+}
+
+.ai-twin-orbit::before {
+    inset: 20%;
+}
+
+.ai-twin-orbit::after {
+    width: 7px;
+    height: 7px;
+    right: 13%;
+    top: 23%;
+    border: 0;
+    background: var(--accent);
+    box-shadow: 0 0 20px rgba(255,73,63,.35);
+}
+
+.ai-twin-mark {
+    width: 62px;
+    height: 62px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: var(--white);
+    font-family: var(--body);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -.05em;
+    transform: rotate(-5deg);
+    transition: transform .45s var(--ease);
+}
+
+.ai-twin-card:hover .ai-twin-mark {
+    transform: rotate(0deg) scale(1.08);
+}
+
+@keyframes aiTwinFloat {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@media (max-width: 760px) {
+    .ai-twin-card {
+        grid-template-columns: 1fr;
+        min-height: 0;
+    }
+
+    .ai-twin-content {
+        min-height: 0;
+    }
+
+    .ai-twin-action {
+        justify-content: flex-start;
+        margin-top: 28px;
+    }
+
+    .ai-twin-orbit {
+        width: 150px;
+    }
+
+    .ai-twin-card::after {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ai-twin-status-dot,
+    .ai-twin-orbit {
+        animation: none;
+    }
+}
