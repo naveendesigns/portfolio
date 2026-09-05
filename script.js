@@ -136,6 +136,14 @@ document.addEventListener('DOMContentLoaded', () => {
     prevButton?.addEventListener('click', event => { event.stopPropagation(); changeCard(-1); });
     nextButton?.addEventListener('click', event => { event.stopPropagation(); changeCard(1); });
 
+    // AI Twin entry point. Both the navigation CTA and work-section card open the standalone chat page.
+    document.querySelectorAll('.ai-twin-nav, .ai-twin-card').forEach(link => {
+        link.addEventListener('click', event => {
+            event.preventDefault();
+            window.location.href = 'ai-twin.html';
+        });
+    });
+
     // Native case studies must navigate directly to their HTML files.
     // No Notion overlay is attached to native case-study cards.
 
