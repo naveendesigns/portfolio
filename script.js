@@ -1,3 +1,10 @@
+/* Vercel Web Analytics bootstrap for the static portfolio. */
+window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+const vercelAnalyticsScript = document.createElement('script');
+vercelAnalyticsScript.defer = true;
+vercelAnalyticsScript.src = '/_vercel/insights/script.js';
+document.head.appendChild(vercelAnalyticsScript);
+
 document.addEventListener('DOMContentLoaded', () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const nav = document.querySelector('.site-nav');
