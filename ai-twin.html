@@ -68,5 +68,9 @@ function ask(q){q=(q||'').trim();if(!q)return;welcome.hidden=true;input.value=''
 $('#form').addEventListener('submit',e=>{e.preventDefault();ask(input.value)});chiprow.addEventListener('click',e=>{const c=e.target.closest('[data-ask]');if(c)ask(c.dataset.ask)});$('#reset').addEventListener('click',()=>{log.innerHTML='';welcome.hidden=false;state.topicHistory=[];pinned=true;updateChips(null);scroller.scrollTop=0;input.focus()});
 (function(){const phrases=['Ask me anything…','What’s DesignOS?','Designer or engineer? (spoiler: both)','What should I look at?','Does he actually code?','Why hire him?'];if(REDUCED){let i=0;setInterval(()=>{if(document.activeElement!==input&&!input.value)input.placeholder=phrases[i++%phrases.length]},4000);return}let pi=0,ci=0,del=false;function tick(){if(document.activeElement===input||input.value){setTimeout(tick,1200);return}const cur=phrases[pi];if(!del){ci++;if(ci>=cur.length){del=true;input.placeholder=cur;setTimeout(tick,2100);return}}else{ci--;if(ci<=0){del=false;pi=(pi+1)%phrases.length}}input.placeholder=cur.slice(0,Math.max(0,ci));setTimeout(tick,del?26:58)}input.placeholder=phrases[0];setTimeout(tick,2200)})();updateChips(null);if(matchMedia('(min-width:721px)').matches)input.focus();
 </script>
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

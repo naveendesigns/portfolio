@@ -30,5 +30,9 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{setTimeout(()=>el.style.tr
 const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.style.opacity='1';entry.target.style.transform='translateY(0)';observer.unobserve(entry.target)}})},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 </script>
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
