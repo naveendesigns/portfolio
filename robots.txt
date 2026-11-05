@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://naveendesigns.github.io/portfolio/sitemap.xml
