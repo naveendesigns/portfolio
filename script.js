@@ -1101,6 +1101,15 @@
 
     function fillLightbox(i) {
       var item = visible[i];
+      if (window.va) {
+        window.va("event", {
+          name: "Sidequest Media Viewed",
+          data: {
+            title: item.title,
+            mediaType: item.mediaType || "image"
+          }
+        });
+      }
       lbMedia.textContent = "";
       if (item.mediaType === "video") {
         if (item.src && /^https?:/i.test(item.src) && /youtu\.?be|vimeo/i.test(item.src)) {
