@@ -17,6 +17,8 @@ function parseKnowledge(markdown) {
   let current = null;
   for (const line of markdown.split(/\r?\n/)) {
     if (line.startsWith("## ")) {
+      if (current) entries.push(current);
+      current = null;
       category = line.slice(3).trim();
     } else if (line.startsWith("### ")) {
       if (current) entries.push(current);
