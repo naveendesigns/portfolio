@@ -66,7 +66,8 @@
     var reader = response.body.getReader();
     var decoder = new TextDecoder();
     var buffer = "";
-    var finished = false;\n    var relatedLinks = [];
+    var finished = false;
+    var relatedLinks = [];
 
     function readEvent(eventText) {
       for (var line of eventText.split(/\r?\n/)) {
