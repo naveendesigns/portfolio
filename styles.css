@@ -2188,7 +2188,33 @@ body > .portfolio-chat-launcher:hover {
 .chat-message { max-width: min(88%, 620px); padding: 13px 16px; border-radius: 16px; font-size: 14px; line-height: 1.65; overflow-wrap: anywhere; }
 .chat-message--user { align-self: flex-end; background: #e9e8e4; }
 .chat-message--assistant { align-self: flex-start; padding-left: 0; background: transparent; }
-.chat-compose-area { width: min(760px, 100%); padding: 0 28px 22px; }
+
+.chat-related-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: min(88%, 620px);
+  margin-top: -8px;
+}
+.chat-related-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid rgba(49, 133, 237, .25);
+  border-radius: 999px;
+  background: #eef5ff;
+  color: #1459a5;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+.chat-related-links a::after { content: "↗"; font-size: 12px; }
+.chat-related-links a:hover { background: #dcecff; border-color: rgba(49, 133, 237, .5); transform: translateY(-1px); }
+.chat-related-links a:focus-visible { outline: 3px solid rgba(49, 133, 237, .35); outline-offset: 2px; }
+\n.chat-compose-area { width: min(760px, 100%); padding: 0 28px 22px; }
 .chat-compose {
   position: relative;
   display: flex;
