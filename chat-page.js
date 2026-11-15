@@ -60,6 +60,8 @@
       bubble.textContent = result.reply;
       bubble.dataset.started = "true";
       bubble.classList.remove("chat-message--pending");
+      bubble.removeAttribute("aria-label");
+      addRelatedLinks(result.suggestions);
       return result.reply;
     }
 
@@ -86,6 +88,7 @@
             bubble.textContent = "";
             bubble.dataset.started = "true";
             bubble.classList.remove("chat-message--pending");
+            bubble.removeAttribute("aria-label");
           }
           bubble.textContent += chunk.delta;
           messageList.scrollTop = messageList.scrollHeight;
@@ -103,6 +106,8 @@
     }
     if (buffer && !finished) readEvent(buffer);
     if (bubble.dataset.started !== "true") throw new Error("The assistant returned an empty reply. Please try again.");
+    addRelatedLinks(relatedLinks);
+    bubble.removeAttribute("aria-label");
     return bubble.textContent;
   }
 
