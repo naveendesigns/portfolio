@@ -1,40 +1,87 @@
+const fs = require("fs");
+const path = require("path");
+
 const MODEL = "nvidia/nemotron-3.5-bolt-e4b";
 const NVIDIA_CHAT_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_LENGTH = 1200;
+const QA_PATH = path.join(__dirname, "../PORTFOLIO_CHAT_QA.md");
+const QA_SOURCE = fs.readFileSync(QA_PATH, "utf8");
 
-const portfolioContext = `
-You are Naveen Kumar's portfolio assistant. Speak naturally, warmly, and concisely, like a helpful person introducing Naveen. Answer only from the information below. If something is not included, say you do not have that detail and invite the visitor to contact Naveen. Never invent employers, outcomes, team sizes, dates, project results, or personal details. You may answer in first person as Naveen, but do not claim to be Naveen or a human.
+const STOP_WORDS = new Set(("a an and are as at be by can do does for from get give has have he her his how i in is it its me my of on or our she tell that the their them they this to was what when where which who why with work you your").split(" "));
+const PROJECT_LINK_PATTERN = /^(?:case-study\.html\?slug=[a-z0-9-]+|index\.html(?:#[a-z0-9-]+)?|sidequests\.html)$/i;
 
-ABOUT NAVEEN
-- Product Designer / Design Engineer based in Chennai, India.
-- Works across B2B SaaS, AI/LLM experiences, design systems, and complex enterprise workflows.
-- Enjoys making complicated products easier to use and works across product thinking, interaction design, prototyping, and implementation with engineers.
-- Has 5+ years in product design, including 4+ years in UX/UI and product work. Earlier worked in video editing and post-production.
-- Tools and skills listed: Figma, HTML, CSS, JavaScript, React, Claude, ChatGPT, and AI-assisted prototyping.
-- Likes photography and capturing small moments while out and about. Portfolio sidequests include cars, coffee, restaurant interiors, and a small F1 model.
+function parseKnowledge(markdown) {
+  const entries = [];
+  let category = "Portfolio";
+  let current = null;
+  for (const line of markdown.split(/\r?\n/)) {
+    if (line.startsWith("## ")) {
+      category = line.slice(3).trim();
+    } else if (line.startsWith("### ")) {
+      if (current) entries.push(current);
+      current = { category, question: line.slice(4).trim(), answer: "" };
+    } else if (current && line.trim()) {
+      current.answer += (current.answer ? " " : "") + line.trim();
+    }
+  }
+  if (current) entries.push(current);
+  return entries;
+}
 
-EXPERIENCE
-- Integrate, USA: Product Designer, Jun 2024 to Sep 2026, product team in Chennai. B2B SaaS for lead management, integrations, user administration, and complex workflows, with design systems and design-engineering collaboration.
-- Innerscore, Hyderabad: Senior UX/UI Designer, Mar 2024 to Jun 2024. Native LLM-based educational assistant, conversational UX, and usability testing. The portfolio reports a 40% reduction in navigation errors for the project.
-- Hurrey Tech, Bengaluru: Product Designer, May 2022 to Jan 2024. Education SaaS for school administration and admissions workflows, design systems, and voice-assistant experiences.
-- Blackdoor Studio, Chennai: Post-production Editor, Oct 2020 to Mar 2022. Video editing and post-production.
+const KNOWLEDGE = parseKnowledge(QA_SOURCE);
 
-FEATURED WORK
-- DesignOS is an independent AI-native design workspace concept connecting design systems, research, product decisions, and team knowledge. It is a concept and interactive product experience, not a shipped product.
-- Design x Engineering Collaboration explores clearer handoffs between design and engineering.
-- Teacher Experience Redesign is an education product redesign around teacher workflows.
-- School Admissions Platform is a school administration experience for admissions.
-- Scalable Typography System connects Figma variables to CSS.
-- One Home for Store Employees is a personal retail operations concept for Android, bringing Receiving, Stowing, and Inventory Audit together. It is based on secondary research and an informal conversation, not an implemented More Retail product. Its prototype explores the workflow; store policies and technical assumptions still need validation.
+function terms(text) {
+  return (String(text).toLowerCase().match(/[a-z0-9]+/g) || [])
+    .filter((word) => word.length > 1 && !STOP_WORDS.has(word));
+}
 
-CONTACT
-- Email: naveenmm26@gmail.com
-- LinkedIn: https://www.linkedin.com/in/naveenux/
-- Portfolio: https://www.mrnk.in/
+function retrieve(query) {
+  const queryTerms = terms(query);
+  const querySet = new Set(queryTerms);
+  const scored = KNOWLEDGE.map((entry) => {
+    const questionTerms = terms(entry.question);
+    const answerTerms = terms(entry.answer.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1"));
+    const questionSet = new Set(questionTerms);
+    const answerSet = new Set(answerTerms);
+    let score = 0;
+    for (const term of querySet) {
+      if (questionSet.has(term)) score += 4;
+      if (answerSet.has(term)) score += 1;
+    }
 
-Keep most answers to a few sentences. Avoid generic praise, exaggerated claims, and jargon. For questions outside the portfolio, gently say this chat is focused on Naveen's work and interests.
-`;
+    const normalizedQuery = query.toLowerCase();
+    if (/designos/.test(normalizedQuery) && /designos/i.test(entry.question + entry.answer)) score += 10;
+    if (/teacher|hurrey/.test(normalizedQuery) && /teacher/i.test(entry.question + entry.answer)) score += 7;
+    if (/admission|school/.test(normalizedQuery) && /admission/i.test(entry.question + entry.answer)) score += 7;
+    if (/typography|font|type scale/.test(normalizedQuery) && /typography/i.test(entry.question + entry.answer)) score += 7;
+    if (/retail|store employee|inventory/.test(normalizedQuery) && /one home|retail/i.test(entry.question + entry.answer)) score += 7;
+    if (/work style|process|approach/.test(normalizedQuery) && /work style|approach|process/i.test(entry.question)) score += 5;
+    if (/experience|worked|employment|career/.test(normalizedQuery) && /experience|career|worked|roles/i.test(entry.question)) score += 3;
+    return { entry, score };
+  }).filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  return scored.slice(0, 4).map((item) => item.entry);
+}
+
+function getSuggestions(entries) {
+  const suggestions = [];
+  const seen = new Set();
+  for (const entry of entries) {
+    const links = entry.answer.matchAll(/\[([^\]]+)\]\(([^)]+)\)/g);
+    for (const match of links) {
+      const title = match[1].trim();
+      const href = match[2].trim();
+      if (!PROJECT_LINK_PATTERN.test(href) || seen.has(href)) continue;
+      if (/^index\.html#(?:about|experience|work|process|contact)$/.test(href)) continue;
+      seen.add(href);
+      suggestions.push({ title, href });
+      if (suggestions.length === 3) return suggestions;
+    }
+  }
+  return suggestions;
+}
 
 function sendJson(res, status, payload) {
   res.statusCode = status;
@@ -72,6 +119,16 @@ module.exports = async function handler(req, res) {
     return sendJson(res, 400, { error: "Send a valid message to continue." });
   }
 
+  const matchedEntries = retrieve(messages[messages.length - 1].content);
+  const referenceContext = matchedEntries.map((entry) =>
+    "Question: " + entry.question + "\nPortfolio answer: " + entry.answer.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+  ).join("\n\n");
+  const suggestions = getSuggestions(matchedEntries);
+  const systemPrompt = `You are Naveen Kumar's portfolio assistant. Answer only from the portfolio reference below and the conversation. The reference is curated from published portfolio pages. Never invent employers, dates, results, skills, team sizes, research counts, or personal details. Distinguish concepts from shipped work and present reported outcomes as portfolio-reported. If the reference does not answer something, say the portfolio does not specify it. Reply naturally in first person when useful, without claiming to be human. Be specific and concise (usually 2–4 sentences). Do not include markdown links; related links are supplied separately by the site.
+
+PORTFOLIO REFERENCE
+${referenceContext || "No matching portfolio entry was found. Say that the portfolio does not specify the answer and offer the contact page."}`;
+
   try {
     const upstream = await fetch(NVIDIA_CHAT_URL, {
       method: "POST",
@@ -81,9 +138,9 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify({
         model: MODEL,
-        messages: [{ role: "system", content: portfolioContext }, ...messages],
-        temperature: 1,
-        top_p: 0.95,
+        messages: [{ role: "system", content: systemPrompt }, ...messages],
+        temperature: 0.7,
+        top_p: 0.9,
         max_tokens: 450,
         chat_template_kwargs: { enable_thinking: false },
         stream: true,
@@ -143,6 +200,7 @@ module.exports = async function handler(req, res) {
       if (providerDone) break;
     }
     if (buffer) forwardEvent(buffer);
+    res.write(`data: ${JSON.stringify({ suggestions })}\n\n`);
     res.write("data: [DONE]\n\n");
     res.end();
   } catch (error) {
@@ -155,4 +213,3 @@ module.exports = async function handler(req, res) {
     }
   }
 };
-
