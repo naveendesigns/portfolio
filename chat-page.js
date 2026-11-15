@@ -79,7 +79,8 @@
           return;
         }
         var chunk = JSON.parse(data);
-        if (chunk.error) throw new Error(chunk.error);\n        if (Array.isArray(chunk.suggestions)) relatedLinks = chunk.suggestions;
+        if (chunk.error) throw new Error(chunk.error);
+        if (Array.isArray(chunk.suggestions)) relatedLinks = chunk.suggestions;
         if (typeof chunk.delta === "string" && chunk.delta) {
           if (bubble.dataset.started !== "true") {
             bubble.textContent = "";
