@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F7F6F2">
+  <title>Chat with Naveen | Product Designer</title>
+  <meta name="description" content="A single chat preview for questions about Naveen's portfolio, experience and interests.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body class="chat-page">
+  <header class="chat-page-header">
+    <button class="chat-page-back" type="button" aria-label="Go back">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>Back</span>
+    </button>
+    <a class="chat-page-brand" href="index.html" aria-label="Naveen Kumar home">
+      <span class="chat-page-brand-mark">NK</span>
+      <span>Naveen Kumar</span>
+    </a>
+    <button class="chat-page-close" type="button" aria-label="Close chat">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+    </button>
+  </header>
+
+  <main class="chat-page-main">
+    <section class="chat-conversation" aria-label="Chat with Naveen's portfolio assistant">
+      <div class="chat-empty-state" id="chatEmptyState">
+        <div class="chat-empty-mark" aria-hidden="true">NK</div>
+        <h1>What would you like to know?</h1>
+        <p>Ask about my product work, experience, or what I get up to outside design.</p>
+        <div class="chat-suggestions" aria-label="Suggested questions">
+          <button type="button" data-prompt="What kind of product design work do you do?">What kind of work do you do?</button>
+          <button type="button" data-prompt="Tell me about DesignOS">Tell me about DesignOS</button>
+          <button type="button" data-prompt="What do you enjoy outside work?">What do you enjoy outside work?</button>
+        </div>
+      </div>
+      <div class="chat-message-list" id="chatMessageList" role="log" aria-live="polite" aria-relevant="additions text"></div>
+    </section>
+
+    <div class="chat-compose-area">
+      <form class="chat-compose" id="chatCompose">
+        <label class="visually-hidden" for="chatQuestion">Message Naveen's portfolio assistant</label>
+        <button class="chat-reaction-trigger" type="button" aria-label="Choose a reaction" aria-expanded="false" aria-controls="chatReactionPicker">
+          <span class="chat-face chat-face--neutral" aria-hidden="true"><i></i><i></i></span>
+        </button>
+        <textarea id="chatQuestion" rows="1" maxlength="1000" placeholder="Ask anything"></textarea>
+        <button type="submit" aria-label="Send message" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+        </button>
+        <div class="chat-reaction-picker" id="chatReactionPicker" role="group" aria-label="Choose a reaction" hidden>
+          <button type="button" data-reaction="neutral" aria-label="Neutral" aria-pressed="false"><span class="chat-face chat-face--neutral" aria-hidden="true"><i></i><i></i></span></button>
+          <button type="button" data-reaction="curious" aria-label="Curious" aria-pressed="false"><span class="chat-face chat-face--curious" aria-hidden="true"><i></i><i></i></span></button>
+          <button type="button" data-reaction="happy" aria-label="Happy" aria-pressed="false"><span class="chat-face chat-face--happy" aria-hidden="true"><i></i><i></i></span></button>
+          <button type="button" data-reaction="thinking" aria-label="Thinking" aria-pressed="false"><span class="chat-face chat-face--thinking" aria-hidden="true"><i></i><i></i></span></button>
+          <button type="button" data-reaction="delighted" aria-label="Delighted" aria-pressed="false"><span class="chat-face chat-face--delighted" aria-hidden="true"><i></i><i></i></span></button>
+        </div>
+      </form>
+      <p class="chat-compose-note">Replies are AI generated. Questions go to NVIDIA, so please avoid sharing sensitive information.</p>
+    </div>
+  </main>
+  <script src="chat-page.js"></script>
+</body>
+</html>
+
