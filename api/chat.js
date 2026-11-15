@@ -85,6 +85,8 @@ module.exports = async function handler(req, res) {
         temperature: 0.5,
         top_p: 1,
         max_tokens: 450,
+        reasoning_effort: "low",
+        chat_template_kwargs: { clear_thinking: true },
         stream: true,
       }),
       signal: AbortSignal.timeout(55000),
