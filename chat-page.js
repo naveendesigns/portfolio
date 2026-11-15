@@ -30,7 +30,25 @@
     messageList.scrollTop = messageList.scrollHeight;
   }
 
-  function addRelatedLinks(links) {\n    if (!Array.isArray(links) || !links.length) return;\n    var container = document.createElement("nav");\n    container.className = "chat-related-links";\n    container.setAttribute("aria-label", "Related portfolio pages");\n    links.forEach(function (link) {\n      if (!link || typeof link.title !== "string" || typeof link.href !== "string") return;\n      var anchor = document.createElement("a");\n      anchor.href = link.href;\n      anchor.textContent = link.title;\n      container.appendChild(anchor);\n    });\n    if (container.childElementCount) {\n      messageList.appendChild(container);\n      messageList.scrollTop = messageList.scrollHeight;\n    }\n  }\n\n  async function readAssistantStream(response, bubble) {
+  function addRelatedLinks(links) {
+    if (!Array.isArray(links) || !links.length) return;
+    var container = document.createElement("nav");
+    container.className = "chat-related-links";
+    container.setAttribute("aria-label", "Related portfolio pages");
+    links.forEach(function (link) {
+      if (!link || typeof link.title !== "string" || typeof link.href !== "string") return;
+      var anchor = document.createElement("a");
+      anchor.href = link.href;
+      anchor.textContent = link.title;
+      container.appendChild(anchor);
+    });
+    if (container.childElementCount) {
+      messageList.appendChild(container);
+      messageList.scrollTop = messageList.scrollHeight;
+    }
+  }
+
+  async function readAssistantStream(response, bubble) {
     if (!response.ok) {
       var errorBody = await response.json().catch(function () { return {}; });
       throw new Error(errorBody.error || "I couldn't reach the assistant. Please try again.");
