@@ -1,4 +1,4 @@
-const MODEL = "z-ai/glm-5.3-flash";
+const MODEL = "nvidia/nemotron-3.5-bolt-e4b";
 const NVIDIA_CHAT_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_LENGTH = 1200;
@@ -82,11 +82,10 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         model: MODEL,
         messages: [{ role: "system", content: portfolioContext }, ...messages],
-        temperature: 0.5,
-        top_p: 1,
+        temperature: 1,
+        top_p: 0.95,
         max_tokens: 450,
-        reasoning_effort: "low",
-        chat_template_kwargs: { clear_thinking: true },
+        chat_template_kwargs: { enable_thinking: false },
         stream: true,
       }),
       signal: AbortSignal.timeout(55000),
