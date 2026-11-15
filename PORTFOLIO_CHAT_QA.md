@@ -117,6 +117,15 @@ DesignOS is an independent, interactive concept for an AI-native design workspac
 ### What problem does DesignOS explore?
 Design knowledge is spread across tools, so context can be lost when a team makes a design decision. DesignOS explores making that context available in the workflow. [DesignOS](case-study.html?slug=designos)
 
+### What knowledge does DesignOS connect?
+The concept connects design systems (components, tokens, patterns, and guidelines), research and user insights, product decisions and their rationale, and team knowledge with AI. [DesignOS](case-study.html?slug=designos)
+
+### How does DesignOS learn with a team?
+The case study describes a loop of context, AI, decisions, learning, and an evolving system. It explores identifying repeated patterns, connecting decisions to research, and surfacing opportunities to improve the system. [DesignOS](case-study.html?slug=designos)
+
+### Is DesignOS meant to replace designer judgment?
+No. The case study frames AI as a way to make team knowledge more contextual and useful; AI recommends, while designers decide. [DesignOS](case-study.html?slug=designos)
+
 ### What did Naveen contribute to DesignOS?
 The case study lists concept, product, and interaction design for a fully interactive product experience. It describes the project team as independent and solo. [DesignOS](case-study.html?slug=designos)
 
