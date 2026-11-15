@@ -2,7 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "api/chat.js": {
-      "maxDuration": 60
+      "maxDuration": 60,
+      "includeFiles": "PORTFOLIO_CHAT_QA.md"
     }
   }
-}
+}\n
