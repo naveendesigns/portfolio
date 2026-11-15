@@ -30,7 +30,7 @@
     messageList.scrollTop = messageList.scrollHeight;
   }
 
-  async function readAssistantStream(response, bubble) {
+  function addRelatedLinks(links) {\n    if (!Array.isArray(links) || !links.length) return;\n    var container = document.createElement("nav");\n    container.className = "chat-related-links";\n    container.setAttribute("aria-label", "Related portfolio pages");\n    links.forEach(function (link) {\n      if (!link || typeof link.title !== "string" || typeof link.href !== "string") return;\n      var anchor = document.createElement("a");\n      anchor.href = link.href;\n      anchor.textContent = link.title;\n      container.appendChild(anchor);\n    });\n    if (container.childElementCount) {\n      messageList.appendChild(container);\n      messageList.scrollTop = messageList.scrollHeight;\n    }\n  }\n\n  async function readAssistantStream(response, bubble) {
     if (!response.ok) {
       var errorBody = await response.json().catch(function () { return {}; });
       throw new Error(errorBody.error || "I couldn't reach the assistant. Please try again.");
@@ -48,7 +48,7 @@
     var reader = response.body.getReader();
     var decoder = new TextDecoder();
     var buffer = "";
-    var finished = false;
+    var finished = false;\n    var relatedLinks = [];
 
     function readEvent(eventText) {
       for (var line of eventText.split(/\r?\n/)) {
@@ -60,7 +60,7 @@
           return;
         }
         var chunk = JSON.parse(data);
-        if (chunk.error) throw new Error(chunk.error);
+        if (chunk.error) throw new Error(chunk.error);\n        if (Array.isArray(chunk.suggestions)) relatedLinks = chunk.suggestions;
         if (typeof chunk.delta === "string" && chunk.delta) {
           if (bubble.dataset.started !== "true") {
             bubble.textContent = "";
