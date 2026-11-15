@@ -117,9 +117,14 @@ module.exports = async function handler(req, res) {
         }
         try {
           const chunk = JSON.parse(data);
-          const delta = chunk.choices && chunk.choices[0] && chunk.choices[0].delta && chunk.choices[0].delta.content;
+          const choice = chunk.choices && chunk.choices[0];
+          const delta = choice && choice.delta && choice.delta.content;
           if (typeof delta === "string" && delta) {
             res.write(`data: ${JSON.stringify({ delta })}\n\n`);
+          }
+          if (choice && choice.finish_reason) {
+            providerDone = true;
+            return;
           }
         } catch {
           // Ignore non-JSON keepalive or metadata events from the provider.
